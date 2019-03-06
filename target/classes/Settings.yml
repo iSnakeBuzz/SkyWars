@@ -1,0 +1,5 @@
+# Modes: LOBBY, SOLO, TEAM, SETUP
+Mode: SETUP
+
+#Debug
+debug: true

@@ -1,0 +1,10 @@
+name: 'SkyWars'
+version: 1.0-SNAPSHOT
+main: com.isnakebuzz.skywars.Main
+authors: ['iSnakeBuzz_']
+description: 'SkyWars Similar to HyPixel'
+website: https://www.isnakebuzz.com/
+commands:
+  SkyWars:
+    description: 'SkyWars principal command'
+    aliases: ['sw', 'skyw', 'swars']

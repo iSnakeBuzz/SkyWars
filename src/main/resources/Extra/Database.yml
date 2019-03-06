@@ -1,0 +1,16 @@
+# Types: MYSQL, MONGODB
+Type: MYSQL
+
+#Database
+MySQL:
+  enabled: false
+  hostname: "127.0.0.1"
+  port: 3306
+  database: "SkyWars"
+  username: "root"
+  password: "snake123"
+MongoDB:
+  hostname: '127.0.0.1'
+  database: 'SkyWars'
+  user: 'admin'
+  pass: 'admin123'
