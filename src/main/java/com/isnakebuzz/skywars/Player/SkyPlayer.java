@@ -11,6 +11,9 @@ public class SkyPlayer {
 
     private UUID uuid;
 
+    //Cosmetics
+    private String cageName;
+
     //Stats
     private int wins;
     private int kills;
@@ -26,6 +29,7 @@ public class SkyPlayer {
     public SkyPlayer(UUID uuid) {
         this.uuid = uuid;
 
+        this.cageName = "default";
         this.wins = 0;
         this.kills = 0;
         this.deaths = 0;
@@ -108,9 +112,9 @@ public class SkyPlayer {
 
         Player p = Bukkit.getPlayer(this.uuid);
         if (spectator) {
+            p.setGameMode(GameMode.ADVENTURE);
             p.setAllowFlight(true);
             p.setFlying(true);
-            p.setGameMode(GameMode.ADVENTURE);
             p.setHealth(p.getMaxHealth());
             p.setFoodLevel(40);
 
@@ -118,11 +122,9 @@ public class SkyPlayer {
                 online.hidePlayer(p);
             }
         } else {
+            p.setGameMode(GameMode.SURVIVAL);
             p.setAllowFlight(false);
             p.setFlying(false);
-            p.setGameMode(GameMode.SURVIVAL);
-            p.setHealth(p.getMaxHealth());
-            p.setFoodLevel(40);
 
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.showPlayer(p);

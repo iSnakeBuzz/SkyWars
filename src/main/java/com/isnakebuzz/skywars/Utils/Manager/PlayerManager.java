@@ -35,7 +35,7 @@ public class PlayerManager {
     }
 
     public SkyPlayer getPlayer(Player p) {
-        return this.skyPlayerMap.getOrDefault(p.getUniqueId(), null);
+        return this.skyPlayerMap.getOrDefault(p.getUniqueId(), new SkyPlayer(p.getUniqueId()));
     }
 
 }

@@ -4,7 +4,7 @@
   <groupId>SkyWars</groupId>
   <artifactId>SkyWars</artifactId>
   <name>SkyWars</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0.0</version>
   <description>SkyWars Similar to HyPixel</description>
   <url>https://www.isnakebuzz.com/</url>
   <build>
@@ -64,10 +64,35 @@
   <dependencies>
     <dependency>
       <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-1.8.8</artifactId>
-      <version>1.8.8</version>
+      <artifactId>spigot</artifactId>
+      <version>1.8.8-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>LATEST</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.boydti</groupId>
+      <artifactId>we-api</artifactId>
+      <version>1.8.9</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/lib/Spigot-1.8.8.jar</systemPath>
+      <systemPath>${project.basedir}/Lib/worldedit-bukkit-6.1.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.boydti</groupId>
+      <artifactId>fawe-api</artifactId>
+      <version>1.8.9</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/Lib/FastAsyncWorldEdit-bukkit.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>

@@ -13,14 +13,14 @@ import java.util.*;
 
 public final class ChestController {
 
-    private final List<ChestItem> iSlandItems = Lists.newArrayList();
-    private final List<ChestItem> CenterItems = Lists.newArrayList();
-    private final Random random = new Random();
+    private List<ChestItem> iSlandItems = Lists.newArrayList();
+    private List<ChestItem> CenterItems = Lists.newArrayList();
+    private Random random = new Random();
 
     private List<Integer> randomLoc = new ArrayList<Integer>();
     private List<Integer> randomDLoc = new ArrayList<Integer>();
-    private final Main plugin;
-    private static SettingsManager CenterChests, IslandsChests;
+    private Main plugin;
+    private SettingsManager CenterChests, IslandsChests;
 
     public ChestController(Main plugin) {
         this.plugin = plugin;

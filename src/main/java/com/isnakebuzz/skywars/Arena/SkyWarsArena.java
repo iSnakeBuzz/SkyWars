@@ -41,11 +41,6 @@ public class SkyWarsArena {
     private int cageOpens;
     private int endTimer;
 
-    //Tasks
-    private int startingTask;
-    private int cageOpensTask;
-    private int endTask;
-
     //Locations
     private Location lobbyLocation;
     private List<Location> lobbyRegion;
@@ -134,14 +129,6 @@ public class SkyWarsArena {
         this.cageOpens = cageOpens;
     }
 
-    public int getCageOpensTask() {
-        return cageOpensTask;
-    }
-
-    public void setCageOpensTask(int cageOpensTask) {
-        this.cageOpensTask = cageOpensTask;
-    }
-
     public int getMaxPlayers() {
         return maxPlayers;
     }
@@ -158,20 +145,12 @@ public class SkyWarsArena {
         return gamePlayers;
     }
 
-    public int getEndTask() {
-        return endTask;
-    }
-
     public int getEndTimer() {
         return endTimer;
     }
 
     public void setEndTimer(int endTimer) {
         this.endTimer = endTimer;
-    }
-
-    public void setEndTask(int endTask) {
-        this.endTask = endTask;
     }
 
     public boolean checkStart() {
@@ -186,14 +165,6 @@ public class SkyWarsArena {
         return false;
     }
 
-    public void setStartingTask(int startingTask) {
-        this.startingTask = startingTask;
-    }
-
-    public int getStartingTask() {
-        return startingTask;
-    }
-
     public boolean checkWin() {
         if (this.gameType.equals(GameType.SOLO)) {
             if (this.getGamePlayers().size() <= 1) {
@@ -203,8 +174,16 @@ public class SkyWarsArena {
         return false;
     }
 
+    public int getTimer() {
+        if (this.getGameStatus().equals(GameStatus.CAGEOPENING)) {
+            return this.getCageOpens();
+        }
+        return -600;
+    }
+
     public void fillChests() {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
+            plugin.debug("Filling chests");
             for (Location loc : this.islandChestLocs) {
                 Block block = loc.getWorld().getBlockAt(loc);
                 if (block.getState() instanceof Chest) {

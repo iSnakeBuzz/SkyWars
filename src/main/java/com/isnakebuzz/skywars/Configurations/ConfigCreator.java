@@ -24,4 +24,12 @@ public class ConfigCreator {
             p.saveResource(configname + ".yml", false);
         }
     }
+
+    public void setupOther(Plugin p, String configname) {
+        this.pluginDir = p.getDataFolder();
+        this.configFile = new File(this.pluginDir, configname);
+        if (!this.configFile.exists()) {
+            p.saveResource(configname, false);
+        }
+    }
 }

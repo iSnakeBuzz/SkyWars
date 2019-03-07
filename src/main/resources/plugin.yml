@@ -2,6 +2,7 @@ name: 'SkyWars'
 version: ${project.version}
 main: com.isnakebuzz.skywars.Main
 authors: ['iSnakeBuzz_']
+softdepend: ['FastAsyncWorldEdit']
 description: 'SkyWars Similar to HyPixel'
 website: https://www.isnakebuzz.com/
 commands:

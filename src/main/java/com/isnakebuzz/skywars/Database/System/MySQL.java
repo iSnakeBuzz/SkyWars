@@ -1,140 +1,127 @@
 package com.isnakebuzz.skywars.Database.System;
 
 import com.isnakebuzz.skywars.Main;
-import com.isnakebuzz.skywars.Utils.Statics;
+import com.isnakebuzz.skywars.Calls.Callback;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
-import java.util.Properties;
-import java.util.logging.Level;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MySQL {
 
-    public static String username;
-    public static String password;
-    public static String database;
-    public static String host;
-    public static int port;
-    public static Connection con;
-    public static boolean isEnabled;
+    private Main plugin;
+    private HikariDataSource dataSource;
 
-    static {
-        MySQL.isEnabled = false;
-        MySQL.username = "";
-        MySQL.password = "";
-        MySQL.database = "";
-        MySQL.host = "";
-        MySQL.port = 3306;
+    public MySQL(Main plugin) {
+        this.plugin = plugin;
     }
 
-    public static void connect(Main plugin) {
-        if (!isConnected()) {
+    public void init() {
+        ConfigurationSection myqslConfig = plugin.getConfig("Extra/Database").getConfigurationSection("MySQL");
+
+        boolean bool = myqslConfig.getBoolean("enabled");
+
+        String ip = myqslConfig.getString("hostname").split(":")[0];
+        String port = myqslConfig.getString("hostname").split(":")[1];
+        String database = myqslConfig.getString("database");
+        String username = myqslConfig.getString("username");
+        String password = myqslConfig.getString("password");
+        HikariConfig config = new HikariConfig();
+        config.setPoolName("HypeSpectPool");
+
+        checkFile(database);
+
+        if (bool) {
+            config.setJdbcUrl("jdbc:mysql://" + ip + ":" + port + "/" + database + "?useSSL=false");
+            config.setUsername(username);
+            config.setPassword(password);
+            config.setDriverClassName("com.mysql.jdbc.Driver");
+            config.addDataSourceProperty("cachePrepStmts", "true");
+            config.addDataSourceProperty("prepStmtCacheSize", "250");
+            config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        } else {
+            config.setDriverClassName("org.sqlite.JDBC");
+            config.setJdbcUrl("jdbc:sqlite:" + plugin.getDataFolder().getPath() + "/" + database + ".db");
+            config.setConnectionTestQuery("SELECT 1");
+            config.setMaxLifetime(60000);
+            config.setIdleTimeout(45000);
+            config.setMaximumPoolSize(50);
+        }
+
+        dataSource = new HikariDataSource(config);
+    }
+
+    public void close() {
+        this.dataSource.close();
+    }
+
+    public void preparedUpdate(String sql) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            Connection connection = null;
+            PreparedStatement preparedStatement;
+
             try {
-                if (MySQL.isEnabled) {
-                    final Properties properties = new Properties();
-                    properties.setProperty("user", MySQL.username);
-                    properties.setProperty("password", MySQL.password);
-                    properties.setProperty("autoReconnect", "true");
-                    properties.setProperty("verifyServerCertificate", "false");
-                    properties.setProperty("useSSL", "false");
-                    properties.setProperty("requireSSL", "false");
-                    MySQL.con = DriverManager.getConnection("jdbc:mysql://" + MySQL.host + ":" + MySQL.port + "/" + MySQL.database, properties);
-                    plugin.log(Statics.logPrefix, "Has been connected to MySQL Connection.");
-                } else {
-                    File db = new File(plugin.getDataFolder(), MySQL.database + ".db");
-                    if (!db.exists()) {
-                        try {
-                            db.createNewFile();
-                        } catch (IOException e) {
-                            plugin.getLogger().log(Level.SEVERE, "File write error: " + MySQL.database + ".db");
-                        }
+                connection = dataSource.getConnection();
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.executeUpdate();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                    Class.forName("org.sqlite.JDBC");
-                    MySQL.con = DriverManager.getConnection("jdbc:sqlite:" + db);
-                    plugin.log(Statics.logPrefix, "Has been loaded SQLite File.");
-
-                }
-            } catch (SQLException e) {
-                plugin.log(Statics.logPrefix, "&cError connecting to MySQL Connection");
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                plugin.log(Statics.logPrefix, "&cError loading SQLite Connection");
-            }
-        }
-    }
-
-    public static void disconnect() {
-        if (isConnected()) {
-            try {
-                MySQL.con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static boolean isConnected() {
-        return MySQL.con != null;
-    }
-
-    public static void update(final String qry) {
-        if (isConnected()) {
-            try {
-                MySQL.con.createStatement().executeUpdate(qry);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static ResultSet getResult(final String qry) {
-        if (isConnected()) {
-            try {
-                return MySQL.con.createStatement().executeQuery(qry);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    public static String getFirstString(final ResultSet rs, final int l, final String re, final int t) {
-        try {
-            while (rs.next()) {
-                if (rs.getString(l).equalsIgnoreCase(re)) {
-                    return rs.getString(t);
                 }
             }
-        } catch (Exception ex) {
-        }
-        return null;
+
+        });
     }
 
-    public static int getFirstInt(final ResultSet rs, final int l, final String re, final int t) {
-        try {
-            while (rs.next()) {
-                if (rs.getString(l).equalsIgnoreCase(re)) {
-                    return rs.getInt(t);
+    public void preparedQuery(String sql, Callback<ResultSet> callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            Connection connection = null;
+            PreparedStatement preparedStatement;
+            ResultSet resultSet = null;
+
+            try {
+                connection = dataSource.getConnection();
+                preparedStatement = connection.prepareStatement(sql);
+                resultSet = preparedStatement.executeQuery();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                callback.done(resultSet);
+
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        } catch (Exception ex) {
-        }
-        return 0;
+
+        });
     }
 
-    public static Connection getConnection() {
-        return MySQL.con;
-    }
-
-    public static ResultSet query(final String query) throws SQLException {
-        final Statement stmt = MySQL.con.createStatement();
-        try {
-            return stmt.executeQuery(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+    private void checkFile(String dbName) {
+        File file = new File(plugin.getDataFolder(), dbName + ".db");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 }

@@ -28,7 +28,7 @@ public class ScoreBoardAPI {
         removeScoreBoard(p);
         p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         ScoreBoardBuilder scoreboard = new ScoreBoardBuilder(randomString(8), health, spect, gamePlayers);
-        int id = Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, () -> {
+        int id = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             Configuration config = plugin.getConfigUtils().getConfig(plugin, "Extra/ScoreBoards");
             scoreboard.setName(chars(p, config.getString(scoreboardType.toString() + ".title")));
 
@@ -70,7 +70,7 @@ public class ScoreBoardAPI {
             if (health) scoreboard.updatelife(plugin);
             if (spect) scoreboard.updatespect(p);
             if (gamePlayers) scoreboard.updategames(plugin, p);
-        }, 0l, 20);
+        }, 0l, 20).getTaskId();
         p.setScoreboard(scoreboard.getScoreboard());
         this.scoretask.put(p, id);
     }

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public interface Database {
 
-    void createPlayer(Player p) throws SQLException, IOException;
+    void createPlayer(Player p);
 
     void savePlayer(Player p);
 

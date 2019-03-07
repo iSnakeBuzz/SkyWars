@@ -16,7 +16,7 @@ INGAME:
   - '&7%date%'
   - '<cages>'
   - '<cages>Next Event:'
-  - '<cages>&aStart %timer%'
+  - '<cages>&aStart %cageOpening%'
   - ''
   - 'Players left: &a%online%'
   - '<!isDead>'

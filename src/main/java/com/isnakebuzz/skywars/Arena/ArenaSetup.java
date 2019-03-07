@@ -25,6 +25,14 @@ public class ArenaSetup {
         p.playSound(p.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
     }
 
+    public void setCenterSchematic(Player p) throws IOException {
+        FileConfiguration config = plugin.getConfigUtils().getConfig(plugin, "Extra/Arena");
+        config.set("Schematic Center", LocUtils.locToString(p.getLocation()));
+        config.save(plugin.getConfigUtils().getFile(plugin, "Extra/Arena"));
+        p.sendMessage(c("&aYou has been setted Center for schematic"));
+        p.playSound(p.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+    }
+
     public void addSpawn(Player p) throws IOException {
         FileConfiguration arenaConfig = plugin.getConfigUtils().getConfig(plugin, "Extra/Arena");
 

@@ -22,23 +22,43 @@ End Game:
   Stay: 20
   FadeOut: 5
 
+Titles In Runnables:
+  Starting:
+    '10':
+      Title: '&c&lGAME ENDED'
+      SubTitle: ''
+      FadeIn: 5
+      Stay: 20
+      FadeOut: 5
+
+Banner:
+- '&a&l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+- '%center%&5&lSkyWars'
+- ''
+- '%center%&e&lGather resources and equipment on your island'
+- '%center%&e&lin order to eliminate every other player'
+- '%center%&e&lGo to the center island for special chests'
+- '%center%&e&lwith special items!'
+- ''
+- '&a&l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+
 Count Messages:
   Starting:
-    '15': '&eThe games starts in &a%seconds%&e seconds!'
-    '10': '&eThe games starts in &a%seconds%&e seconds!'
-    '5': '&eThe games starts in &a%seconds%&e seconds!'
-    '4': '&eThe games starts in &a%seconds%&e seconds!'
-    '3': '&eThe games starts in &a%seconds%&e seconds!'
-    '2': '&eThe games starts in &a%seconds%&e seconds!'
-    '1': '&eThe games starts in &a%seconds%&e second!'
+    '12': '&eThe games starts in &a%seconds%&e seconds!'
+    '10': '&eThe games starts in &6%seconds%&e seconds!'
+    '5': '&eThe games starts in &c%seconds%&e seconds!'
+    '4': '&eThe games starts in &c%seconds%&e seconds!'
+    '3': '&eThe games starts in &c%seconds%&e seconds!'
+    '2': '&eThe games starts in &c%seconds%&e seconds!'
+    '1': '&eThe games starts in &c%seconds%&e second!'
   Cages Open:
-    '10': '&eCages open in: &a%seconds%&e seconds!'
-    '9': '&eCages open in: &a%seconds%&e seconds!'
-    '8': '&eCages open in: &a%seconds%&e seconds!'
-    '7': '&eCages open in: &a%seconds%&e seconds!'
-    '6': '&eCages open in: &a%seconds%&e seconds!'
-    '5': '&eCages open in: &a%seconds%&e seconds!'
-    '4': '&eCages open in: &a%seconds%&e seconds!'
-    '3': '&eCages open in: &a%seconds%&e seconds!'
-    '2': '&eCages open in: &a%seconds%&e seconds!'
-    '1': '&eCages open in: &a%seconds%&e second!'
+    '10': '&eCages open in: &c%seconds%&e seconds!'
+    '9': '&eCages open in: &c%seconds%&e seconds!'
+    '8': '&eCages open in: &c%seconds%&e seconds!'
+    '7': '&eCages open in: &c%seconds%&e seconds!'
+    '6': '&eCages open in: &c%seconds%&e seconds!'
+    '5': '&eCages open in: &c%seconds%&e seconds!'
+    '4': '&eCages open in: &c%seconds%&e seconds!'
+    '3': '&eCages open in: &c%seconds%&e seconds!'
+    '2': '&eCages open in: &c%seconds%&e seconds!'
+    '1': '&eCages open in: &c%seconds%&e second!'
