@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Listeners.Lobby;
 import com.isnakebuzz.skywars.Inventory.MenuManager.MenuCreator;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
@@ -46,14 +47,7 @@ public class LobbyItems implements Listener {
             if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null) return;
 
             if (e.getCurrentItem().equals(itemStack)) {
-                if (_action.split(":")[0].equalsIgnoreCase("menu")) {
-                    new MenuCreator(p, plugin, _action.split(":")[1]).o(p);
-                } else if (_action.split(":")[0].equalsIgnoreCase("cmd")) {
-                    String cmd = "/" + _action.split(":")[1];
-                    p.chat(cmd);
-                } else if (_action.split(":")[0].equalsIgnoreCase("leave")) {
-
-                }
+                ACTIONS(p, (_action.split(":")[0] != null) ? _action.split(":")[0] : "", (_action.split(":").length > 0) ? _action.split(":")[1] : "");
                 e.setCancelled(true);
             }
         }
@@ -68,7 +62,8 @@ public class LobbyItems implements Listener {
         } catch (Exception ex) {
             key = null;
         }
-        if (key == null | key.size() < 1) return;
+        assert key != null;
+        if (key.size() < 1) return;
         for (String item : key) {
             String path = "Lobby." + item + ".";
             String _item = config.getString(path + "item");
@@ -77,17 +72,10 @@ public class LobbyItems implements Listener {
             String _action = config.getString(path + "action");
             ItemStack itemStack = ItemBuilder.crearItem1(Integer.valueOf(_item.split(":")[0]), 1, Integer.valueOf(_item.split(":")[1]), _name, _lore);
 
-            if (e.getItem() == null || e.getItem().getItemMeta().equals(null)) return;
+            if (e.getItem() == null || e.getItem().getItemMeta() == null) return;
 
             if (e.getItem().equals(itemStack)) {
-                if (_action.split(":")[0].equalsIgnoreCase("menu")) {
-                    new MenuCreator(e.getPlayer(), plugin, _action.split(":")[1]).o(e.getPlayer());
-                } else if (_action.split(":")[0].equalsIgnoreCase("cmd")) {
-                    String cmd = "/" + _action.split(":")[1];
-                    e.getPlayer().chat(cmd);
-                } else if (_action.split(":")[0].equalsIgnoreCase("leave")) {
-
-                }
+                ACTIONS(e.getPlayer(), (_action.split(":")[0] != null) ? _action.split(":")[0] : "", (_action.split(":").length > 0) ? _action.split(":")[0] : "");
                 e.setCancelled(true);
             }
         }
@@ -96,6 +84,19 @@ public class LobbyItems implements Listener {
     @EventHandler
     public void InventoryDrag(InventoryDragEvent e) {
         e.setCancelled(true);
+    }
+
+    private void ACTIONS(Player player, String action, String args) {
+        if (action.equalsIgnoreCase("menu")) {
+            new MenuCreator(player, plugin, args).o(player);
+
+        } else if (action.equalsIgnoreCase("cmd")) {
+            String cmd = "/" + args;
+            player.chat(cmd);
+
+        } else if (action.equalsIgnoreCase("server")) {
+            PacketsAPI.connect(plugin, player, args);
+        }
     }
 
     private String c(String s) {

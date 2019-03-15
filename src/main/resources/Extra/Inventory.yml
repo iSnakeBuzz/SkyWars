@@ -1,37 +1,51 @@
 Lobby:
-  Vote:
-    item: '395:0'
+  Kits:
+    item: '261:0'
     slot: 0
-    name: '&e&lVote'
+    name: '&aKit Selector &7(Right Click)'
+    lore: []
+    action: 'open:Kits'
+  GSettings:
+    item: '377:0'
+    slot: 1
+    name: '&aGame Settings &7(Right Click)'
     lore:
-    - '&7Click to open vote menu'
+      - ''
+      - '&7Right-click to configure Game!'
     action: 'open:Votes'
   Leave:
     item: '355:0'
     slot: 8
-    name: '&c&lLeave &7(Right-Click)'
+    name: '&c&lReturn to Lobby &7(Right-Click)'
     lore:
-    - '&7Right-Click to go lobby.'
-    action: 'leave'
+    - '&7Right-click to leave to the lobby!'
+    action: 'server:Lobby'
 Spectator:
-  Spectator:
+  Teleporter:
     item: '345:0'
     slot: 0
-    name: '&a&lTeletransportador &7(Click Derecho)'
+    name: '&a&lTeleporter &7(Click Derecho)'
     lore:
-    - '&7Click-Derecho para espectear jugadores.'
-    action: 'server:lobby'
+    - '&7Right-click to spectate players!'
+    action: 'open:Teleporter'
   Settings:
     item: '404:0'
     slot: 4
-    name: '&b&l&7(Click Derecho)'
+    name: '&b&lSpectator Settings &7(Click Derecho)'
     lore:
-    - '&7Click para regresar al Lobby.'
-    action: 'server:lobby'
+    - '&7Right-click to change your spectator settings!'
+    action: 'open:SpectatorSettings'
+  PlayAgain:
+    item: '339:0'
+    slot: 7
+    name: '&b&lPlay Again &7(Click Derecho)'
+    lore:
+    - '&7Right-click to play another game!'
+    action: 'playAgain'
   Leave:
     item: '355:0'
     slot: 8
-    name: '&c&lRegresar al Lobby &7(Click Derecho)'
+    name: '&c&lReturn to Lobby &7(Right-Click)'
     lore:
-    - '&7Click-Derecho para regresar al Lobby.'
-    action: 'server:lobby'
+    - '&7Right-click to leave to the lobby!'
+    action: 'server:Lobby'

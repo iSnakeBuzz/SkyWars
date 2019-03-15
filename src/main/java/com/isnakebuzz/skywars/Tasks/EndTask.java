@@ -19,35 +19,36 @@ public class EndTask extends BukkitRunnable {
     @Override
     public void run() {
 
-        if (plugin.getSkyWarsArena().getEndTimer() <= 1) {
+        if (plugin.getSkyWarsArena().getEndTimer() == 2) {
             for (Player online : Bukkit.getOnlinePlayers()) {
                 plugin.getDb().savePlayer(online);
             }
         }
 
-        if (plugin.getSkyWarsArena().getEndTimer() <= 0) {
+        if (plugin.getSkyWarsArena().getEndTimer() == 0) {
             //replace for others methodes more efficients.
+            plugin.debug("Restarting arena..");
+            this.cancel();
             if (Statics.isFawe) {
                 plugin.getWorldRestarting().restartWorld();
                 plugin.getListenerManager().reset();
                 plugin.resetArena();
-
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(online, "Rejoined");
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                        for (Player online2 : Bukkit.getOnlinePlayers()) {
-                            if (!online.equals(online2)) {
-                                online.showPlayer(online2);
-                            }
-                        }
-                        Bukkit.getPluginManager().callEvent(playerJoinEvent);
-                    });
-                }
-
             } else {
                 Bukkit.shutdown();
+                return;
             }
-            this.cancel();
+
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(online, "Rejoined");
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                    for (Player online2 : Bukkit.getOnlinePlayers()) {
+                        if (!online.equals(online2)) {
+                            online.showPlayer(online2);
+                        }
+                    }
+                    Bukkit.getPluginManager().callEvent(playerJoinEvent);
+                });
+            }
             return;
         }
 

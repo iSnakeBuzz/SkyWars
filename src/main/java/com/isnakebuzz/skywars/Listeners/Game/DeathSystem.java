@@ -28,12 +28,16 @@ public class DeathSystem implements Listener {
 
     @EventHandler
     public void DeathCheckWin(PlayerDeathEvent e) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             if (plugin.getSkyWarsArena().checkWin()) {
+                if (plugin.getSkyWarsArena().getGamePlayers().isEmpty()) {
+                    Bukkit.getPluginManager().callEvent(new SkyWinEvent(null));
+                    return;
+                }
                 Player winner = plugin.getSkyWarsArena().getGamePlayers().get(0);
                 Bukkit.getPluginManager().callEvent(new SkyWinEvent(plugin.getPlayerManager().getPlayer(winner)));
             }
-        }, 5);
+        });
     }
 
     @EventHandler

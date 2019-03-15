@@ -22,6 +22,20 @@ End Game:
   Stay: 20
   FadeOut: 5
 
+Spectating Titles:
+  Spectating:
+    Title: '&aSpectating &7%player%'
+    SubTitle: '&cSNEAK to exit'
+    FadeIn: 5
+    Stay: 20
+    FadeOut: 5
+  Exiting:
+    Title: '&eExiting Spectator mode'
+    SubTitle: ''
+    FadeIn: 5
+    Stay: 20
+    FadeOut: 5
+
 Titles In Runnables:
   Starting:
     '10':
@@ -41,6 +55,8 @@ Banner:
 - '%center%&e&lwith special items!'
 - ''
 - '&a&l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+- '&c&lTeaming is not allowed on Solo mode!'
+- '&eCages opened! &cFIGHT!'
 
 Count Messages:
   Starting:
@@ -62,3 +78,60 @@ Count Messages:
     '3': '&eCages open in: &c%seconds%&e seconds!'
     '2': '&eCages open in: &c%seconds%&e seconds!'
     '1': '&eCages open in: &c%seconds%&e second!'
+
+Death Messages:
+  fall:
+    inflicted: "&7%dead%&e murio por caida intentando matar a &7%killer%"
+    other: "&7%dead%&e fell to their death."
+  explosion:
+    inflicted: "&7%dead%&e exploto luchando contra &7%killer%"
+    other: "&7%dead%&e exploto en un millón de piezas"
+  cactus:
+    inflicted: "&7%dead%&e fue empujado a un millón de espinas por &7%killer%"
+    other: "&7%dead%&e abrazó a un cactus"
+  drown:
+    inflicted: "&7%dead%&e se ahogó luchando contra &7%killer%"
+    other: "&7%dead%&e nadie le dio un tanque de oxígeno y se ahogó"
+  fire:
+    inflicted: "&7%dead%&e murio insinerado luchando contra &7%killer%"
+    other: "&7%dead%&e ardió en llamas"
+  lava:
+    inflicted: "&7%dead%&e cayó en un charco de lava mientras luchaba contra &7%killer%"
+    other: "&7%dead%&e cayó en un charco de lava"
+  lightning:
+    inflicted: "&7%dead%&e murio por un rayo de &7%killer%"
+    other: "&7%dead%&e murio por un rayo"
+  melting:
+    inflicted: "&7%dead%&e melted while fighting &7%killer%"
+    other: "&7%dead%&e melted"
+  projectile:
+    inflicted: "&7%dead%&e was shot by &7%killer%"
+    other: "&7%dead%&e murio por una flecha perdida.."
+  starvation:
+    inflicted: "&7%dead%&e se murio de hambre mientras luchaba contra &7%killer%"
+    other: "&7%dead%&e se murio de hambre"
+  suffocation:
+    inflicted: "&7%dead%&e fue empujado a una pared mientras luchaba &7%killer%"
+    other: "&7%dead%&e se metio a una pared y se ahogó"
+  suicide:
+    inflicted: "&7%dead%&e se suicidó mientras luchaba &7%killer%"
+    other: "&7%dead%&e cometió suicidio"
+  thorns:
+    inflicted: "&7%dead%&e fue pinchado hasta su muerte por &7%killer%"
+    other: "&7%dead%&e se pincho hasta morir"
+  void:
+    inflicted: "&7%killer%&e empujo al vacío a &7%dead%"
+    other: "&7%dead%&e cayo en una gran grieta"
+  wither:
+    inflicted: "&7%dead%&e withered away while fighting &7%killer%"
+    other: "&7%dead%&e withered away"
+  potion:
+    inflicted: "&7%dead%&e murio en manos de &7%killer% utilizando magia"
+    other: "&7%dead%&e murio por fuerzas misteriosas"
+  entity-attack:
+    inflicted: "&7%dead%&e was killed by &7%killer%"
+    other: "&7%dead%&e murio sin mas"
+  player-attack:
+    inflicted: "&7%dead%&e murio en manos de &7%killer%"
+    other: "&7%dead%&e murio sin mas"
+  other: "&7%dead%&b murio de forma extraña"

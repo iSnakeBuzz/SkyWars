@@ -1,17 +1,37 @@
 package com.isnakebuzz.skywars.Utils;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.isnakebuzz.skywars.Main;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
+
 public class PacketsAPI {
+
+    public static void setSpectating(Player player, Player pSpect, boolean spectating) throws NoSuchFieldException, IllegalAccessException {
+        CraftPlayer craftPlayer = (CraftPlayer) player;
+
+        PacketPlayOutCamera packet = new PacketPlayOutCamera();
+
+        if (spectating) {
+            Field field = packet.getClass().getDeclaredField("a");
+            field.setAccessible(true);
+            field.set(packet, pSpect.getEntityId());
+            craftPlayer.getHandle().playerConnection.sendPacket(packet);
+        } else {
+            Field field = packet.getClass().getDeclaredField("a");
+            field.setAccessible(true);
+            field.set(packet, player.getEntityId());
+            craftPlayer.getHandle().playerConnection.sendPacket(packet);
+        }
+    }
 
     public static void sendTitle(Main plugin, Player p, String title, String subtitle, int fadein, int stay, int fadeout) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -45,6 +65,14 @@ public class PacketsAPI {
         p.setGameMode(GameMode.SURVIVAL);
         p.setAllowFlight(false);
         p.setFlying(false);
+    }
+
+
+    public static void connect(Main plugin, Player p, String server) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF(server);
+        p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
     }
 
 }

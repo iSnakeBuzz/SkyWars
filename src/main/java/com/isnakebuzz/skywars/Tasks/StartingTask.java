@@ -1,8 +1,13 @@
 package com.isnakebuzz.skywars.Tasks;
 
+import com.isnakebuzz.ccsigns.Enums.PacketType;
+import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
+import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,6 +15,9 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 public class StartingTask extends BukkitRunnable {
@@ -35,13 +43,16 @@ public class StartingTask extends BukkitRunnable {
 
         if (plugin.getSkyWarsArena().getStartingTime() <= 1) {
             Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
-
                 int id = 0;
                 for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
                     int finalId = id;
                     Location location = plugin.getSkyWarsArena().getSpawnLocations().get(finalId);
 
-                    plugin.getSkyWarsArena().generateCage(location);
+                    SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame);
+                    Cage cage = new Cage(plugin, location, skyPlayer.getCageName());
+                    cage.paste();
+                    plugin.getCagesManager().addCage(cage);
+
                     Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                         inGame.teleport(location);
                         inGame.getInventory().clear();
@@ -49,6 +60,7 @@ public class StartingTask extends BukkitRunnable {
                     });
                     id++;
                 }
+                plugin.getSkyWarsArena().removeLobby();
             });
 
             plugin.getSkyWarsArena().setGameStatus(GameStatus.CAGEOPENING);
@@ -56,10 +68,15 @@ public class StartingTask extends BukkitRunnable {
             plugin.getListenerManager().loadCageOpens();
             plugin.getListenerManager().loadInGame();
             this.cancel();
+            if (Statics.isCCSings) {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                    SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID);
+                }, 20 * 3);
+            }
             return;
         }
 
-        plugin.getSkyWarsArena().setStartingTime(plugin.getSkyWarsArena().getStartingTime() - 1);
+        plugin.getSkyWarsArena().setStatrtingTime(plugin.getSkyWarsArena().getStartingTime() - 1);
     }
 
     private String c(String s) {

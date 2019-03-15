@@ -70,7 +70,7 @@ public class ScoreBoardAPI {
             if (health) scoreboard.updatelife(plugin);
             if (spect) scoreboard.updatespect(p);
             if (gamePlayers) scoreboard.updategames(plugin, p);
-        }, 0l, 20).getTaskId();
+        }, 0, 20).getTaskId();
         p.setScoreboard(scoreboard.getScoreboard());
         this.scoretask.put(p, id);
     }

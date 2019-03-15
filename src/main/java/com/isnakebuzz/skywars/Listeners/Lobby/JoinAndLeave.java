@@ -1,10 +1,13 @@
 package com.isnakebuzz.skywars.Listeners.Lobby;
 
+import com.isnakebuzz.ccsigns.Enums.PacketType;
+import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Tasks.StartingTask;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
+import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -55,6 +58,13 @@ public class JoinAndLeave implements Listener {
                 lang.getInt("Join Title.FadeOut")
         );
 
+        if (Statics.isCCSings) {
+            String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
+            String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
+
+            SignsAPI.sendPacket(PacketType.PLAYERS, Statics.BungeeID, playerOnline, maxPlayer);
+        }
+
         if (plugin.getSkyWarsArena().checkStart()) {
             plugin.debug("Starting arena");
             plugin.getSkyWarsArena().setGameStatus(GameStatus.STARTING);
@@ -71,6 +81,13 @@ public class JoinAndLeave implements Listener {
 
         plugin.getScoreBoardAPI().removeScoreBoard(p);
         plugin.getDb().savePlayer(p);
+
+        if (Statics.isCCSings) {
+            String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size() - 1);
+            String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
+
+            SignsAPI.sendPacket(PacketType.PLAYERS, Statics.BungeeID, playerOnline, maxPlayer);
+        }
 
         e.setQuitMessage(c(lang.getString("LeaveMessage")
                 .replaceAll("%player%", p.getName())

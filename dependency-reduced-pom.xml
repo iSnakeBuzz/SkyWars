@@ -73,12 +73,12 @@
       <artifactId>HikariCP</artifactId>
       <version>LATEST</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>slf4j-api</artifactId>
-          <groupId>org.slf4j</groupId>
-        </exclusion>
-      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.8.0-beta4</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.boydti</groupId>
@@ -93,6 +93,13 @@
       <version>1.8.9</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/Lib/FastAsyncWorldEdit-bukkit.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>CCSigns</groupId>
+      <artifactId>ccsigns-api</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/Lib/CCSigns-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>

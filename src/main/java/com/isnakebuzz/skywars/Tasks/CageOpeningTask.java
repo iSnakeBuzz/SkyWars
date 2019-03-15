@@ -32,13 +32,14 @@ public class CageOpeningTask extends BukkitRunnable {
         }
 
         if (plugin.getSkyWarsArena().getCageOpens() <= 1) {
-            for (int id = 0; id <= plugin.getSkyWarsArena().getGamePlayers().size(); id++) {
+            /*for (int id = 0; id <= plugin.getSkyWarsArena().getGamePlayers().size(); id++) {
                 int finalId = id;
                 if (id > plugin.getSkyWarsArena().getGamePlayers().size()) return;
                 Location location = plugin.getSkyWarsArena().getSpawnLocations().get(finalId);
 
                 plugin.getSkyWarsArena().deleteCage(location);
-            }
+            } OLD CODE */
+            plugin.getCagesManager().deleteAllCages();
             plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
             plugin.getListenerManager().unloadPrelobby();
             plugin.getSkyWarsArena().fillChests();
@@ -51,6 +52,8 @@ public class CageOpeningTask extends BukkitRunnable {
 
                 plugin.broadcast(message);
             }
+
+            Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, new InGame(plugin), 0, 20);
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
                 plugin.getListenerManager().unloadCageOpens();

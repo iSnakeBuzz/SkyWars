@@ -23,7 +23,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.zaxxer:HikariCP:3.3.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: com.boydti:fawe-api:1.8.9">
         <CLASSES>
@@ -42,6 +41,15 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: com.flowpowered:flow-nbt:1.0.1-SNAPSHOT" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: CCSigns:ccsigns-api:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/Lib/CCSigns-1.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-api:1.8.0-beta4" level="project" />
   </component>
 </module>

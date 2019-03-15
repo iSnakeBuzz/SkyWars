@@ -26,6 +26,7 @@ public class GameEvents implements Listener {
 
         plugin.getListenerManager().unloadIngame();
         plugin.getSkyWarsArena().setGameStatus(GameStatus.FINISH);
+        plugin.getListenerManager().loadEnd();
         new EndTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
 
         for (Player all : Bukkit.getOnlinePlayers()) {

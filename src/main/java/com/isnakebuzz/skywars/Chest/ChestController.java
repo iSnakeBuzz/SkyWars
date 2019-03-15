@@ -73,8 +73,8 @@ public final class ChestController {
         Inventory inventory = chest.getBlockInventory();
         inventory.clear();
         int added = 0;
-        int max = 25;
-        int min = 21;
+        int max = 15;
+        int min = 5;
         Collections.shuffle(this.randomLoc);
         for (final ChestItem chestItem : this.iSlandItems) {
             if (this.random.nextInt(10) + 1 <= chestItem.getChance()) {
@@ -92,8 +92,8 @@ public final class ChestController {
         inventory.clear();
         int added = 0;
         Collections.shuffle(this.randomLoc);
-        int max = 24;
-        int min = 18;
+        int max = 15;
+        int min = 5;
         for (final ChestItem chestItem : this.CenterItems) {
             if (this.random.nextInt(10) + 1 <= chestItem.getChance()) {
                 inventory.setItem((int) this.randomLoc.get(added), chestItem.getItem());

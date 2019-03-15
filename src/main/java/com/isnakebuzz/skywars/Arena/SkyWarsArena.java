@@ -1,20 +1,26 @@
 package com.isnakebuzz.skywars.Arena;
 
+import com.isnakebuzz.ccsigns.Enums.GameStates;
+import com.isnakebuzz.ccsigns.Enums.PacketType;
+import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.Cuboids.BasicCuboid;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.LocUtils;
+import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import sun.util.resources.es.LocaleNames_es_US;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +31,8 @@ public class SkyWarsArena {
     private GameStatus gameStatus;
     private GameType gameType;
     private List<Player> gamePlayers;
+    private HashMap<LivingEntity, LivingEntity> lastDamager;
+    private HashMap<LivingEntity, Integer> lastDmgTime;
 
     //Map name
     private String mapName;
@@ -55,6 +63,8 @@ public class SkyWarsArena {
         this.centerChestLocs = new ArrayList<>();
         this.islandChestLocs = new ArrayList<>();
         this.lobbyRegion = new ArrayList<>();
+        this.lastDamager = new HashMap<>();
+        this.lastDmgTime = new HashMap<>();
 
         Configuration arena = plugin.getConfig("Extra/Arena");
         this.minPlayers = arena.getInt("Players.min");
@@ -117,7 +127,7 @@ public class SkyWarsArena {
         return spawnLocations;
     }
 
-    public void setStartingTime(int startingTime) {
+    public void setStatrtingTime(int startingTime) {
         this.startingTime = startingTime;
     }
 
@@ -135,6 +145,26 @@ public class SkyWarsArena {
 
     public void setGameStatus(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
+        if (Statics.isCCSings) {
+            if (Bukkit.getOnlinePlayers().size() >= this.getMaxPlayers()) {
+                SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.FULL);
+                return;
+            }
+            switch (gameStatus) {
+                case WAITING:
+                    SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.WAITING);
+                    break;
+                case STARTING:
+                    SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.STARTING);
+                    break;
+                case CAGEOPENING:
+                    SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.INGAME);
+                    break;
+                case FINISH:
+                    SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.RESTARTING);
+                    break;
+            }
+        }
     }
 
     public GameStatus getGameStatus() {
@@ -202,38 +232,26 @@ public class SkyWarsArena {
         });
     }
 
-    public void generateCage(Location loc) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
-            int x = loc.getBlockX();
-            int y = loc.getBlockY();
-            int z = loc.getBlockZ();
-            Location l1 = loc.getWorld().getBlockAt(x - 1, y - 2, z - 1).getLocation();
-            Location l2 = loc.getWorld().getBlockAt(x + 1, y + 2, z + 1).getLocation();
-
-            BasicCuboid cuboid = new BasicCuboid(l1, l2);
-            for (Block b : cuboid.getBlocks()) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                    b.setType(Material.GLASS);
-                });
-            }
-        });
+    public HashMap<LivingEntity, Integer> getLastDmgTime() {
+        return lastDmgTime;
     }
 
-    public void deleteCage(Location loc) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
-            int x = loc.getBlockX();
-            int y = loc.getBlockY();
-            int z = loc.getBlockZ();
-            Location l1 = loc.getWorld().getBlockAt(x - 1, y - 2, z - 1).getLocation();
-            Location l2 = loc.getWorld().getBlockAt(x + 1, y + 2, z + 1).getLocation();
+    public HashMap<LivingEntity, LivingEntity> getLastDamager() {
+        return lastDamager;
+    }
 
-            BasicCuboid cuboid = new BasicCuboid(l1, l2);
-            for (Block b : cuboid.getBlocks()) {
+    public void removeLobby() {
+        Location loc1 = lobbyRegion.get(0);
+        Location loc2 = lobbyRegion.get(1);
+
+        BasicCuboid cuboid = new BasicCuboid(loc1, loc2);
+        for (Block b : cuboid) {
+            if (!b.getType().equals(Material.AIR)) {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                     b.setType(Material.AIR);
                 });
             }
-        });
+        }
     }
 
 }

@@ -116,9 +116,19 @@
         </dependency>
 
         <dependency>
-            <groupId>com.flowpowered</groupId>
-            <artifactId>flow-nbt</artifactId>
-            <version>LATEST</version>
+            <groupId>CCSigns</groupId>
+            <artifactId>ccsigns-api</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/Lib/CCSigns-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.8.0-beta4</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

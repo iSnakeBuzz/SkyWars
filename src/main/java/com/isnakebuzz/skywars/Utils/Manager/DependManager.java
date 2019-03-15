@@ -23,8 +23,7 @@ public class DependManager {
     public void loadDepends() {
         try {
             this.downloadDependency(new URL("http://central.maven.org/maven2/com/zaxxer/HikariCP/3.3.1/HikariCP-3.3.1.jar"), "HikariCP");
-            this.downloadDependency(new URL("http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.26/slf4j-api-1.7.26.jar"), "slf4j-api");
-            this.downloadDependency(new URL("http://central.maven.org/maven2/com/flowpowered/flow-nbt/1.0.0/flow-nbt-1.0.0.jar"), "jnbt");
+            this.downloadDependency(new URL("http://central.maven.org/maven2/org/slf4j/slf4j-api/1.8.0-beta4/slf4j-api-1.8.0-beta4.jar"), "slf4j");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

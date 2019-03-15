@@ -1,7 +1,8 @@
 name: 'SkyWars'
-version: 1.0-SNAPSHOT
+version: 1.0.0.0
 main: com.isnakebuzz.skywars.Main
 authors: ['iSnakeBuzz_']
+softdepend: ['FastAsyncWorldEdit', 'CCSigns']
 description: 'SkyWars Similar to HyPixel'
 website: https://www.isnakebuzz.com/
 commands:

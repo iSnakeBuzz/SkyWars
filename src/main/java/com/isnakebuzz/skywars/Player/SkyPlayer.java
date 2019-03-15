@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class SkyPlayer {
@@ -13,6 +15,9 @@ public class SkyPlayer {
 
     //Cosmetics
     private String cageName;
+    private String kitName;
+    private List<String> purchCages;
+    private List<String> purchKits;
 
     //Stats
     private int wins;
@@ -24,20 +29,29 @@ public class SkyPlayer {
     private boolean isDead;
     private boolean isSpectator;
     private boolean isStaff;
+    private boolean isSpectating;
     private Team team;
 
     public SkyPlayer(UUID uuid) {
         this.uuid = uuid;
 
+        //Cosmetics
         this.cageName = "default";
+        this.kitName = "default";
+        this.purchCages = new ArrayList<>();
+        this.purchKits = new ArrayList<>();
+
+        //Stats
         this.wins = 0;
         this.kills = 0;
         this.deaths = 0;
         this.killStreak = 0;
 
+        //Internal usages
         this.isDead = false;
         this.isSpectator = false;
         this.isStaff = false;
+        this.isSpectator = false;
     }
 
     public void setWins(int wins) {
@@ -150,6 +164,46 @@ public class SkyPlayer {
 
     public void setDead(boolean dead) {
         isDead = dead;
+    }
+
+    public String getCageName() {
+        return cageName;
+    }
+
+    public String getKitName() {
+        return kitName;
+    }
+
+    public List<String> getPurchCages() {
+        return purchCages;
+    }
+
+    public List<String> getPurchKits() {
+        return purchKits;
+    }
+
+    public void setKitName(String kitName) {
+        this.kitName = kitName;
+    }
+
+    public void setPurchKits(List<String> purchKits) {
+        this.purchKits = purchKits;
+    }
+
+    public void setCageName(String cageName) {
+        this.cageName = cageName;
+    }
+
+    public void setPurchCages(List<String> purchCages) {
+        this.purchCages = purchCages;
+    }
+
+    public boolean isSpectating() {
+        return isSpectating;
+    }
+
+    public void setSpectating(boolean spectating) {
+        isSpectating = spectating;
     }
 
     public Team getTeam() {

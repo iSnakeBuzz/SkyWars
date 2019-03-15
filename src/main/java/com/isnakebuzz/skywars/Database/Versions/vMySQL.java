@@ -4,9 +4,12 @@ import com.isnakebuzz.skywars.Database.Database;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Calls.Callback;
+import com.isnakebuzz.skywars.Utils.Base64Utils;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class vMySQL implements Database {
 
@@ -21,13 +24,7 @@ public class vMySQL implements Database {
 
         playerExist(p, playerExist -> {
             if (!playerExist) {
-                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
-                plugin.getPlayerManager().addPlayer(p, skyPlayer);
-                plugin.getDataManager().getMySQL().preparedUpdate("INSERT INTO SkyWars (UUID, Wins, Kills, Deaths) VALUES " +
-                        "('" + p.getUniqueId().toString() + "', " +
-                        "'0', " +
-                        "'0', " +
-                        "'0');");
+                cdbPlayer(p);
             } else {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
                 plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM SkyWars WHERE UUID='" + p.getUniqueId().toString() + "'", rs -> {
@@ -50,17 +47,23 @@ public class vMySQL implements Database {
 
     @Override
     public void savePlayer(Player p) {
-        SkyPlayer gamePlayer = plugin.getPlayerManager().getPlayer(p);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
         String uuid = p.getUniqueId().toString();
 
         playerExist(p, playerExist -> {
             if (!playerExist) return;
 
+            String kitsTodb = Base64Utils.toBase64(skyPlayer.getPurchKits());
+            String cagesTodb = Base64Utils.toBase64(skyPlayer.getPurchCages());
 
             plugin.getDataManager().getMySQL().preparedUpdate("UPDATE SkyWars SET " +
-                    "Wins='" + gamePlayer.getWins() + "', " +
-                    "Kills='" + gamePlayer.getKills() + "', " +
-                    "Deaths='" + gamePlayer.getDeaths() + "' " +
+                    "Kits='" + kitsTodb + "', " +
+                    "SelKit='" + skyPlayer.getKitName() + "', " +
+                    "Cages='" + cagesTodb + "', " +
+                    "SelCage='" + skyPlayer.getCageName() + "', " +
+                    "Wins='" + skyPlayer.getWins() + "', " +
+                    "Kills='" + skyPlayer.getKills() + "', " +
+                    "Deaths='" + skyPlayer.getDeaths() + "' " +
                     "WHERE UUID='" + uuid + "'"
             );
 
@@ -73,6 +76,33 @@ public class vMySQL implements Database {
     @Override
     public void closeConnection() {
         plugin.getDataManager().getMySQL().close();
+    }
+
+    private void cdbPlayer(Player p) {
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+        plugin.getPlayerManager().addPlayer(p, skyPlayer);
+
+        List<String> kits = new ArrayList<>();
+        kits.add("default");
+
+        List<String> cages = new ArrayList<>();
+        cages.add("default");
+
+        String kitsTodb = Base64Utils.toBase64(kits);
+        String cagesTodb = Base64Utils.toBase64(cages);
+
+
+        plugin.getDataManager().getMySQL().preparedUpdate(
+                "INSERT INTO SkyWars (UUID, Kits, SelKit, Cages, SelCage, Wins, Kills, Deaths) VALUES " +
+                        "('" + p.getUniqueId().toString() + "', " +
+                        "'" + kitsTodb + "', " +
+                        "'" + skyPlayer.getKitName() + "', " +
+                        "'" + cagesTodb + "', " +
+                        "'" + skyPlayer.getCageName() + "', " +
+                        "'0', " +
+                        "'0', " +
+                        "'0');"
+        );
     }
 
     private void playerExist(Player p, Callback<Boolean> callback) {

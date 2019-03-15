@@ -23,7 +23,7 @@ public class DataManager {
         mySQL.init();
         this.database = new vMySQL(plugin);
 
-        mySQL.preparedUpdate("CREATE TABLE IF NOT EXISTS SkyWars (UUID VARCHAR(100), Wins Integer, Kills Integer, Deaths Integer)");
+        mySQL.preparedUpdate("CREATE TABLE IF NOT EXISTS SkyWars (UUID VARCHAR(100), Kits Text, SelKit Text, Cages Text, SelCage Text, Wins Integer, Kills Integer, Deaths Integer)");
         plugin.log(Statics.logPrefix, "Has been loaded MySQL database");
     }
 
