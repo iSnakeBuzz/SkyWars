@@ -2,9 +2,14 @@ package com.isnakebuzz.skywars.Inventory.MenuManager;
 
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Utils.Enums.ChestType;
+import com.isnakebuzz.skywars.Utils.Enums.ProjectileType;
+import com.isnakebuzz.skywars.Utils.Enums.TimeType;
+import com.isnakebuzz.skywars.Utils.Enums.VoteType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,7 +25,7 @@ public class MenuCreator extends Menu {
     public MenuCreator(Player player, Main plugin, String _name) {
         super(plugin, _name);
         this.plugin = plugin;
-        Configuration config = plugin.getConfigUtils().getConfig(plugin, "Utils/MenuCreator");
+        Configuration config = plugin.getConfig("Extra/MenuCreator");
         String path = "MenuCreator." + _name + ".";
         if (config.getBoolean(path + "update.enabled")) {
             taskId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, () -> {
@@ -34,7 +39,7 @@ public class MenuCreator extends Menu {
     @Override
     public void onClick(final Player p, final ItemStack itemStack, String _name) {
         Configuration lang = plugin.getConfigUtils().getConfig(plugin, "Lang");
-        Configuration config = plugin.getConfigUtils().getConfig(plugin, "Utils/MenuCreator");
+        Configuration config = plugin.getConfig("Extra/MenuCreator");
         String menu_path = "MenuCreator." + _name + ".";
         Set<String> key = config.getConfigurationSection(menu_path + "items").getKeys(false);
         for (String _item : key) {
@@ -62,6 +67,74 @@ public class MenuCreator extends Menu {
                 } else if (action.split(":")[0].equalsIgnoreCase("flyspeed")) {
                     float speed = Float.valueOf(action.split(":")[1]);
                     p.setFlySpeed(speed);
+                } else if (action.split(":")[0].equalsIgnoreCase("close")) {
+                    p.closeInventory();
+                } else if (action.split(":")[0].equalsIgnoreCase("vote")) {
+                    String voteCheck = action.split(":")[1];
+                    switch (voteCheck) {
+
+                        // Check chest votes
+                        case "chest_normal":
+                            if (!plugin.getVoteManager().setChestVote(p, ChestType.NORMAL)) {
+                                ConfigurationSection votemsg = plugin.getConfig("Lang").getConfigurationSection("VoteMessages");
+                                p.sendMessage(c(votemsg.getString("Already")));
+                            }
+                            break;
+                        case "chest_basic":
+                            if (!plugin.getVoteManager().setChestVote(p, ChestType.BASIC)) {
+                                ConfigurationSection votemsg = plugin.getConfig("Lang").getConfigurationSection("VoteMessages");
+                                p.sendMessage(c(votemsg.getString("Already")));
+                            }
+                            break;
+                        case "chest_overpowered":
+                            if (!plugin.getVoteManager().setChestVote(p, ChestType.OVERPOWERED)) {
+                                ConfigurationSection votemsg = plugin.getConfig("Lang").getConfigurationSection("VoteMessages");
+                                p.sendMessage(c(votemsg.getString("Already")));
+                            }
+                            break;
+
+                        // Check time votes
+                        case "time_day":
+                            if (!plugin.getVoteManager().setTimeVote(p, TimeType.DAY)) {
+                                ConfigurationSection votemsg = plugin.getConfig("Lang").getConfigurationSection("VoteMessages");
+                                p.sendMessage(c(votemsg.getString("Already")));
+                            }
+                            break;
+                        case "time_night":
+                            if (!plugin.getVoteManager().setTimeVote(p, TimeType.NIGHT)) {
+                                ConfigurationSection votemsg = plugin.getConfig("Lang").getConfigurationSection("VoteMessages");
+                                p.sendMessage(c(votemsg.getString("Already")));
+                            }
+                            break;
+                        case "time_sunset":
+                            if (!plugin.getVoteManager().setTimeVote(p, TimeType.SUNSET)) {
+                                ConfigurationSection votemsg = plugin.getConfig("Lang").getConfigurationSection("VoteMessages");
+                                p.sendMessage(c(votemsg.getString("Already")));
+                            }
+                            break;
+
+                        // Check projectiles votes
+                        case "projectile_no_throwables":
+                            if (!plugin.getVoteManager().setProjectileVote(p, ProjectileType.TWROWABLES)) {
+                                ConfigurationSection votemsg = plugin.getConfig("Lang").getConfigurationSection("VoteMessages");
+                                p.sendMessage(c(votemsg.getString("Already")));
+                            }
+                            break;
+                        case "projectile_normal":
+                            if (!plugin.getVoteManager().setProjectileVote(p, ProjectileType.NORMAL)) {
+                                ConfigurationSection votemsg = plugin.getConfig("Lang").getConfigurationSection("VoteMessages");
+                                p.sendMessage(c(votemsg.getString("Already")));
+                            }
+                            break;
+                        case "projectile_soft_blocks":
+                            if (!plugin.getVoteManager().setProjectileVote(p, ProjectileType.SOFTBLOCKS)) {
+                                ConfigurationSection votemsg = plugin.getConfig("Lang").getConfigurationSection("VoteMessages");
+                                p.sendMessage(c(votemsg.getString("Already")));
+                            }
+                            break;
+
+                    }
+
                 }
 
             }
@@ -75,7 +148,7 @@ public class MenuCreator extends Menu {
     }
 
     private void updateInv(Player p, String _name) {
-        Configuration config = plugin.getConfigUtils().getConfig(plugin, "Utils/MenuCreator");
+        Configuration config = plugin.getConfigUtils().getConfig(plugin, "Extra/MenuCreator");
         String menu_path = "MenuCreator." + _name + ".";
         Set<String> key = config.getConfigurationSection(menu_path + "items").getKeys(false);
         for (String _item : key) {
@@ -95,6 +168,25 @@ public class MenuCreator extends Menu {
         List<String> newMessages = new ArrayList<>();
         for (String msg : messages) {
             newMessages.add(msg
+                    // Chests
+                    .replaceAll("%chest_op%", String.valueOf(plugin.getVoteManager().getVoteSize(VoteType.CHEST, ChestType.OVERPOWERED)))
+                    .replaceAll("%chest_normal%", String.valueOf(plugin.getVoteManager().getVoteSize(VoteType.CHEST, ChestType.NORMAL)))
+                    .replaceAll("%chest_basic%", String.valueOf(plugin.getVoteManager().getVoteSize(VoteType.CHEST, ChestType.BASIC)))
+
+                    // Times
+                    .replaceAll("%time_day%", String.valueOf(plugin.getVoteManager().getVoteSize(VoteType.TIME, TimeType.DAY)))
+                    .replaceAll("%time_night%", String.valueOf(plugin.getVoteManager().getVoteSize(VoteType.TIME, TimeType.NIGHT)))
+                    .replaceAll("%time_sunset%", String.valueOf(plugin.getVoteManager().getVoteSize(VoteType.TIME, TimeType.SUNSET)))
+
+                    //Projectiles
+                    .replaceAll("%projectiles_no_throwables%", String.valueOf(plugin.getVoteManager().getVoteSize(VoteType.PROJECTILE, ProjectileType.TWROWABLES)))
+                    .replaceAll("%projectiles_normal%", String.valueOf(plugin.getVoteManager().getVoteSize(VoteType.PROJECTILE, ProjectileType.NORMAL)))
+                    .replaceAll("%projectiles_soft_blocks%", String.valueOf(plugin.getVoteManager().getVoteSize(VoteType.PROJECTILE, ProjectileType.SOFTBLOCKS)))
+
+                    //Totals
+                    .replaceAll("%total_chest%", String.valueOf(plugin.getVoteManager().getTotalVotes(VoteType.CHEST)))
+                    .replaceAll("%total_time%", String.valueOf(plugin.getVoteManager().getTotalVotes(VoteType.TIME)))
+                    .replaceAll("%total_projectile%", String.valueOf(plugin.getVoteManager().getTotalVotes(VoteType.PROJECTILE)))
             );
         }
         return newMessages;

@@ -15,13 +15,13 @@ import com.isnakebuzz.skywars.Inventory.Inventories;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.skywars.Utils.World.FaweUtils;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.HashMap;
 
 public final class Main extends JavaPlugin {
 
@@ -37,8 +37,14 @@ public final class Main extends JavaPlugin {
     private DependManager dependManager;
     private FaweUtils worldRestarting;
     private CagesManager cagesManager;
+    private VoteManager voteManager;
+    private TimerManager timerManager;
+    private ChestRefillManager chestRefillManager;
 
     public Main() {
+        this.chestRefillManager = new ChestRefillManager(this);
+        this.timerManager = new TimerManager(this);
+        this.voteManager = new VoteManager(this);
         this.cagesManager = new CagesManager(this);
         this.dependManager = new DependManager(this);
         this.chestController = new ChestController(this);
@@ -56,6 +62,9 @@ public final class Main extends JavaPlugin {
         log(Statics.logPrefix, "Initializing SkyWars..");
         this.dependManager.loadDepends();
 
+        //Register bungeecord channels
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
         //Exporting and loading configuration
         ConfigCreator.get().setup(this, "Settings");
         ConfigCreator.get().setup(this, "Lang");
@@ -63,6 +72,7 @@ public final class Main extends JavaPlugin {
         ConfigCreator.get().setup(this, "Extra/ScoreBoards");
         ConfigCreator.get().setup(this, "Extra/Arena");
         ConfigCreator.get().setup(this, "Extra/Inventory");
+        ConfigCreator.get().setup(this, "Extra/MenuCreator");
 
         Configuration settings = this.getConfig("Settings");
         Configuration database = this.getConfig("Extra/Database");
@@ -70,6 +80,7 @@ public final class Main extends JavaPlugin {
         Statics.skyMode = settings.getString("Mode").toUpperCase();
         Statics.baseMode = database.getString("Type").toUpperCase();
         Statics.BungeeID = settings.getString("BungeeID", "none");
+        Statics.lobbies = settings.getStringList("Lobbies");
         Statics.mapName = arena.getString("MapName", "none");
 
         //Loading database
@@ -102,9 +113,7 @@ public final class Main extends JavaPlugin {
     public void onDisable() {
         this.dataManager.getDatabase().closeConnection();
         if (Statics.isCCSings) {
-            if (SignsAPI.game != null) {
-                SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID);
-            }
+            SignsAPI.sendPacket(PacketType.DELETE, Statics.BungeeID);
         }
     }
 
@@ -120,6 +129,16 @@ public final class Main extends JavaPlugin {
 
     public void broadcast(String message) {
         Bukkit.broadcastMessage(c(message));
+    }
+
+    public void broadcast(BaseComponent... baseComponent) {
+        Bukkit.spigot().broadcast(baseComponent);
+    }
+
+    public void closeInventory() {
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            online.closeInventory();
+        }
     }
 
     public ConfigUtils getConfigUtils() {
@@ -150,6 +169,10 @@ public final class Main extends JavaPlugin {
         return arenaSetup;
     }
 
+    public ChestRefillManager getChestRefillManager() {
+        return chestRefillManager;
+    }
+
     public DataManager getDataManager() {
         return dataManager;
     }
@@ -170,16 +193,32 @@ public final class Main extends JavaPlugin {
         return cagesManager;
     }
 
+    public VoteManager getVoteManager() {
+        return voteManager;
+    }
+
     public ChestController getChestController() {
         return chestController;
     }
 
+    public TimerManager getTimerManager() {
+        return timerManager;
+    }
+
     public void resetArena() {
+        this.getChestRefillManager().reset();
         this.skyWarsArena = new SkyWarsArena(this);
+        this.voteManager = new VoteManager(this);
+        this.chestRefillManager = new ChestRefillManager(this);
         if (Statics.isCCSings) {
             if (SignsAPI.game != null) {
                 SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID);
             }
+
+            String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
+            String maxPlayer = String.valueOf(this.getSkyWarsArena().getMaxPlayers());
+
+            SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
         }
     }
 

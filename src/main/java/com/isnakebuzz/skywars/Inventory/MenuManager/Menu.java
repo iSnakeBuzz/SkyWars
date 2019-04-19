@@ -25,11 +25,11 @@ public abstract class Menu implements Listener {
     public Menu(Main plugin, String menu_name) {
         this._name = menu_name;
         this.plugin = plugin;
-        Configuration config = plugin.getConfigUtils().getConfig(plugin, "Utils/MenuCreator");
+        Configuration config = plugin.getConfig( "Extra/MenuCreator");
         String path = "MenuCreator." + menu_name + ".";
         if (config.getString(path + "title") == null) return;
-        this._inv = Bukkit.createInventory((InventoryHolder) null, 9 * config.getInt(path + "rows"), ChatColor.translateAlternateColorCodes('&', config.getString(path + "title")));
-        plugin.getServer().getPluginManager().registerEvents((Listener) this, plugin);
+        this._inv = Bukkit.createInventory(null, 9 * config.getInt(path + "rows"), ChatColor.translateAlternateColorCodes('&', config.getString(path + "title")));
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public void a(final ItemStack itemStack) {

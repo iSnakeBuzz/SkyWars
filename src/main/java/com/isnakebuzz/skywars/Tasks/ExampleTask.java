@@ -2,8 +2,9 @@ package com.isnakebuzz.skywars.Tasks;
 
 import com.isnakebuzz.skywars.Main;
 import org.bukkit.ChatColor;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class ExampleTask implements Runnable {
+public class ExampleTask extends BukkitRunnable {
 
     private Main plugin;
 

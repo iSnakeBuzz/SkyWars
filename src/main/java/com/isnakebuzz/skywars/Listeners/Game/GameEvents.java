@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Listeners.Game;
 import com.isnakebuzz.skywars.Calls.Events.SkyWinEvent;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Tasks.EndTask;
+import com.isnakebuzz.skywars.Tasks.WinEffect;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import org.bukkit.Bukkit;
@@ -28,6 +29,10 @@ public class GameEvents implements Listener {
         plugin.getSkyWarsArena().setGameStatus(GameStatus.FINISH);
         plugin.getListenerManager().loadEnd();
         new EndTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
+
+        if (e.getSkyPlayer() != null) {
+            new WinEffect(plugin, e.getSkyPlayer().getPlayer()).runTaskTimer(plugin, 0, 20);
+        }
 
         for (Player all : Bukkit.getOnlinePlayers()) {
             PacketsAPI.sendTitle(

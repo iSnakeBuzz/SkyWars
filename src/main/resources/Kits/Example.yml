@@ -1,0 +1,26 @@
+#
+# Example kit
+#
+
+# Don't use colorcodes here :)
+Name: 'Basic'
+
+# Defualt or not :)
+Default: false
+
+# If player has selected this kit, appears glowing
+Selected Glow: true
+
+# Logo, this appears in the kit menu
+Logo:
+  name: '&7Basic Kit'
+  lore:
+  - 'This is a example kit'
+  item: '1:0'
+
+# If the player have this permissions gets kit for free
+# Set to 'none' for disable perm system in this kit
+Perm: 'none'
+
+Armor:
+Inventory:

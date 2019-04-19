@@ -67,6 +67,9 @@ public class StartingTask extends BukkitRunnable {
             new CageOpeningTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
             plugin.getListenerManager().loadCageOpens();
             plugin.getListenerManager().loadInGame();
+            plugin.getVoteManager().checkVotes();
+            plugin.getChestController().load();
+            plugin.closeInventory();
             this.cancel();
             if (Statics.isCCSings) {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {

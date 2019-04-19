@@ -53,7 +53,8 @@ public class CageOpeningTask extends BukkitRunnable {
                 plugin.broadcast(message);
             }
 
-            Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, new InGame(plugin), 0, 20);
+
+            new InGame(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
                 plugin.getListenerManager().unloadCageOpens();

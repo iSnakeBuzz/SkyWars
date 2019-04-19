@@ -13,6 +13,7 @@ import com.isnakebuzz.skywars.Listeners.Lobby.Protector;
 import com.isnakebuzz.skywars.Listeners.Lobby.VoidTP;
 import com.isnakebuzz.skywars.Listeners.Setup.SetupInteract;
 import com.isnakebuzz.skywars.Listeners.Setup.SetupJoin;
+import com.isnakebuzz.skywars.Listeners.VoteEvents.SoftBlocks;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
@@ -40,6 +41,9 @@ public class ListenerManager {
     private DeathMsgEvent deathMsgEvent;
     private Tagging tagging;
 
+    //Vote events
+    private SoftBlocks softBlocks;
+
     //End events
     private PlayerEndBlock playerEndBlock;
 
@@ -61,6 +65,9 @@ public class ListenerManager {
         this.deathMsgEvent = new DeathMsgEvent(plugin);
         this.tagging = new Tagging(plugin);
 
+        //Vote listeners
+        this.softBlocks = new SoftBlocks(plugin);
+
         //End Listeners
         this.playerEndBlock = new PlayerEndBlock(plugin);
     }
@@ -72,9 +79,6 @@ public class ListenerManager {
             registerListener(new WorldEvents(plugin));
             registerListener(new SetupInteract(plugin));
             registerListener(new SetupJoin(plugin));
-
-            //Loading chests
-            plugin.getChestController().load();
             plugin.getCommand("SkyWars").setExecutor(new SetupCommands(plugin));
         } else if (Statics.skyMode.equalsIgnoreCase("LOBBY")) {
         } else if (Statics.skyMode.equalsIgnoreCase("SOLO")) {
@@ -88,17 +92,12 @@ public class ListenerManager {
             registerListener(this.deathMsgEvent);
             registerListener(this.tagging);
 
-            //Loading chests
-            plugin.getChestController().load();
         } else if (Statics.skyMode.equalsIgnoreCase("TEAM")) {
             registerListener(new WorldEvents(plugin));
             registerListener(this.joinAndLeave);
             registerListener(this.protector);
             registerListener(this.lobbyItems);
             registerListener(this.spectatorEvents);
-
-            //Loading chests
-            plugin.getChestController().load();
         }
 
         try {
@@ -123,6 +122,7 @@ public class ListenerManager {
         unregisterListener(this.playerEndBlock);
         unregisterListener(this.deathMsgEvent);
         unregisterListener(this.tagging);
+        unregisterListener(this.softBlocks);
         unloadCageOpens();
 
         this.loadInitialsEvents();
@@ -152,6 +152,10 @@ public class ListenerManager {
     public void unloadIngame() {
         unregisterListener(this.deathSystem);
         unregisterListener(this.gameEvents);
+    }
+
+    public void loadVoteEvents(){
+        registerListener(this.softBlocks);
     }
 
     public void loadEnd() {

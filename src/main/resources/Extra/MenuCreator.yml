@@ -1,0 +1,28 @@
+# # # # # # # # # # # # # # # # # # # # # #
+#                                         #
+#                HubCore                  #
+#                                         #
+# # # # # # # # # # # # # # # # # # # # # #
+
+MenuCreator:
+  Votes:
+    title: '&aVote!'
+    rows: 3
+    # This menu need this :)
+    update:
+      enabled: true
+      time: 5 # In ticks!
+    items:
+      VoteChests:
+        # 'ID:DATA'
+        item: '54:0'
+        slot: 10
+        amount: 1
+        name: '&6&lItem Types'
+        lore:
+        - '&7Vote for the items you find in the game!'
+        - ''
+        - '&7Total Votes - &a %votes_chests%'
+        # Actions: CMD:SAY TEST, OPEN:TEST, FLYSPEED:0.5, VELOCITY:0.5
+        perms: 'none'
+        action: 'open:ItemTypes'

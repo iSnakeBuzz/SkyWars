@@ -183,6 +183,12 @@ public class SetupCommands implements CommandExecutor {
         }
     }
 
+    void kitCommands(Player p, String cmd, String[] args) {
+        if (!cmd.equalsIgnoreCase("kit")) return;
+        String subCmds = args[1];
+
+    }
+
     void example(Player p, String cmd, String[] args) {
         if (!cmd.equalsIgnoreCase("")) return;
     }

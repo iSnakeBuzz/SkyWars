@@ -22,8 +22,8 @@ public class ItemBuilder {
         return itemStack;
     }
 
-    public static ItemStack crearItem(final int n, final int n2, final int n3) {
-        final ItemStack itemStack = new ItemStack(n, n2, (short) (byte) n3);
+    public static ItemStack crearItem(int type, int amount, int damage) {
+        final ItemStack itemStack = new ItemStack(type, amount, (short) (byte) damage);
         return itemStack;
     }
 

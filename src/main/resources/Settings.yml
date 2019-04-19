@@ -3,5 +3,9 @@ Mode: SETUP
 
 BungeeID: ''
 
+# If you have more lobbies, set more lobbies below
+Lobbies:
+- 'Lobby'
+
 #Debug
 debug: true

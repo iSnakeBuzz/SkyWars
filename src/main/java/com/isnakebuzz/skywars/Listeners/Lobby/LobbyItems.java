@@ -4,6 +4,7 @@ import com.isnakebuzz.skywars.Inventory.MenuManager.MenuCreator;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
+import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class LobbyItems implements Listener {
@@ -47,7 +49,7 @@ public class LobbyItems implements Listener {
             if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null) return;
 
             if (e.getCurrentItem().equals(itemStack)) {
-                ACTIONS(p, (_action.split(":")[0] != null) ? _action.split(":")[0] : "", (_action.split(":").length > 0) ? _action.split(":")[1] : "");
+                ACTIONS(p, (_action.split(":")[0] != null) ? _action.split(":")[0] : "", (_action.split(":").length > 1) ? _action.split(":")[1] : "");
                 e.setCancelled(true);
             }
         }
@@ -75,7 +77,7 @@ public class LobbyItems implements Listener {
             if (e.getItem() == null || e.getItem().getItemMeta() == null) return;
 
             if (e.getItem().equals(itemStack)) {
-                ACTIONS(e.getPlayer(), (_action.split(":")[0] != null) ? _action.split(":")[0] : "", (_action.split(":").length > 0) ? _action.split(":")[0] : "");
+                ACTIONS(e.getPlayer(), (_action.split(":")[0] != null) ? _action.split(":")[0] : "", (_action.split(":").length > 1) ? _action.split(":")[1] : "");
                 e.setCancelled(true);
             }
         }
@@ -89,13 +91,16 @@ public class LobbyItems implements Listener {
     private void ACTIONS(Player player, String action, String args) {
         if (action.equalsIgnoreCase("menu")) {
             new MenuCreator(player, plugin, args).o(player);
-
         } else if (action.equalsIgnoreCase("cmd")) {
             String cmd = "/" + args;
             player.chat(cmd);
-
-        } else if (action.equalsIgnoreCase("server")) {
-            PacketsAPI.connect(plugin, player, args);
+        } else if (action.equalsIgnoreCase("leave")) {
+            String lobby = Statics.lobbies.get(new Random().nextInt(Statics.lobbies.size()));
+            PacketsAPI.connect(plugin, player, lobby);
+        } else if (action.equalsIgnoreCase("playAgain")){
+            player.sendMessage(c("&cThat function is under development, please wait for new updates :)"));
+        } else{
+            player.sendMessage(c("&cThat action does't exist, please contact with administrator :)"));
         }
     }
 

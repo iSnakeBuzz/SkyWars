@@ -1,6 +1,8 @@
 JoinMessage: '&7%player%&e has joined (&b%online%&e/&b%max%&e)!'
 LeaveMessage: '&7%player%&e has quit (&b%online%&e/&b%max%&e)!'
 
+NoPerms: "&cYou don't have permissions for use that feature."
+
 Join Title:
   Title: '&e&lSkyWars'
   SubTitle: '&aNormal mode'
@@ -44,6 +46,51 @@ Titles In Runnables:
       FadeIn: 5
       Stay: 20
       FadeOut: 5
+
+VoteMessages:
+  message: '&eSelected %type%'
+  Voted: '&a%player% &evoted for %type%.&7 %votes% vote(s).'
+  Already: '&cYou already voted for this type :)'
+  HoverText:
+    Chest:
+    - '&eSelected %type%'
+    - '&5Basic:&a %votes_basic% vote(s)'
+    - '&5Normal:&a %votes_normal% vote(s)'
+    - '&5Overpowered:&a %votes_overpowered% vote(s)'
+    - ''
+    - '%has_voted%'
+    Time:
+    - '&eSelected %type%'
+    - '&5Day time:&a %votes_day% vote(s)'
+    - '&5Night time:&a %votes_night% vote(s)'
+    - '&5Sunset:&a %votes_sunset% vote(s)'
+    - ''
+    - '%has_voted%'
+    Projectiles:
+    - '&eSelected %type%'
+    - '&5No throwables:&a %votes_throwables% vote(s)'
+    - '&5Normal projectiles:&a %votes_normal% vote(s)'
+    - '&5Soft blocks:&a %votes_softblocks% vote(s)'
+    - ''
+    - '%has_voted%'
+  HasVoted:
+    'Yes': '&7%votes% vote(s).'
+    'No': '&7Selected due to no votes.'
+  Types:
+    Chest:
+      basic: '&a&lBasic&e chest items!'
+      normal: '&a&lNormal&e chest items!'
+      overpowered: '&a&lOverpowered&e chest items!'
+    Time:
+      day: '&a&lDay time'
+      sunset: '&a&lSunset time'
+      night: '&a&lNight time'
+    Projectiles:
+      no throwables: '&a&lNo throwables projectiles'
+      normal projectiles: '&a&lNormal projectiles'
+      soft blocks: '&a&lSoft blocks'
+
+
 
 Banner:
 - '&a&l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'

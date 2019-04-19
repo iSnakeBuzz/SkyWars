@@ -32,6 +32,11 @@ public class SkyPlayer {
     private boolean isSpectating;
     private Team team;
 
+    //Votes
+    private boolean isChest;
+    private boolean isTime;
+    private boolean isProjectile;
+
     public SkyPlayer(UUID uuid) {
         this.uuid = uuid;
 
@@ -52,6 +57,11 @@ public class SkyPlayer {
         this.isSpectator = false;
         this.isStaff = false;
         this.isSpectator = false;
+
+        //Votes
+        this.isChest = false;
+        this.isTime = false;
+        this.isProjectile = false;
     }
 
     public void setWins(int wins) {
@@ -100,6 +110,18 @@ public class SkyPlayer {
 
     public boolean isStaff() {
         return isStaff;
+    }
+
+    public void setProjectile(boolean projectile) {
+        isProjectile = projectile;
+    }
+
+    public void setTime(boolean time) {
+        isTime = time;
+    }
+
+    public void setChest(boolean chest) {
+        isChest = chest;
     }
 
     public void setStaff(boolean staff) {
@@ -208,6 +230,18 @@ public class SkyPlayer {
 
     public Team getTeam() {
         return team;
+    }
+
+    public boolean isProjectile() {
+        return isProjectile;
+    }
+
+    public boolean isChest() {
+        return isChest;
+    }
+
+    public boolean isTime() {
+        return isTime;
     }
 
     public void setTeam(Team team) {

@@ -5,8 +5,7 @@ import com.isnakebuzz.ccsigns.Enums.PacketType;
 import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.Cuboids.BasicCuboid;
-import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
-import com.isnakebuzz.skywars.Utils.Enums.GameType;
+import com.isnakebuzz.skywars.Utils.Enums.*;
 import com.isnakebuzz.skywars.Utils.LocUtils;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
@@ -17,7 +16,6 @@ import org.bukkit.block.Chest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import sun.util.resources.es.LocaleNames_es_US;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +46,7 @@ public class SkyWarsArena {
     private int startingTime;
     private int cageOpens;
     private int endTimer;
+    private int refillTimer;
 
     //Locations
     private Location lobbyLocation;
@@ -55,6 +54,11 @@ public class SkyWarsArena {
     private List<Location> spawnLocations;
     private List<Location> centerChestLocs;
     private List<Location> islandChestLocs;
+
+    //Vote managers
+    private ChestType chestType;
+    private TimeType timeType;
+    private ProjectileType projectileType;
 
     public SkyWarsArena(Main plugin) {
         this.plugin = plugin;
@@ -73,9 +77,13 @@ public class SkyWarsArena {
         this.startingTime = arena.getInt("Timers.Starting");
         this.cageOpens = arena.getInt("Timers.CageOpens");
         this.endTimer = arena.getInt("Timers.End");
+        this.refillTimer = arena.getInt("Timers.ChestRefill");
 
         this.lobbyLocation = LocUtils.stringToLoc(arena.getString("Lobby"));
         this.gameType = GameType.SOLO;
+        this.chestType = ChestType.NORMAL;
+        this.timeType = TimeType.DAY;
+        this.projectileType = ProjectileType.NORMAL;
 
         //Loading spawns
         Set<String> keys = arena.getConfigurationSection("Spawns").getKeys(false);
@@ -139,6 +147,22 @@ public class SkyWarsArena {
         this.cageOpens = cageOpens;
     }
 
+    public int getRefillTimer() {
+        return refillTimer;
+    }
+
+    public List<Location> getCenterChestLocs() {
+        return centerChestLocs;
+    }
+
+    public List<Location> getIslandChestLocs() {
+        return islandChestLocs;
+    }
+
+    public void setRefillTimer(int refillTimer) {
+        this.refillTimer = refillTimer;
+    }
+
     public int getMaxPlayers() {
         return maxPlayers;
     }
@@ -183,6 +207,30 @@ public class SkyWarsArena {
         this.endTimer = endTimer;
     }
 
+    public void setChestType(ChestType chestType) {
+        this.chestType = chestType;
+    }
+
+    public void setTimeType(TimeType timeType) {
+        this.timeType = timeType;
+    }
+
+    public void setProjectileType(ProjectileType projectileType) {
+        this.projectileType = projectileType;
+    }
+
+    public ProjectileType getProjectileType() {
+        return projectileType;
+    }
+
+    public TimeType getTimeType() {
+        return timeType;
+    }
+
+    public ChestType getChestType() {
+        return chestType;
+    }
+
     public boolean checkStart() {
         if (!this.started) {
             if (this.getGamePlayers().size() >= this.getMinPlayers()) {
@@ -197,9 +245,7 @@ public class SkyWarsArena {
 
     public boolean checkWin() {
         if (this.gameType.equals(GameType.SOLO)) {
-            if (this.getGamePlayers().size() <= 1) {
-                return true;
-            }
+            return this.getGamePlayers().size() <= 1;
         }
         return false;
     }

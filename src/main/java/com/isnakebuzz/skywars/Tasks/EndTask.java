@@ -25,11 +25,22 @@ public class EndTask extends BukkitRunnable {
             }
         }
 
+        if (plugin.getSkyWarsArena().getEndTimer() == 1) {
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                //Move to lobby or other game :)
+            }
+        }
+
         if (plugin.getSkyWarsArena().getEndTimer() == 0) {
             //replace for others methodes more efficients.
             plugin.debug("Restarting arena..");
             this.cancel();
             if (Statics.isFawe) {
+                if (Statics.toRestart++ >= 6) {
+                    Bukkit.shutdown();
+                    return;
+                }
+
                 plugin.getWorldRestarting().restartWorld();
                 plugin.getListenerManager().reset();
                 plugin.resetArena();
