@@ -18,8 +18,8 @@ import java.io.IOException;
 
 public abstract class Menu implements Listener {
 
-    Inventory _inv;
-    Main plugin;
+    private Inventory _inv;
+    private Main plugin;
     private String _name;
 
     public Menu(Main plugin, String menu_name) {
@@ -33,7 +33,7 @@ public abstract class Menu implements Listener {
     }
 
     public void a(final ItemStack itemStack) {
-        this._inv.addItem(new ItemStack[]{itemStack});
+        this._inv.addItem(itemStack);
     }
 
     public void s(final int n, final ItemStack itemStack) {

@@ -13,10 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class KitLoader {
@@ -75,7 +72,7 @@ public class KitLoader {
     }
 
     public Kit getKit(String kitName) {
-        return this.kitMap.getOrDefault(kitName, null);
+        return this.kitMap.getOrDefault(kitName, this.defaultKits.get(new Random().nextInt(this.defaultKits.size())));
     }
 
     private File[] getKits() {
