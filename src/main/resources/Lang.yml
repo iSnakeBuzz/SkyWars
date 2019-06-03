@@ -3,6 +3,10 @@ LeaveMessage: '&7%player%&e has quit (&b%online%&e/&b%max%&e)!'
 
 NoPerms: "&cYou don't have permissions for use that feature."
 
+Kit:
+  Selected: '&eYou has been selected &a%kit%'
+  ActionBar: '&eSelected Kit: &a%kit%'
+
 Holograms:
   ChestRefill:
     Normal:

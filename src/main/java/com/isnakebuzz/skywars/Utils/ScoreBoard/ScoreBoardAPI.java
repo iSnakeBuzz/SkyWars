@@ -88,6 +88,10 @@ public class ScoreBoardAPI {
         }
 
         String transformed = (c(s)
+                //Plugin holders
+                .replaceAll("%version%", plugin.getDescription().getVersion())
+
+                //Player and other things
                 .replaceAll("%date%", getDate())
                 .replaceAll("%online%", String.valueOf(plugin.getSkyWarsArena().getGamePlayers().size()))
                 .replaceAll("%maxPlayers%", String.valueOf(plugin.getSkyWarsArena().getMaxPlayers()))

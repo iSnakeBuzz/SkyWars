@@ -1,6 +1,7 @@
 PRELOBBY:
   title: '&e&lSKYWARS'
   lines:
+  - '&7%date% &8'
   - ''
   - 'Players: &a%online%/%maxPlayers%'
   - ''
@@ -8,6 +9,7 @@ PRELOBBY:
   - '<starting>Starting in &a%startTime%s'
   - ''
   - 'Server: &a%map%'
+  - 'Version: &6%version%'
   - ''
   - '&ewww.server.net'
 INGAME:

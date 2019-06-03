@@ -215,15 +215,6 @@ public class SetupCommands implements CommandExecutor {
             ItemStack[] armorCont = p.getInventory().getArmorContents();
             ItemStack[] invCont = p.getInventory().getContents();
 
-            //Logo item
-            ItemStack logo;
-            if (p.getInventory().getItemInHand() != null && p.getInventory().getItemInHand().getType() != Material.AIR) {
-                logo = p.getInventory().getItemInHand();
-            } else {
-                p.sendMessage(c("&aYou need have a item in your hand for setup logo kit :)"));
-                return;
-            }
-
             File kitFile = new File(plugin.getDataFolder() + "/Kits/" + name + ".yml");
             if (kitFile.exists()) {
                 p.sendMessage(c("&cKit already exist, use &b/sw kit update {name} {perm/none} {default: true/false} {Glow: true/false}&c to update kit"));
@@ -242,7 +233,6 @@ public class SetupCommands implements CommandExecutor {
             kitConfig.set("Perm", permission);
             kitConfig.set("Default", isDef);
             kitConfig.set("Selected Glow", glow);
-            kitConfig.set("Logo", logo);
 
             //Inventory
             kitConfig.set("Armor", armorCont);
@@ -273,15 +263,6 @@ public class SetupCommands implements CommandExecutor {
             ItemStack[] armorCont = p.getInventory().getArmorContents();
             ItemStack[] invCont = p.getInventory().getContents();
 
-            //Logo item
-            ItemStack logo;
-            if (p.getInventory().getItemInHand() != null && p.getInventory().getItemInHand().getType() != Material.AIR) {
-                logo = p.getInventory().getItemInHand();
-            } else {
-                p.sendMessage(c("&aYou need have a item in your hand for update logo kit :)"));
-                return;
-            }
-
             File kitFile = new File(plugin.getDataFolder() + "/Kits/" + name + ".yml");
             try {
                 boolean newFile = kitFile.createNewFile();
@@ -296,7 +277,6 @@ public class SetupCommands implements CommandExecutor {
             kitConfig.set("Perm", permission);
             kitConfig.set("Default", isDef);
             kitConfig.set("Selected Glow", glow);
-            kitConfig.set("Logo", logo);
 
             //Inventory
             kitConfig.set("Armor", armorCont);

@@ -1,5 +1,8 @@
 package com.isnakebuzz.skywars.Listeners;
 
+import com.isnakebuzz.ccsigns.Enums.GameStates;
+import com.isnakebuzz.ccsigns.Enums.PacketType;
+import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Commands.NormalCommands;
 import com.isnakebuzz.skywars.Commands.SetupCommands;
 import com.isnakebuzz.skywars.Listeners.Commons.WorldEvents;
@@ -92,12 +95,37 @@ public class ListenerManager {
             registerListener(this.deathMsgEvent);
             registerListener(this.tagging);
 
+            // Create new skywars arena
+            plugin.resetArena();
+
+            // Setting up Signs
+            if (Bukkit.getPluginManager().isPluginEnabled("CCSigns")) {
+                Statics.isCCSings = true;
+
+                String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
+                String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
+
+                SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
+            }
         } else if (Statics.skyMode.equalsIgnoreCase("TEAM")) {
             registerListener(new WorldEvents(plugin));
             registerListener(this.joinAndLeave);
             registerListener(this.protector);
             registerListener(this.lobbyItems);
             registerListener(this.spectatorEvents);
+
+            // Create new skywars arena
+            plugin.resetArena();
+
+            // Setting up Signs
+            if (Bukkit.getPluginManager().isPluginEnabled("CCSigns")) {
+                Statics.isCCSings = true;
+
+                String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
+                String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
+
+                SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
+            }
         }
 
         try {
@@ -108,7 +136,7 @@ public class ListenerManager {
             world.setGameRuleValue("doDaylightCycle", "false");
             world.setGameRuleValue("doMobSpawning", "false");
         } catch (Exception ex) {
-            plugin.debug("Error loading world with name: \"world\"");
+            plugin.log("&c&lError","Error loading world with name: \"world\"");
         }
     }
 

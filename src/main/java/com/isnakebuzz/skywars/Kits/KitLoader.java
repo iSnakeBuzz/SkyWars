@@ -3,13 +3,10 @@ package com.isnakebuzz.skywars.Kits;
 import com.isnakebuzz.skywars.Inventory.KitInventory;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftInventory;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -31,35 +28,32 @@ public class KitLoader {
 
     public void loadKits() {
         plugin.debug("Loading kits..");
-        for (File kit : getKits()) {
+        for (File kit : getKitsFiles()) {
             plugin.debug("Loading kit from file [" + kit.getName() + "]");
 
             //Creating config file
             String fileName = kit.getName().split(Pattern.quote("."))[0];
             Configuration config = plugin.getConfig("Kits/" + fileName);
-            YamlConfiguration configInv = YamlConfiguration.loadConfiguration(kit);
 
             //Kit configurations
             String name = config.getString("Name", "Default");
-            String logo = config.getString("Logo", "166:0");
-
             String perm = config.getString("Perm", "none");
 
-            Boolean isDefault = config.getBoolean("Default", false);
+            boolean isDefault = config.getBoolean("Default", false);
 
             //Loading inventory configuration
-            ItemStack[] armorCont = (ItemStack[]) ((List) configInv.get("Armor")).toArray(new ItemStack[0]);
-            ItemStack[] invCont = (ItemStack[]) ((List) configInv.get("Inventory")).toArray(new ItemStack[0]);
+            ItemStack[] armorCont = (ItemStack[]) ((List) config.get("Armor")).toArray(new ItemStack[0]);
+            ItemStack[] invCont = (ItemStack[]) ((List) config.get("Inventory")).toArray(new ItemStack[0]);
 
 
             // Parsing data to kit format
             KitInventory kitInventory = new KitInventory(armorCont, invCont);
-            ItemStack iLogo = ItemBuilder.crearItem(Integer.valueOf(logo.split(":")[0]), 1, Integer.valueOf(logo.split(":")[1]));
+            plugin.debug(config.getConfigurationSection("Logo").toString());
+            ItemStack iLogo = plugin.getUtils().createItem(config.getConfigurationSection("Logo"));
 
 
             // Creating kit
-            Kit pKit = new Kit(name, iLogo, perm, kitInventory);
-
+            Kit pKit = new Kit(name, iLogo, perm, kitInventory, isDefault);
 
             //Adding kit to the kit map
             this.kitMap.put(name, pKit);
@@ -75,10 +69,14 @@ public class KitLoader {
         return this.kitMap.getOrDefault(kitName, this.defaultKits.get(new Random().nextInt(this.defaultKits.size())));
     }
 
-    private File[] getKits() {
+    public Collection<Kit> getKits() {
+        return this.kitMap.values();
+    }
+
+    private File[] getKitsFiles() {
         File dir = new File(plugin.getDataFolder() + "/Kits/");
-        File[] files = dir.listFiles();
-        return files;
+        if (!dir.exists()) dir.mkdir();
+        return dir.listFiles();
     }
 
     private String c(String s) {

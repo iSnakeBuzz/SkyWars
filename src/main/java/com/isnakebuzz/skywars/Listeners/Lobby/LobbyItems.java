@@ -1,6 +1,7 @@
 package com.isnakebuzz.skywars.Listeners.Lobby;
 
 import com.isnakebuzz.skywars.Inventory.MenuManager.MenuCreator;
+import com.isnakebuzz.skywars.Inventory.Others.KitsMenu;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
@@ -90,16 +91,20 @@ public class LobbyItems implements Listener {
 
     private void ACTIONS(Player player, String action, String args) {
         if (action.equalsIgnoreCase("menu")) {
-            new MenuCreator(player, plugin, args).o(player);
+            if (args.equalsIgnoreCase("kits")) {
+                new KitsMenu(plugin, args, player).open();
+            } else {
+                new MenuCreator(player, plugin, args).open();
+            }
         } else if (action.equalsIgnoreCase("cmd")) {
             String cmd = "/" + args;
             player.chat(cmd);
         } else if (action.equalsIgnoreCase("leave")) {
             String lobby = Statics.lobbies.get(new Random().nextInt(Statics.lobbies.size()));
             PacketsAPI.connect(plugin, player, lobby);
-        } else if (action.equalsIgnoreCase("playAgain")){
+        } else if (action.equalsIgnoreCase("playAgain")) {
             player.sendMessage(c("&cThat function is under development, please wait for new updates :)"));
-        } else{
+        } else {
             player.sendMessage(c("&cThat action does't exist, please contact with administrator :)"));
         }
     }

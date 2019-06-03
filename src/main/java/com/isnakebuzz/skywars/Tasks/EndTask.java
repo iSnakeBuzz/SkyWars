@@ -1,5 +1,7 @@
 package com.isnakebuzz.skywars.Tasks;
 
+import com.isnakebuzz.ccsigns.Enums.PacketType;
+import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
@@ -45,6 +47,9 @@ public class EndTask extends BukkitRunnable {
                 plugin.getListenerManager().reset();
                 plugin.resetArena();
             } else {
+                if (Statics.isCCSings) {
+                    SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID);
+                }
                 Bukkit.shutdown();
                 return;
             }

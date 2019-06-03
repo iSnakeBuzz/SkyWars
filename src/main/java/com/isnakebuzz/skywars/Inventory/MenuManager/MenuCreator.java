@@ -23,7 +23,7 @@ public class MenuCreator extends Menu {
     private int taskId;
 
     public MenuCreator(Player player, Main plugin, String _name) {
-        super(plugin, _name);
+        super(plugin, _name, player);
         this.plugin = plugin;
         Configuration config = plugin.getConfig("Extra/MenuCreator");
         String path = "MenuCreator." + _name + ".";
@@ -57,7 +57,7 @@ public class MenuCreator extends Menu {
                     return;
                 }
                 if (action.split(":")[0].equalsIgnoreCase("open")) {
-                    new MenuCreator(p, plugin, action.split(":")[1]).o(p);
+                    new MenuCreator(p, plugin, action.split(":")[1]).open();
                 } else if (action.split(":")[0].equalsIgnoreCase("cmd")) {
                     String cmd = "/" + action.split(":")[1];
                     p.chat(cmd);

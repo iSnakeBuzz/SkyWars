@@ -56,10 +56,14 @@ public class CageOpeningTask extends BukkitRunnable {
 
             new InGame(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
 
-            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-                plugin.getListenerManager().unloadCageOpens();
-            }, 20 * 5);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getListenerManager().unloadCageOpens(), 20 * 5);
             this.cancel();
+            return;
+        }
+
+        if (plugin.getSkyWarsArena().getGamePlayers().size() < plugin.getSkyWarsArena().getMinPlayers() && !plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.FINISH)) {
+            this.cancel();
+            plugin.resetArena();
             return;
         }
 

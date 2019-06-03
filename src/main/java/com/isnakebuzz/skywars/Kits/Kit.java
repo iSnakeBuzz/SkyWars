@@ -9,6 +9,7 @@ public class Kit {
     //Principal
     private String name;
     private ItemStack logo;
+    private Boolean isDefault;
 
     //Perms
     private String permission;
@@ -16,9 +17,10 @@ public class Kit {
     //Inventory
     private KitInventory kitInventory;
 
-    public Kit(String name, ItemStack logo, String permission, KitInventory kitInventory) {
+    public Kit(String name, ItemStack logo, String permission, KitInventory kitInventory, boolean isDefault) {
         this.name = name;
         this.logo = logo;
+        this.isDefault = isDefault;
         this.permission = permission;
         this.kitInventory = kitInventory;
     }
@@ -29,6 +31,10 @@ public class Kit {
 
     public ItemStack getLogo() {
         return logo;
+    }
+
+    public Boolean isDefault() {
+        return isDefault;
     }
 
     public String getPermission() {

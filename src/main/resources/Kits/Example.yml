@@ -13,10 +13,11 @@ Selected Glow: true
 
 # Logo, this appears in the kit menu
 Logo:
-  name: '&7Basic Kit'
+  name: 'Basic Kit'
+  item: '1:0'
+  amount: 1
   lore:
   - 'This is a example kit'
-  item: '1:0'
 
 # If the player have this permissions gets kit for free
 # Set to 'none' for disable perm system in this kit

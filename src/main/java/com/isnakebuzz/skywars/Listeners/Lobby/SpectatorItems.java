@@ -48,7 +48,7 @@ public class SpectatorItems implements Listener {
 
             if (e.getCurrentItem().equals(itemStack)) {
                 if (_action.split(":")[0].equalsIgnoreCase("menu")) {
-                    new MenuCreator(p, plugin, _action.split(":")[1]).o(p);
+                    new MenuCreator(p, plugin, _action.split(":")[1]).open();
                 } else if (_action.split(":")[0].equalsIgnoreCase("cmd")) {
                     String cmd = "/" + _action.split(":")[1];
                     p.chat(cmd);
@@ -82,7 +82,7 @@ public class SpectatorItems implements Listener {
 
             if (e.getItem().equals(itemStack)) {
                 if (_action.split(":")[0].equalsIgnoreCase("menu")) {
-                    new MenuCreator(e.getPlayer(), plugin, _action.split(":")[1]).o(e.getPlayer());
+                    new MenuCreator(e.getPlayer(), plugin, _action.split(":")[1]).open();
                 } else if (_action.split(":")[0].equalsIgnoreCase("cmd")) {
                     String cmd = "/" + _action.split(":")[1];
                     e.getPlayer().chat(cmd);

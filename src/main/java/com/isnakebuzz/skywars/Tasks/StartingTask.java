@@ -72,14 +72,18 @@ public class StartingTask extends BukkitRunnable {
             plugin.closeInventory();
             this.cancel();
             if (Statics.isCCSings) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                    SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID);
-                }, 20 * 3);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID), 20 * 3);
             }
             return;
         }
 
         plugin.getSkyWarsArena().setStatrtingTime(plugin.getSkyWarsArena().getStartingTime() - 1);
+
+        if (plugin.getSkyWarsArena().getGamePlayers().size() < plugin.getSkyWarsArena().getMinPlayers() && plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.STARTING)) {
+            this.cancel();
+            plugin.getSkyWarsArena().cancelStart();
+            plugin.debug("Cancelling starting task..");
+        }
     }
 
     private String c(String s) {

@@ -329,7 +329,6 @@ public final class ChestController {
             }
 
         } catch (Exception ignored) {
-
         }
         return itemStack;
     }

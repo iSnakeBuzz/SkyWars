@@ -9,11 +9,13 @@ import com.isnakebuzz.skywars.Chest.ChestController;
 import com.isnakebuzz.skywars.Configurations.ConfigCreator;
 import com.isnakebuzz.skywars.Configurations.ConfigUtils;
 import com.isnakebuzz.skywars.Database.Database;
+import com.isnakebuzz.skywars.Kits.KitLoader;
 import com.isnakebuzz.skywars.Utils.Manager.*;
 import com.isnakebuzz.skywars.Listeners.ListenerManager;
 import com.isnakebuzz.skywars.Inventory.Inventories;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
+import com.isnakebuzz.skywars.Utils.Utils;
 import com.isnakebuzz.skywars.Utils.World.FaweUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
@@ -40,8 +42,12 @@ public final class Main extends JavaPlugin {
     private VoteManager voteManager;
     private TimerManager timerManager;
     private ChestRefillManager chestRefillManager;
+    private KitLoader kitLoader;
+    private Utils utils;
 
     public Main() {
+        this.utils = new Utils(this);
+        this.kitLoader = new KitLoader(this);
         this.chestRefillManager = new ChestRefillManager(this);
         this.timerManager = new TimerManager(this);
         this.voteManager = new VoteManager(this);
@@ -89,32 +95,19 @@ public final class Main extends JavaPlugin {
         //Load Listeners
         this.getListenerManager().loadInitialsEvents();
 
-        // Create new skywars arena
-        this.resetArena();
+        //Loading kits
+        this.getKitLoader().loadKits();
 
         //Detecting fawe for instant world restart without lag
         if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
             Statics.isFawe = true;
             this.worldRestarting = new FaweUtils(this);
         }
-
-        if (Bukkit.getPluginManager().isPluginEnabled("CCSigns")) {
-            Statics.isCCSings = true;
-
-            String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
-            String maxPlayer = String.valueOf(this.getSkyWarsArena().getMaxPlayers());
-
-            SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
-        }
-
     }
 
     @Override
     public void onDisable() {
         this.dataManager.getDatabase().closeConnection();
-        if (Statics.isCCSings) {
-            SignsAPI.sendPacket(PacketType.DELETE, Statics.BungeeID);
-        }
     }
 
     public void log(String logger, String log) {
@@ -205,11 +198,20 @@ public final class Main extends JavaPlugin {
         return timerManager;
     }
 
+    public Utils getUtils() {
+        return utils;
+    }
+
+    public KitLoader getKitLoader() {
+        return kitLoader;
+    }
+
     public void resetArena() {
         this.getChestRefillManager().reset();
         this.skyWarsArena = new SkyWarsArena(this);
         this.voteManager = new VoteManager(this);
         this.chestRefillManager = new ChestRefillManager(this);
+        Runtime.getRuntime().gc();
         if (Statics.isCCSings) {
             if (SignsAPI.game != null) {
                 SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID);

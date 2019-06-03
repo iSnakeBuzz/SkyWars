@@ -4,22 +4,22 @@ Lobby:
     slot: 0
     name: '&aKit Selector &7(Right Click)'
     lore: []
-    action: 'open:Kits'
+    action: 'menu:Kits'
   GSettings:
     item: '377:0'
     slot: 1
     name: '&aGame Settings &7(Right Click)'
     lore:
-      - ''
-      - '&7Right-click to configure Game!'
-    action: 'open:Votes'
+    - ''
+    - '&7Right-click to configure Game!'
+    action: 'menu:GameSettings'
   Leave:
     item: '355:0'
     slot: 8
     name: '&c&lReturn to Lobby &7(Right-Click)'
     lore:
     - '&7Right-click to leave to the lobby!'
-    action: 'server:Lobby'
+    action: 'leave'
 Spectator:
   Teleporter:
     item: '345:0'
@@ -27,14 +27,14 @@ Spectator:
     name: '&a&lTeleporter &7(Click Derecho)'
     lore:
     - '&7Right-click to spectate players!'
-    action: 'open:Teleporter'
+    action: 'menu:Teleporter'
   Settings:
     item: '404:0'
     slot: 4
     name: '&b&lSpectator Settings &7(Click Derecho)'
     lore:
     - '&7Right-click to change your spectator settings!'
-    action: 'open:SpectatorSettings'
+    action: 'menu:SpectatorSettings'
   PlayAgain:
     item: '339:0'
     slot: 7
@@ -48,4 +48,4 @@ Spectator:
     name: '&c&lReturn to Lobby &7(Right-Click)'
     lore:
     - '&7Right-click to leave to the lobby!'
-    action: 'server:Lobby'
+    action: 'leave'

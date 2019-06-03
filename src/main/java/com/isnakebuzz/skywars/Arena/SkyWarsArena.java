@@ -5,6 +5,7 @@ import com.isnakebuzz.ccsigns.Enums.PacketType;
 import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.Cuboids.BasicCuboid;
+import com.isnakebuzz.skywars.Utils.Cuboids.Cuboid;
 import com.isnakebuzz.skywars.Utils.Enums.*;
 import com.isnakebuzz.skywars.Utils.LocUtils;
 import com.isnakebuzz.skywars.Utils.Statics;
@@ -113,6 +114,21 @@ public class SkyWarsArena {
 
         this.started = false;
         setGameStatus(GameStatus.WAITING);
+    }
+
+    public void cancelStart() {
+        this.started = false;
+        Configuration arena = plugin.getConfig("Extra/Arena");
+
+        this.startingTime = arena.getInt("Timers.Starting");
+        this.cageOpens = arena.getInt("Timers.CageOpens");
+        this.gameType = GameType.SOLO;
+        this.chestType = ChestType.NORMAL;
+        this.timeType = TimeType.DAY;
+        this.projectileType = ProjectileType.NORMAL;
+        setGameStatus(GameStatus.WAITING);
+
+
     }
 
     public String getMapName() {
@@ -290,12 +306,10 @@ public class SkyWarsArena {
         Location loc1 = lobbyRegion.get(0);
         Location loc2 = lobbyRegion.get(1);
 
-        BasicCuboid cuboid = new BasicCuboid(loc1, loc2);
+        Cuboid cuboid = new Cuboid(loc1, loc2);
         for (Block b : cuboid) {
             if (!b.getType().equals(Material.AIR)) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                    b.setType(Material.AIR);
-                });
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> b.setType(Material.AIR));
             }
         }
     }

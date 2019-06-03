@@ -15,7 +15,7 @@ public class SkyPlayer {
 
     //Cosmetics
     private String cageName;
-    private String kitName;
+    private String selectedKit;
     private List<String> purchCages;
     private List<String> purchKits;
 
@@ -42,7 +42,7 @@ public class SkyPlayer {
 
         //Cosmetics
         this.cageName = "default";
-        this.kitName = "default";
+        this.selectedKit = "default";
         this.purchCages = new ArrayList<>();
         this.purchKits = new ArrayList<>();
 
@@ -192,8 +192,8 @@ public class SkyPlayer {
         return cageName;
     }
 
-    public String getKitName() {
-        return kitName;
+    public String getSelectedKit() {
+        return selectedKit;
     }
 
     public List<String> getPurchCages() {
@@ -204,8 +204,8 @@ public class SkyPlayer {
         return purchKits;
     }
 
-    public void setKitName(String kitName) {
-        this.kitName = kitName;
+    public void setSelectedKit(String selectedKit) {
+        this.selectedKit = selectedKit;
     }
 
     public void setPurchKits(List<String> purchKits) {

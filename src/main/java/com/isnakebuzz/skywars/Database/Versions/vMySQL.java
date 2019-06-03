@@ -58,7 +58,7 @@ public class vMySQL implements Database {
 
             plugin.getDataManager().getMySQL().preparedUpdate("UPDATE SkyWars SET " +
                     "Kits='" + kitsTodb + "', " +
-                    "SelKit='" + skyPlayer.getKitName() + "', " +
+                    "SelKit='" + skyPlayer.getSelectedKit() + "', " +
                     "Cages='" + cagesTodb + "', " +
                     "SelCage='" + skyPlayer.getCageName() + "', " +
                     "Wins='" + skyPlayer.getWins() + "', " +
@@ -96,7 +96,7 @@ public class vMySQL implements Database {
                 "INSERT INTO SkyWars (UUID, Kits, SelKit, Cages, SelCage, Wins, Kills, Deaths) VALUES " +
                         "('" + p.getUniqueId().toString() + "', " +
                         "'" + kitsTodb + "', " +
-                        "'" + skyPlayer.getKitName() + "', " +
+                        "'" + skyPlayer.getSelectedKit() + "', " +
                         "'" + cagesTodb + "', " +
                         "'" + skyPlayer.getCageName() + "', " +
                         "'0', " +

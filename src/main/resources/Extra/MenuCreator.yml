@@ -5,24 +5,225 @@
 # # # # # # # # # # # # # # # # # # # # # #
 
 MenuCreator:
-  Votes:
-    title: '&aVote!'
+  GameSettings:
+    title: 'Game Settings'
     rows: 3
     # This menu need this :)
     update:
       enabled: true
-      time: 5 # In ticks!
+      time: 20 # In ticks!
     items:
-      VoteChests:
+      ChestItems:
         # 'ID:DATA'
         item: '54:0'
         slot: 10
         amount: 1
-        name: '&6&lItem Types'
+        name: '&e&lChest Items'
         lore:
-        - '&7Vote for the items you find in the game!'
-        - ''
-        - '&7Total Votes - &a %votes_chests%'
+        - '&7Vote for the items'
+        - '&7that you find in'
+        - '&7chests.'
         # Actions: CMD:SAY TEST, OPEN:TEST, FLYSPEED:0.5, VELOCITY:0.5
         perms: 'none'
-        action: 'open:ItemTypes'
+        action: 'open:VoteChests'
+      ProjectileOptions:
+        item: '262:0'
+        slot: 13
+        amount: 1
+        name: '&e&lProjectile Options'
+        lore:
+        - '&7Vote for the projectile'
+        - '&7settings of the'
+        - '&7game.'
+        perms: 'none'
+        action: 'open:ProjectileVotes'
+      Time:
+        item: '347:0'
+        slot: 16
+        amount: 1
+        name: '&e&lTime'
+        lore:
+        - '&7Vote for the time'
+        - '&7of day that game'
+        - '&7is played at.'
+        perms: 'none'
+        action: 'open:TimeVotes'
+      Close:
+        item: '340:0'
+        slot: 22
+        amount: 1
+        name: '&9Back'
+        lore:
+        - '&7Click to close'
+        - '&7the menu.'
+        perms: 'none'
+        action: 'close'
+  VoteChests:
+    title: 'Chest Game Settings'
+    rows: 3
+    # This menu need this :)
+    update:
+      enabled: true
+      time: 20 # In ticks!
+    items:
+      Basic:
+        item: '298:0'
+        slot: 10
+        amount: 1
+        name: '&aBasic'
+        lore:
+        - '&7Chest will contain:'
+        - '&7Weak armour'
+        - '&7Low damaginng swords'
+        - '&7Avarage food'
+        - '&7And other sutff'
+        - '&7'
+        - '&7%chest_basic% vote(s)'
+        perms: 'sw.chest.basic'
+        action: 'vote:chest_basic'
+      Normal:
+        item: '302:0'
+        slot: 13
+        amount: 1
+        name: '&aNormal'
+        lore:
+        - '&7Chest will contain:'
+        - '&7Avarage armour'
+        - '&7Avarage weapons'
+        - '&7Avarage food and minimum golden apples'
+        - '&7And other sutff'
+        - '&7'
+        - '&7%chest_normal% vote(s)'
+        perms: 'sw.chest.normal'
+        action: 'vote:chest_normal'
+      Overpowered:
+        item: '310:0'
+        slot: 16
+        amount: 1
+        name: '&aOverpowered'
+        lore:
+        - '&7Chest will contain:'
+        - '&7String armour'
+        - '&7Robust weapons'
+        - '&7More golden apples and enderrpearls'
+        - '&7And other sutff'
+        - '&7'
+        - '&7%chest_op% vote(s)'
+        perms: 'sw.chest.overpowered'
+        action: 'vote:chest_overpowered'
+      GoBack:
+        item: '340:0'
+        slot: 22
+        amount: 1
+        name: '&9Back'
+        lore:
+        - '&7Go back to the previus'
+        - '&7menu'
+        perms: 'none'
+        action: 'open:GameSettings'
+  ProjectileVotes:
+    title: 'Projectile Game Settings'
+    rows: 3
+    # This menu need this :)
+    update:
+      enabled: true
+      time: 20 # In ticks!
+    items:
+      No Throwables:
+        item: '344:0'
+        slot: 10
+        amount: 1
+        name: '&aNo throwables'
+        lore:
+        - "&7Chest don't contain any projectiles."
+        - '&7Any kits containing projectiles are banned.'
+        - '&7'
+        - '&7%projectiles_no_throwables% vote(s)'
+        perms: 'sw.projectiles.no.throwables'
+        action: 'vote:projectile_no_throwables'
+      Normal:
+        item: '261:0'
+        slot: 13
+        amount: 1
+        name: '&aNormal projectiles'
+        lore:
+        - '&7Chests contain eggs and bows.'
+        - '&7'
+        - '&7%projectiles_normal% vote(s)'
+        perms: 'sw.projectiles.normal'
+        action: 'vote:projectile_normal'
+      Soft Blocks:
+        item: '4:0'
+        slot: 16
+        amount: 1
+        name: '&aSoft blocks'
+        lore:
+        - '&7Any projectile that hits a block causes it to break.'
+        - '&7'
+        - '&7%projectiles_soft_blocks% vote(s)'
+        perms: 'sw.projectiles.soft.blocks'
+        action: 'vote:projectile_soft_blocks'
+      GoBack:
+        item: '340:0'
+        slot: 22
+        amount: 1
+        name: '&9Back'
+        lore:
+        - '&7Go back to the previus'
+        - '&7menu'
+        perms: 'none'
+        action: 'open:GameSettings'
+  TimeVotes:
+    title: 'Time Game Settings'
+    rows: 3
+    # This menu need this :)
+    update:
+      enabled: true
+      time: 20 # In ticks!
+    items:
+      DayTime:
+        item: '159:4'
+        slot: 10
+        amount: 1
+        name: '&aDay time'
+        lore:
+        - '&7Play the game at day time.'
+        - '&7'
+        - '&7%time_day% vote(s)'
+        perms: 'sw.time.day'
+        action: 'vote:time_day'
+      NightTime:
+        item: '159:15'
+        slot: 13
+        amount: 1
+        name: '&aNight time'
+        lore:
+        - '&7Play the game at night time.'
+        - '&7'
+        - '&7%time_night% vote(s)'
+        perms: 'sw.time.night'
+        action: 'vote:time_night'
+      Soft Blocks:
+        item: '159:14'
+        slot: 16
+        amount: 1
+        name: '&aSunset time'
+        lore:
+        - '&7Play the game at sunset.'
+        - '&7'
+        - '&7%time_sunset% vote(s)'
+        perms: 'sw.time.sunset'
+        action: 'vote:time_sunset'
+      GoBack:
+        item: '340:0'
+        slot: 22
+        amount: 1
+        name: '&9Back'
+        lore:
+        - '&7Go back to the previus'
+        - '&7menu'
+        perms: 'none'
+        action: 'open:GameSettings'
+  Kits:
+    title: 'Kits'
+    rows: 4

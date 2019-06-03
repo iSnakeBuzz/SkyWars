@@ -21,11 +21,13 @@ public abstract class Menu implements Listener {
     private Inventory _inv;
     private Main plugin;
     private String _name;
+    private Player player;
 
-    public Menu(Main plugin, String menu_name) {
+    public Menu(Main plugin, String menu_name, Player player) {
         this._name = menu_name;
         this.plugin = plugin;
-        Configuration config = plugin.getConfig( "Extra/MenuCreator");
+        this.player = player;
+        Configuration config = plugin.getConfig("Extra/MenuCreator");
         String path = "MenuCreator." + menu_name + ".";
         if (config.getString(path + "title") == null) return;
         this._inv = Bukkit.createInventory(null, 9 * config.getInt(path + "rows"), ChatColor.translateAlternateColorCodes('&', config.getString(path + "title")));
@@ -48,11 +50,15 @@ public abstract class Menu implements Listener {
         return this._inv.getName();
     }
 
-    public void o(final Player player) {
+    public void open() {
         if (this._inv == null) {
             player.sendMessage("§4Menu error.. Wrong name.");
         }
         player.openInventory(this._inv);
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     @EventHandler

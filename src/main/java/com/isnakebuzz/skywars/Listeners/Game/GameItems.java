@@ -94,7 +94,7 @@ public class GameItems implements Listener {
 
     private void ACTIONS(Player player, String action, String args) {
         if (action.equalsIgnoreCase("menu")) {
-            new MenuCreator(player, plugin, args).o(player);
+            new MenuCreator(player, plugin, args).open();
         } else if (action.equalsIgnoreCase("cmd")) {
             String cmd = "/" + args;
             player.chat(cmd);
