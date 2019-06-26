@@ -6,6 +6,7 @@ import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
+import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
@@ -52,7 +53,7 @@ public class StartingTask extends BukkitRunnable {
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     inGame.teleport(location);
                     inGame.getInventory().clear();
-                    plugin.getScoreBoardAPI().setScoreBoard(inGame, ScoreBoardAPI.ScoreboardType.INGAME, true, false, true);
+                    plugin.getScoreBoardAPI2().setScoreBoard(inGame, ScoreboardType.INGAME, true, false, true);
                 });
                 id++;
             }

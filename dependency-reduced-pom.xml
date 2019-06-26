@@ -81,6 +81,26 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.comphenix.protocol</groupId>
+      <artifactId>ProtocolLib</artifactId>
+      <version>4.4.0</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>ProtocolLib-API</artifactId>
+          <groupId>com.comphenix.protocol</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>cglib-nodep</artifactId>
+          <groupId>cglib</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>BukkitExecutors</artifactId>
+          <groupId>com.comphenix.executors</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>com.boydti</groupId>
       <artifactId>we-api</artifactId>
       <version>1.8.9</version>

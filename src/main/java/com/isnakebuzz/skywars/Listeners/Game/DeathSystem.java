@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Listeners.Game;
 import com.isnakebuzz.skywars.Calls.Events.SkyWinEvent;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import org.bukkit.Bukkit;
@@ -53,7 +54,7 @@ public class DeathSystem implements Listener {
         }
 
         skyPlayer.setDead(true);
-        plugin.getScoreBoardAPI().setScoreBoard(p, ScoreBoardAPI.ScoreboardType.INGAME, true, true, true);
+        plugin.getScoreBoardAPI2().setScoreBoard(p, ScoreboardType.INGAME, true, true, true);
         plugin.getInventories().setSpectInventory(p);
         plugin.getSkyWarsArena().getGamePlayers().remove(p);
         

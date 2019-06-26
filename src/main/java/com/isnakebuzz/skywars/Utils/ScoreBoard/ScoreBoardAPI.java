@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Utils.ScoreBoard;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
+import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -33,6 +34,8 @@ public class ScoreBoardAPI {
             scoreboard.setName(chars(p, config.getString(scoreboardType.toString() + ".title")));
 
             int line = config.getStringList(scoreboardType.toString() + ".lines").size();
+            int slime = 0;
+
             for (final String s : config.getStringList(scoreboardType.toString() + ".lines")) {
 
                 if (s.contains("<starting>")) {
@@ -59,9 +62,8 @@ public class ScoreBoardAPI {
                     } else {
                         scoreboard.dLine(line);
                     }
-                } else if (s.contains("<!isDead>")) {
-                    SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
-                    if (skyPlayer.isDead()) {
+                } else if (s.contains("<ended>")) {
+                    if (plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.FINISH)) {
                         scoreboard.lines(line, chars(p, s));
                     } else {
                         scoreboard.dLine(line);
@@ -114,7 +116,7 @@ public class ScoreBoardAPI {
                 .replaceAll("<starting>", "")
                 .replaceAll("<cages>", "")
                 .replaceAll("<refill>", "")
-                .replaceAll("<!isDead>", "")
+                .replaceAll("<ended>", "")
         );
         return transformed;
     }
@@ -134,10 +136,6 @@ public class ScoreBoardAPI {
 
     private String c(String c) {
         return ChatColor.translateAlternateColorCodes('&', c);
-    }
-
-    public enum ScoreboardType {
-        PRELOBBY, INGAME
     }
 
 }

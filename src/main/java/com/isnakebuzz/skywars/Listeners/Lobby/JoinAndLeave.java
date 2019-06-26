@@ -5,8 +5,8 @@ import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Tasks.StartingTask;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
+import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
-import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,7 +38,7 @@ public class JoinAndLeave implements Listener {
         plugin.getInventories().setLobbyInventory(p);
         PacketsAPI.sendClean(p);
 
-        plugin.getScoreBoardAPI().setScoreBoard(p, ScoreBoardAPI.ScoreboardType.PRELOBBY, false, false, false);
+        plugin.getScoreBoardAPI2().setScoreBoard(p, ScoreboardType.PRELOBBY, false, false, false);
         plugin.getDb().createPlayer(p);
 
         e.setJoinMessage(c(lang.getString("JoinMessage")

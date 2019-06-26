@@ -181,7 +181,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
     }
 
     public void addKillStreak() {
-        this.setKills(this.getKillStreak() + 1);
+        this.setKillStreak(this.getKillStreak() + 1);
     }
 
     public void setDead(boolean dead) {
@@ -250,6 +250,6 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
 
     @Override
     public int compareTo(SkyPlayer o) {
-        return this.killStreak - o.getKillStreak();
+        return o.getKillStreak() - this.killStreak;
     }
 }
