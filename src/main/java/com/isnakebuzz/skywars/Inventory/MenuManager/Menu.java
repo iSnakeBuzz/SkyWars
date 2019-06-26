@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -42,7 +41,7 @@ public abstract class Menu implements Listener {
         this._inv.setItem(n, itemStack);
     }
 
-    public Inventory i() {
+    public Inventory inventory() {
         return this._inv;
     }
 
@@ -63,7 +62,7 @@ public abstract class Menu implements Listener {
 
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent inventoryClickEvent) throws IOException {
-        if (inventoryClickEvent.getInventory().equals(this.i()) && inventoryClickEvent.getCurrentItem() != null && this.i().contains(inventoryClickEvent.getCurrentItem()) && inventoryClickEvent.getWhoClicked() instanceof Player) {
+        if (inventoryClickEvent.getInventory().equals(this.inventory()) && inventoryClickEvent.getCurrentItem() != null && this.inventory().contains(inventoryClickEvent.getCurrentItem()) && inventoryClickEvent.getWhoClicked() instanceof Player) {
             this.onClick((Player) inventoryClickEvent.getWhoClicked(), inventoryClickEvent.getCurrentItem(), _name);
             inventoryClickEvent.setCancelled(true);
         }
@@ -71,7 +70,7 @@ public abstract class Menu implements Listener {
 
     @EventHandler
     public void onInventoryClose(final InventoryCloseEvent inventoryCloseEvent) {
-        if (inventoryCloseEvent.getInventory().equals(this.i()) && inventoryCloseEvent.getPlayer() instanceof Player) {
+        if (inventoryCloseEvent.getInventory().equals(this.inventory()) && inventoryCloseEvent.getPlayer() instanceof Player) {
             this.onClose((Player) inventoryCloseEvent.getPlayer());
             HandlerList.unregisterAll(this);
         }

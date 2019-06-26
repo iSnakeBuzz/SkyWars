@@ -1,14 +1,20 @@
 package com.isnakebuzz.skywars.Utils;
 
 import com.google.common.collect.Lists;
+import com.isnakebuzz.skywars.Calls.Callback;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Kits.Kit;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Player.SkyPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
@@ -46,19 +52,19 @@ public class Utils {
         List<String> lore = kit.getLogo().getItemMeta().getLore();
 
         if (purchKit || isDefault) {
-            itemFormatted = purchased.getString("item").split(":");
+            itemFormatted = new String[]{String.valueOf(kit.getLogo().getType().getId()), String.valueOf(kit.getLogo().getDurability())};
 
             if (isSelected) {
-                itemName = noPurchased.getString("name").replaceAll("%name%", strip(kit.getLogo().getItemMeta().getDisplayName()));
+                itemName = selected.getString("name").replaceAll("%name%", strip(kit.getLogo().getItemMeta().getDisplayName()));
                 lore = c(selected.getStringList("lore"));
             } else {
-                itemName = noPurchased.getString("name").replaceAll("%name%", strip(kit.getLogo().getItemMeta().getDisplayName()));
+                itemName = purchased.getString("name").replaceAll("%name%", strip(kit.getLogo().getItemMeta().getDisplayName()));
                 lore.addAll(c(purchased.getStringList("lore")));
             }
 
         } else {
             itemName = noPurchased.getString("name").replaceAll("%name%", strip(kit.getLogo().getItemMeta().getDisplayName()));
-            itemFormatted = new String[]{String.valueOf(kit.getLogo().getType().getId()), String.valueOf(kit.getLogo().getDurability())};
+            itemFormatted = noPurchased.getString("item", "160:14").split(":");
             lore.addAll(c(noPurchased.getStringList("lore")));
         }
 
@@ -74,6 +80,42 @@ public class Utils {
         return newList;
     }
 
+    public void playSound(Player player, String sound) {
+        String[] args = sound.split(":");
+
+        String soundName = args[0];
+        int volume = Integer.parseInt(args[1]);
+        int pitch = Integer.parseInt(args[2]);
+
+        player.playSound(player.getLocation(), Sound.valueOf(soundName), volume, pitch);
+    }
+
+    public void sortKits(SkyPlayer skyPlayer, Callback<List<Kit>> callback) {
+
+        List<Kit> defaultKits = Lists.newArrayList();
+
+        List<Kit> purchKits = Lists.newArrayList();
+        List<Kit> normalKits = Lists.newArrayList();
+
+        for (Kit kit : plugin.getKitLoader().getKits()) {
+            if (skyPlayer.getPurchKits().contains(kit.getName())) {
+                purchKits.add(kit);
+            } else if (kit.isDefault()) {
+                defaultKits.add(kit);
+            } else {
+                normalKits.add(kit);
+            }
+        }
+
+        List<Kit> finalList = Lists.newArrayList();
+
+        finalList.addAll(defaultKits);
+        finalList.addAll(purchKits);
+        finalList.addAll(normalKits);
+
+        callback.done(finalList);
+
+    }
 
     public String c(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);

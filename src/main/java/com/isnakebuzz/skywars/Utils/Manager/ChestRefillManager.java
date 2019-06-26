@@ -1,15 +1,15 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
+import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Main;
-import com.isnakebuzz.skywars.Utils.Enums.ChestType;
 import com.isnakebuzz.skywars.Utils.Holograms.TruenoHologram;
 import com.isnakebuzz.skywars.Utils.Holograms.TruenoHologramAPI;
+import com.isnakebuzz.skywars.Utils.LocUtils;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.TileEntityChest;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
@@ -32,57 +32,87 @@ public class ChestRefillManager {
     }
 
     public void updateChest(Chest chest, boolean broken, boolean open) {
-        if (plugin.getSkyWarsArena().getCenterChestLocs().contains(chest.getLocation())
-                || plugin.getSkyWarsArena().getIslandChestLocs().contains(chest.getLocation())) {
+        String locFixed = LocUtils.locToString(chest.getLocation());
+
+
+        plugin.debug("Broken?: " + broken + " " + locFixed);
+        if (plugin.getSkyWarsArena().getCenterChestLocs().contains(LocUtils.stringToLoc(locFixed))
+                || plugin.getSkyWarsArena().getIslandChestLocs().contains(LocUtils.stringToLoc(locFixed))) {
             checkChest(chest, broken);
             playChestAction(chest, open);
+            plugin.debug("Checking chest");
         }
     }
 
     private void checkChest(Chest chest, boolean broken) {
-        if (broken && hologramHashMap.containsKey(chest.getLocation())) {
-            hologramHashMap.remove(chest.getLocation());
+        Location locFixed = LocUtils.fixLocation(chest.getLocation());
+
+        if (broken) {
+            if (hologramHashMap.containsKey(locFixed)) hologramHashMap.get(locFixed).delete();
+            hologramHashMap.remove(locFixed);
             this.removeChest(chest);
+            plugin.debug("Removing hologram by breaked");
             return;
         }
 
-        if (this.hologramHashMap.containsKey(chest.getLocation())) {
+        if (this.hologramHashMap.containsKey(locFixed)) {
             if (this.chestEmpty(chest.getInventory())) {
                 ConfigurationSection lang = plugin.getConfig("Lang").getConfigurationSection("Holograms.ChestRefill");
 
-                TruenoHologram hologram = this.hologramHashMap.get(chest.getLocation());
-                List<String> hologramInfo = transformTo(lang.getStringList("Empty"));
+                TruenoHologram hologram = this.hologramHashMap.get(locFixed);
+                ArrayList<String> hologramInfo = Lists.newArrayList();
+                hologramInfo.add(c(lang.getString("Name")));
+                hologramInfo.add(c(lang.getString("Empty")));
+                plugin.debug(hologramInfo.toString());
 
-                hologram.newUpdate(hologramInfo);
+                hologram.update(hologramInfo);
             } else {
                 ConfigurationSection lang = plugin.getConfig("Lang").getConfigurationSection("Holograms.ChestRefill");
 
-                TruenoHologram hologram = this.hologramHashMap.get(chest.getLocation());
-                List<String> hologramInfo = transformTo(lang.getStringList("Normal"));
+                TruenoHologram hologram = this.hologramHashMap.get(locFixed);
+                ArrayList<String> hologramInfo = Lists.newArrayList();
 
-                hologram.newUpdate(hologramInfo);
+                hologramInfo.add(c(lang.getString("Name")));
+                hologramInfo.add("");
+
+                plugin.debug(hologramInfo.toString());
+
+                hologram.update(hologramInfo);
             }
         } else {
             ConfigurationSection lang = plugin.getConfig("Lang").getConfigurationSection("Holograms.ChestRefill");
 
             TruenoHologram hologram = TruenoHologramAPI.getNewHologram();
-            List<String> hologramInfo = transformTo(lang.getStringList("Normal"));
-            Location loc = chest.getLocation().clone();
-            loc.setY(loc.getY() + .5);
+            List<String> hologramInfo = Lists.newArrayList();
+
+            hologramInfo.add(c(lang.getString("Name")));
+            hologramInfo.add("");
+
+            Location loc = locFixed.clone();
+            loc.setY(loc.getY() - 0.1);
 
             assert hologram != null;
-            hologram.setupWorldHologram(loc, hologramInfo, 0.1);
+            hologram.setupWorldHologram(loc, new ArrayList<>(hologramInfo));
+            hologram.setDistanceBetweenLines(0.3);
+            plugin.debug("Hologram created: " + hologram.toString());
+            hologram.display();
 
-            this.hologramHashMap.put(chest.getLocation(), hologram);
+            this.hologramHashMap.put(locFixed, hologram);
         }
     }
 
     private void playChestAction(Chest chest, boolean open) {
-        Location location = chest.getLocation();
-        World world = ((CraftWorld) location.getWorld()).getHandle();
-        BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
+        Location locFixed = LocUtils.fixLocation(chest.getLocation());
+
+        World world = ((CraftWorld) locFixed.getWorld()).getHandle();
+        BlockPosition position = new BlockPosition(locFixed.getX(), locFixed.getY(), locFixed.getZ());
         TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
         world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
+    }
+
+    public void update(String name) {
+        if (!this.hologramHashMap.isEmpty())
+            this.hologramHashMap.values().forEach(holo -> holo.updateLine(1, name));
     }
 
     private boolean chestEmpty(Inventory inv) {
@@ -109,15 +139,20 @@ public class ChestRefillManager {
         for (TruenoHologram hologram : this.hologramHashMap.values()) {
             hologram.delete();
         }
+
+        this.hologramHashMap.clear();
     }
 
     private void removeChest(Chest chest) {
-        plugin.getSkyWarsArena().getIslandChestLocs().remove(chest.getLocation());
-        plugin.getSkyWarsArena().getCenterChestLocs().remove(chest.getLocation());
+        Location locFixed = LocUtils.fixLocation(chest.getLocation());
+
+        plugin.getSkyWarsArena().getIslandChestLocs().remove(locFixed);
+        plugin.getSkyWarsArena().getCenterChestLocs().remove(locFixed);
     }
 
     private String c(String s) {
-        return ChatColor.translateAlternateColorCodes('&', s);
+        String timer = plugin.getTimerManager().transformToDate(plugin.getSkyWarsArena().getRefillTimer());
+        return ChatColor.translateAlternateColorCodes('&', s.replaceAll("%timer%", timer));
     }
 
 }

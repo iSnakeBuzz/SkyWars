@@ -1,15 +1,17 @@
 package com.isnakebuzz.skywars.Tasks;
 
 import com.isnakebuzz.skywars.Main;
-import com.isnakebuzz.skywars.Utils.DefaultFontInfo;
+import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Set;
+
+import static com.isnakebuzz.skywars.Utils.StringUtils.centerText;
 
 public class CageOpeningTask extends BukkitRunnable {
 
@@ -53,8 +55,19 @@ public class CageOpeningTask extends BukkitRunnable {
                 plugin.broadcast(message);
             }
 
+            /*
+             * Giving kits to players
+             * 1.0.0 System
+             */
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
+                plugin.getKitLoader().giveKit(skyPlayer);
+            }
+
 
             new InGame(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
+            Bukkit.getScheduler().runTask(plugin, () -> new RefillTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20));
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getListenerManager().unloadCageOpens(), 20 * 5);
             this.cancel();
@@ -68,44 +81,6 @@ public class CageOpeningTask extends BukkitRunnable {
         }
 
         plugin.getSkyWarsArena().setCageOpens(plugin.getSkyWarsArena().getCageOpens() - 1);
-    }
-
-    private String centerText(String message, int CENTER_PX) {
-        if (message == null || message.equals("")) return "";
-        message = net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', message);
-
-        int messagePxSize = 0;
-        boolean previousCode = false;
-        boolean isBold = false;
-
-        for (char c : message.toCharArray()) {
-            if (c == '§') {
-                previousCode = true;
-                continue;
-            } else if (previousCode == true) {
-                previousCode = false;
-                if (c == 'l' || c == 'L') {
-                    isBold = true;
-                    continue;
-                } else isBold = false;
-            } else {
-                DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
-                messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
-                messagePxSize++;
-            }
-        }
-
-        int halvedMessageSize = messagePxSize / 2;
-        int toCompensate = CENTER_PX - halvedMessageSize;
-        int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
-        int compensated = 0;
-        StringBuilder sb = new StringBuilder();
-        while (compensated < toCompensate) {
-            sb.append(" ");
-            compensated += spaceLength;
-        }
-
-        return sb.toString() + message;
     }
 
     private String c(String s) {

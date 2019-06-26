@@ -28,7 +28,7 @@ public class NormalCommands implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (command.getName().equalsIgnoreCase("skywars") && sender instanceof Player) {
-            sender.sendMessage(c("&aSnake SkyWars &8&l|&e Version and Author: " + plugin.getDescription().getVersion() + ", iSnakeBuzz_"));
+            sender.sendMessage(c("&aSkyWars &8&l|&e Version: " + plugin.getDescription().getVersion() + ", made by iSnakeBuzz_"));
         }
 
         return false;

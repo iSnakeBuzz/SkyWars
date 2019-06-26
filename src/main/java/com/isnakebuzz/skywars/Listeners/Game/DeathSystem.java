@@ -56,7 +56,7 @@ public class DeathSystem implements Listener {
         plugin.getScoreBoardAPI().setScoreBoard(p, ScoreBoardAPI.ScoreboardType.INGAME, true, true, true);
         plugin.getInventories().setSpectInventory(p);
         plugin.getSkyWarsArena().getGamePlayers().remove(p);
-
+        
         PacketsAPI.sendTitle(
                 plugin,
                 p,

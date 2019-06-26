@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SkyPlayer {
+public class SkyPlayer implements Comparable<SkyPlayer> {
 
     private UUID uuid;
 
@@ -246,5 +246,10 @@ public class SkyPlayer {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    @Override
+    public int compareTo(SkyPlayer o) {
+        return this.killStreak - o.getKillStreak();
     }
 }

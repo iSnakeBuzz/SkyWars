@@ -30,4 +30,8 @@ public class LocUtils {
         return l;
     }
 
+    public static Location fixLocation(Location loc) {
+        return new Location(loc.getWorld(), loc.getX() + 0.5, loc.getY(), loc.getZ() + 0.5);
+    }
+
 }

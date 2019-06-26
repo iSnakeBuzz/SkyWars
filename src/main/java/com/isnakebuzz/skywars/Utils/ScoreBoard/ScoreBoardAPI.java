@@ -53,6 +53,12 @@ public class ScoreBoardAPI {
                     } else {
                         scoreboard.dLine(line);
                     }
+                } else if (s.contains("<refill>")) {
+                    if (plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.INGAME)) {
+                        scoreboard.lines(line, chars(p, s));
+                    } else {
+                        scoreboard.dLine(line);
+                    }
                 } else if (s.contains("<!isDead>")) {
                     SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
                     if (skyPlayer.isDead()) {
@@ -98,6 +104,7 @@ public class ScoreBoardAPI {
                 .replaceAll("%map%", plugin.getSkyWarsArena().getMapName())
                 .replaceAll("%startTime%", String.valueOf(plugin.getSkyWarsArena().getStartingTime()))
                 .replaceAll("%cageOpening%", String.valueOf(plugin.getSkyWarsArena().getCageOpens()))
+                .replaceAll("%refill_timer%", plugin.getSkyWarsArena().getParsedRefill())
 
                 //Player placeholders
                 .replaceAll("%kills%", String.valueOf(killStreak))
@@ -106,6 +113,7 @@ public class ScoreBoardAPI {
                 .replaceAll("<waiting>", "")
                 .replaceAll("<starting>", "")
                 .replaceAll("<cages>", "")
+                .replaceAll("<refill>", "")
                 .replaceAll("<!isDead>", "")
         );
         return transformed;

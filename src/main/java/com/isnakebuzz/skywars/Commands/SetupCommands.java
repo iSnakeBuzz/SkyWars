@@ -3,7 +3,6 @@ package com.isnakebuzz.skywars.Commands;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,6 +44,7 @@ public class SetupCommands implements CommandExecutor {
             setStarting(p, cmd, args);
             setCages(p, cmd, args);
             setEnd(p, cmd, args);
+            setRefillTime(p, cmd, args);
             setCenterSchem(p, cmd, args);
             kitCommands(p, cmd, args);
 
@@ -181,6 +181,21 @@ public class SetupCommands implements CommandExecutor {
         }
     }
 
+    void setRefillTime(Player p, String cmd, String[] args) {
+        if (!cmd.equalsIgnoreCase("setRefillTime")) return;
+        if (args.length < 2) {
+            return;
+        }
+
+        String args2 = args[1];
+
+        try {
+            plugin.getArenaSetup().setSettings(p, "Timers.ChestRefill", Integer.valueOf(args2));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     void setCenterSchem(Player p, String cmd, String[] args) {
         if (!cmd.equalsIgnoreCase("setCenterSchem")) return;
         try {
@@ -233,6 +248,12 @@ public class SetupCommands implements CommandExecutor {
             kitConfig.set("Perm", permission);
             kitConfig.set("Default", isDef);
             kitConfig.set("Selected Glow", glow);
+
+            //Adding default kit logo
+            kitConfig.set("Logo.name", "&e" + name);
+            kitConfig.set("Logo.item", "1:0");
+            kitConfig.set("Logo.amount", 1);
+            kitConfig.set("Logo.lore", new String[]{"This is a example kit", "Please change this in kit " + name + ".yml"});
 
             //Inventory
             kitConfig.set("Armor", armorCont);

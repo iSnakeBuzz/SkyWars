@@ -4,7 +4,6 @@ import com.isnakebuzz.ccsigns.Enums.GameStates;
 import com.isnakebuzz.ccsigns.Enums.PacketType;
 import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
-import com.isnakebuzz.skywars.Utils.Cuboids.BasicCuboid;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cuboid;
 import com.isnakebuzz.skywars.Utils.Enums.*;
 import com.isnakebuzz.skywars.Utils.LocUtils;
@@ -165,6 +164,10 @@ public class SkyWarsArena {
 
     public int getRefillTimer() {
         return refillTimer;
+    }
+
+    public String getParsedRefill() {
+        return plugin.getTimerManager().transformToDate(this.refillTimer);
     }
 
     public List<Location> getCenterChestLocs() {

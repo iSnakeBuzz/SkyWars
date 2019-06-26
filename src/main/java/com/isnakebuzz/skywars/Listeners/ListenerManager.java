@@ -43,6 +43,8 @@ public class ListenerManager {
     private GameEvents gameEvents;
     private DeathMsgEvent deathMsgEvent;
     private Tagging tagging;
+    private ChestUtils chestUtils;
+    private SkyStats skyStats;
 
     //Vote events
     private SoftBlocks softBlocks;
@@ -67,6 +69,8 @@ public class ListenerManager {
         this.gameEvents = new GameEvents(plugin);
         this.deathMsgEvent = new DeathMsgEvent(plugin);
         this.tagging = new Tagging(plugin);
+        this.chestUtils = new ChestUtils(plugin);
+        this.skyStats = new SkyStats(plugin);
 
         //Vote listeners
         this.softBlocks = new SoftBlocks(plugin);
@@ -75,7 +79,7 @@ public class ListenerManager {
         this.playerEndBlock = new PlayerEndBlock(plugin);
     }
 
-    public void loadInitialsEvents() {
+    public synchronized void loadInitialsEvents() {
         plugin.log(Statics.logPrefix, "Loading listeners..");
 
         if (Statics.skyMode.equalsIgnoreCase("SETUP")) {
@@ -99,14 +103,16 @@ public class ListenerManager {
             plugin.resetArena();
 
             // Setting up Signs
-            if (Bukkit.getPluginManager().isPluginEnabled("CCSigns")) {
-                Statics.isCCSings = true;
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                if (Bukkit.getPluginManager().isPluginEnabled("CCSigns")) {
+                    Statics.isCCSings = true;
 
-                String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
-                String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
+                    String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
+                    String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
 
-                SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
-            }
+                    SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
+                }
+            });
         } else if (Statics.skyMode.equalsIgnoreCase("TEAM")) {
             registerListener(new WorldEvents(plugin));
             registerListener(this.joinAndLeave);
@@ -136,7 +142,7 @@ public class ListenerManager {
             world.setGameRuleValue("doDaylightCycle", "false");
             world.setGameRuleValue("doMobSpawning", "false");
         } catch (Exception ex) {
-            plugin.log("&c&lError","Error loading world with name: \"world\"");
+            plugin.log("&c&lError", "Error loading world with name: \"world\"");
         }
     }
 
@@ -175,14 +181,18 @@ public class ListenerManager {
         registerListener(this.joinAndQuit);
         registerListener(this.deathSystem);
         registerListener(this.gameEvents);
+        registerListener(this.chestUtils);
+        registerListener(this.skyStats);
     }
 
     public void unloadIngame() {
         unregisterListener(this.deathSystem);
         unregisterListener(this.gameEvents);
+        unregisterListener(this.chestUtils);
+        unregisterListener(this.skyStats);
     }
 
-    public void loadVoteEvents(){
+    public void loadVoteEvents() {
         registerListener(this.softBlocks);
     }
 

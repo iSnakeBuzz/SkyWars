@@ -4,6 +4,7 @@ import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -36,6 +37,10 @@ public class PlayerManager {
 
     public SkyPlayer getPlayer(Player p) {
         return this.skyPlayerMap.getOrDefault(p.getUniqueId(), new SkyPlayer(p.getUniqueId()));
+    }
+
+    public Collection<SkyPlayer> getPlayers() {
+        return this.skyPlayerMap.values();
     }
 
 }

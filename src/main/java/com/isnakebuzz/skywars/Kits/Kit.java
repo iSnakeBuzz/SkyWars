@@ -44,4 +44,5 @@ public class Kit {
     public KitInventory getInventory() {
         return kitInventory;
     }
+
 }

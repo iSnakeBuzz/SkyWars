@@ -3,9 +3,27 @@ Mode: SETUP
 
 BungeeID: ''
 
-# If you have more lobbies, set more lobbies below
+# Kit default config..
+No Purchased Logo:
+  name: '&c%name%'
+  item: '160:14'
+  lore:
+  - ''
+  - '&c&lNot purchased yet'
+Purchased Logo:
+  name: '&a%name%'
+  lore:
+  - ''
+  - '&eClick to select!'
+Selected Logo:
+  name: '&a%name%'
+  lore:
+  - ''
+  - '&aSELECTED'
+
+# If you have more lobbies, add more lobbies below
 Lobbies:
 - 'Lobby'
 
-#Debug
-debug: true
+# If you have problems with skywars, please send a server.log with this enable :)
+debug: false

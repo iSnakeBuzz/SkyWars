@@ -4,16 +4,28 @@ LeaveMessage: '&7%player%&e has quit (&b%online%&e/&b%max%&e)!'
 NoPerms: "&cYou don't have permissions for use that feature."
 
 Kit:
-  Selected: '&eYou has been selected &a%kit%'
   ActionBar: '&eSelected Kit: &a%kit%'
+  Selected:
+    msg: "&eYou've slected the %kit% kit!"
+    sound: 'NOTE_STICKS:1:2'
+  its Too Late:
+    msg: "&cIt's too late to pick your kit!"
+    sound: 'ENDERMAN_TELEPORT:1:0'
+  Locked Kit:
+    msg: "&cYou haven't unlocked that kit"
+    sound: 'ENDERMAN_TELEPORT:1:0'
 
 Holograms:
   ChestRefill:
-    Normal:
-      - '&a%time%'
-    Empty:
-      - '&a%time%'
-      - '&cEmpty!'
+    Name: '&a%timer%'
+    Empty: '&cEmpty!'
+
+Chest Refilled:
+  Title: ''
+  SubTitle: '&eAll chests have been refilled!'
+  FadeIn: 10
+  Stay: 30
+  FadeOut: 10
 
 Join Title:
   Title: '&e&lSkyWars'
@@ -102,7 +114,17 @@ VoteMessages:
       normal projectiles: '&a&lNormal projectiles'
       soft blocks: '&a&lSoft blocks'
 
-
+Winner:
+- '&a&l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+- '%center%&f&lSkyWars'
+- ''
+- '%center%&eWinner &7- &f%winner%'
+- ''
+- '%center%&e&l1st Killer &7- &f%top-name-1% &7- %top-kills-1%'
+- '%center%&6&l2st Killer &7- &f%top-name-2% &7- %top-kills-2%'
+- '%center%&c&l3st Killer &7- &f%top-name-3% &7- %top-kills-3%'
+- ''
+- '&a&l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
 
 Banner:
 - '&a&l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'

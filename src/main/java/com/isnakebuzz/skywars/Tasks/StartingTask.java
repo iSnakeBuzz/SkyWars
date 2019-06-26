@@ -15,9 +15,6 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 public class StartingTask extends BukkitRunnable {
@@ -42,29 +39,30 @@ public class StartingTask extends BukkitRunnable {
         }
 
         if (plugin.getSkyWarsArena().getStartingTime() <= 1) {
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
-                int id = 0;
-                for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
-                    int finalId = id;
-                    Location location = plugin.getSkyWarsArena().getSpawnLocations().get(finalId);
+            int id = 0;
+            for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
+                int finalId = id;
+                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(finalId);
 
-                    SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame);
-                    Cage cage = new Cage(plugin, location, skyPlayer.getCageName());
-                    cage.paste();
-                    plugin.getCagesManager().addCage(cage);
+                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame);
+                Cage cage = new Cage(plugin, location, skyPlayer.getCageName());
+                cage.paste();
+                plugin.getCagesManager().addCage(cage);
 
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                        inGame.teleport(location);
-                        inGame.getInventory().clear();
-                        plugin.getScoreBoardAPI().setScoreBoard(inGame, ScoreBoardAPI.ScoreboardType.INGAME, true, false, true);
-                    });
-                    id++;
-                }
-                plugin.getSkyWarsArena().removeLobby();
-            });
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    inGame.teleport(location);
+                    inGame.getInventory().clear();
+                    plugin.getScoreBoardAPI().setScoreBoard(inGame, ScoreBoardAPI.ScoreboardType.INGAME, true, false, true);
+                });
+                id++;
+            }
 
+            /* REMOVING LOBBY */
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getSkyWarsArena().removeLobby());
+
+            /* OTHER THINGS */
             plugin.getSkyWarsArena().setGameStatus(GameStatus.CAGEOPENING);
-            new CageOpeningTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
+            Bukkit.getScheduler().runTask(plugin, () -> new CageOpeningTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20));
             plugin.getListenerManager().loadCageOpens();
             plugin.getListenerManager().loadInGame();
             plugin.getVoteManager().checkVotes();

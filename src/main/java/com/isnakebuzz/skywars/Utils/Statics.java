@@ -1,5 +1,7 @@
 package com.isnakebuzz.skywars.Utils;
 
+import org.bukkit.Bukkit;
+
 import java.util.List;
 
 public class Statics {
@@ -13,5 +15,9 @@ public class Statics {
     public static String mapName = "none";
     public static int toRestart = 0;
     public static List<String> lobbies;
+
+
+    //For setup
+    public static String BOT_NAME = "Billy";
 
 }

@@ -116,7 +116,6 @@ public class DependManager {
             method.invoke(classLoader, jar.toURI().toURL());
         } catch (NoSuchMethodException | MalformedURLException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
-            return;
         }
     }
 

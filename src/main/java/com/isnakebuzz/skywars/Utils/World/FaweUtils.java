@@ -1,16 +1,12 @@
 package com.isnakebuzz.skywars.Utils.World;
 
-import com.boydti.fawe.object.schematic.Schematic;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.LocUtils;
-import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.math.transform.Transform;
 import org.bukkit.Location;
 import org.bukkit.World;
 

@@ -102,6 +102,10 @@ public final class Main extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
             Statics.isFawe = true;
             this.worldRestarting = new FaweUtils(this);
+
+            if (Statics.toRestart == 0) {
+                getWorldRestarting().restartWorld();
+            }
         }
     }
 
@@ -206,22 +210,12 @@ public final class Main extends JavaPlugin {
         return kitLoader;
     }
 
-    public void resetArena() {
+    public synchronized void resetArena() {
         this.getChestRefillManager().reset();
         this.skyWarsArena = new SkyWarsArena(this);
         this.voteManager = new VoteManager(this);
         this.chestRefillManager = new ChestRefillManager(this);
         Runtime.getRuntime().gc();
-        if (Statics.isCCSings) {
-            if (SignsAPI.game != null) {
-                SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID);
-            }
-
-            String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
-            String maxPlayer = String.valueOf(this.getSkyWarsArena().getMaxPlayers());
-
-            SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
-        }
     }
 
     private String c(String c) {

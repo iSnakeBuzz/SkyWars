@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Kits;
 import com.isnakebuzz.skywars.Inventory.KitInventory;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Player.SkyPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
@@ -67,6 +68,11 @@ public class KitLoader {
 
     public Kit getKit(String kitName) {
         return this.kitMap.getOrDefault(kitName, this.defaultKits.get(new Random().nextInt(this.defaultKits.size())));
+    }
+
+    public void giveKit(SkyPlayer skyPlayer) {
+        Kit kit = getKit(skyPlayer.getSelectedKit());
+        kit.getInventory().setup(skyPlayer.getPlayer());
     }
 
     public Collection<Kit> getKits() {
