@@ -1,8 +1,5 @@
 package com.isnakebuzz.skywars;
 
-import com.isnakebuzz.ccsigns.Enums.GameStates;
-import com.isnakebuzz.ccsigns.Enums.PacketType;
-import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Arena.ArenaSetup;
 import com.isnakebuzz.skywars.Arena.SkyWarsArena;
 import com.isnakebuzz.skywars.Chest.ChestController;
@@ -14,7 +11,6 @@ import com.isnakebuzz.skywars.Utils.Manager.*;
 import com.isnakebuzz.skywars.Listeners.ListenerManager;
 import com.isnakebuzz.skywars.Inventory.Inventories;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
-import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI2;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.skywars.Utils.Utils;
 import com.isnakebuzz.skywars.Utils.World.FaweUtils;
@@ -35,7 +31,7 @@ public final class Main extends JavaPlugin {
 
     //Scoreboard
     private ScoreBoardAPI scoreBoardAPI;
-    private ScoreBoardAPI2 scoreBoardAPI2;
+    private ScoreBoardAPI scoreBoardAPI2;
 
 
     private Inventories inventories;
@@ -64,7 +60,7 @@ public final class Main extends JavaPlugin {
         this.arenaSetup = new ArenaSetup(this);
         this.inventories = new Inventories(this);
         this.scoreBoardAPI = new ScoreBoardAPI(this);
-        this.scoreBoardAPI2 = new ScoreBoardAPI2(this);
+        this.scoreBoardAPI2 = new ScoreBoardAPI(this);
         this.dataManager = new DataManager(this);
         this.playerManager = new PlayerManager(this);
         this.configUtils = new ConfigUtils();
@@ -169,7 +165,7 @@ public final class Main extends JavaPlugin {
         return scoreBoardAPI;
     }
 
-    public ScoreBoardAPI2 getScoreBoardAPI2() {
+    public ScoreBoardAPI getScoreBoardAPI2() {
         return scoreBoardAPI2;
     }
 

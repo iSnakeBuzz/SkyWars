@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.isnakebuzz.skywars.Utils.StringUtils.centerText;
+import static com.isnakebuzz.skywars.Utils.Strings.StringUtils.centerText;
 
 public class GameEvents implements Listener {
 

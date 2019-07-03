@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Set;
 
-import static com.isnakebuzz.skywars.Utils.StringUtils.centerText;
+import static com.isnakebuzz.skywars.Utils.Strings.StringUtils.centerText;
 
 public class CageOpeningTask extends BukkitRunnable {
 

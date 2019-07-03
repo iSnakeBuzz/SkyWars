@@ -1,5 +1,5 @@
 PRELOBBY:
-  title: '&e&lSKYWARS'
+  title: 'SKYWARS'
   lines:
   - '&7%date% &8'
   - ''
@@ -13,7 +13,7 @@ PRELOBBY:
   - ''
   - '&ewww.server.net'
 INGAME:
-  title: '&e&lSKYWARS'
+  title: 'SKYWARS'
   lines:
   - '&7%date%'
   - '<cages>'

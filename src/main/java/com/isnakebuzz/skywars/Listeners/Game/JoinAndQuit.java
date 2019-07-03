@@ -55,7 +55,7 @@ public class JoinAndQuit implements Listener {
         Player p = e.getPlayer();
         plugin.getDb().savePlayer(p);
         PlayerDeathEvent playerDeathEvent = new PlayerDeathEvent(p, new ArrayList<>(), 0, "player left the game");
-        plugin.getScoreBoardAPI().removeScoreBoard(p);
+        plugin.getScoreBoardAPI2().removeScoreBoard(p);
         Bukkit.getPluginManager().callEvent(playerDeathEvent);
         plugin.getDb().savePlayer(p);
         e.setQuitMessage(null);

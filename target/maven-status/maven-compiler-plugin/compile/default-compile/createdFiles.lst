@@ -1,8 +1,9 @@
+com\isnakebuzz\skywars\Utils\Strings\Alphabet.class
 com\isnakebuzz\skywars\Utils\Cuboids\BasicCuboid.class
 com\isnakebuzz\skywars\Utils\Holograms\tinyprotocol\TinyProtocol$1.class
 com\isnakebuzz\skywars\Utils\Manager\PlayerManager.class
 com\isnakebuzz\skywars\Utils\Holograms\TruenoHologram.class
-com\isnakebuzz\skywars\Utils\ScoreBoard\ScoreBoardBuilder.class
+com\isnakebuzz\skywars\Utils\Strings\StringUtils.class
 com\isnakebuzz\skywars\Utils\Holograms\event\TruenoHologramEvent.class
 com\isnakebuzz\skywars\Utils\Holograms\tinyprotocol\Reflection$1.class
 com\isnakebuzz\skywars\MessageAPI\Messages.class
@@ -29,6 +30,7 @@ com\isnakebuzz\skywars\Utils\Manager\VoteManager.class
 com\isnakebuzz\skywars\Commands\NormalCommands.class
 com\isnakebuzz\skywars\Listeners\DeathMessages\Tagging.class
 com\isnakebuzz\skywars\Teams\TeamManager.class
+com\isnakebuzz\skywars\Utils\ScoreBoard\ScoreUtils.class
 com\isnakebuzz\skywars\Scoreboard\common\EntryBuilder.class
 com\isnakebuzz\skywars\Calls\Events\SkyWinEvent.class
 com\isnakebuzz\skywars\Utils\ScoreBoard\ScoreBoardAPI.class
@@ -36,7 +38,6 @@ com\isnakebuzz\skywars\Configurations\ConfigCreator.class
 com\isnakebuzz\skywars\Database\Versions\vMySQL.class
 com\isnakebuzz\skywars\Tasks\WinEffect.class
 com\isnakebuzz\skywars\Inventory\MenuManager\Menu.class
-com\isnakebuzz\skywars\Utils\ScoreBoard\ScoreBoardAPI2.class
 com\isnakebuzz\skywars\Listeners\Game\JoinAndQuit.class
 com\isnakebuzz\skywars\Utils\Holograms\tinyprotocol\TinyProtocol$6.class
 com\isnakebuzz\skywars\Utils\Enums\ScoreboardType.class
@@ -137,6 +138,5 @@ com\isnakebuzz\skywars\Arena\SkyWarsArena$1.class
 com\isnakebuzz\skywars\Listeners\Lobby\JoinAndLeave.class
 com\isnakebuzz\skywars\Utils\Utils.class
 com\isnakebuzz\skywars\Utils\Enums\ChestType.class
-com\isnakebuzz\skywars\Utils\StringUtils.class
 com\isnakebuzz\skywars\Listeners\Game\SkyStats.class
 com\isnakebuzz\skywars\Listeners\Lobby\Protector.class

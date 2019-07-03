@@ -1,10 +1,28 @@
 package com.isnakebuzz.skywars.Teams;
 
-import org.bukkit.entity.Player;
+import com.isnakebuzz.skywars.Main;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class TeamManager {
 
-    String[] teamsName = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q"
-            , "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+    private Main plugin;
+
+    public TeamManager(Main plugin) {
+        this.plugin = plugin;
+    }
+
+    public void loadTeams() {
+        ConfigurationSection arena = plugin.getConfig("Extra/Arena").getConfigurationSection("Teams");
+
+        boolean enabledTeams = arena.getBoolean("enabled", false);
+        boolean alphabeticNames = arena.getBoolean("alphabetic names", true);
+        int teamSize = arena.getInt("size", 2);
+
+        if (enabledTeams) {
+
+        }
+
+    }
 
 }

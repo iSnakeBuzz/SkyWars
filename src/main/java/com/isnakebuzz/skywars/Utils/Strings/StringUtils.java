@@ -1,4 +1,6 @@
-package com.isnakebuzz.skywars.Utils;
+package com.isnakebuzz.skywars.Utils.Strings;
+
+import com.isnakebuzz.skywars.Utils.DefaultFontInfo;
 
 public class StringUtils {
 

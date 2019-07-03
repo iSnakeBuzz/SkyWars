@@ -77,7 +77,7 @@ public class JoinAndLeave implements Listener {
         Player p = e.getPlayer();
         plugin.getSkyWarsArena().getGamePlayers().remove(p);
 
-        plugin.getScoreBoardAPI().removeScoreBoard(p);
+        plugin.getScoreBoardAPI2().removeScoreBoard(p);
         plugin.getDb().savePlayer(p);
 
         if (Statics.isCCSings) {

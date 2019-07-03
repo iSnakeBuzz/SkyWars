@@ -129,17 +129,23 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
 
         Player p = Bukkit.getPlayer(this.uuid);
         if (staff) {
+            PlayerUtils.clean(p);
+
+            p.setGameMode(GameMode.ADVENTURE);
             p.setAllowFlight(true);
             p.setFlying(true);
-            p.setGameMode(GameMode.ADVENTURE);
-            p.setHealth(p.getMaxHealth());
-            p.setFoodLevel(40);
+            p.setGameSpect(true);
+
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                online.hidePlayer(p);
+            }
         } else {
-            p.setAllowFlight(false);
-            p.setFlying(false);
+            PlayerUtils.clean(p);
             p.setGameMode(GameMode.SURVIVAL);
-            p.setHealth(p.getMaxHealth());
-            p.setFoodLevel(40);
+
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                online.showPlayer(p);
+            }
         }
     }
 
@@ -148,19 +154,19 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
 
         Player p = Bukkit.getPlayer(this.uuid);
         if (spectator) {
+            PlayerUtils.clean(p);
+
             p.setGameMode(GameMode.ADVENTURE);
             p.setAllowFlight(true);
             p.setFlying(true);
-            p.setHealth(p.getMaxHealth());
-            p.setFoodLevel(40);
+            p.setGameSpect(true);
 
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.hidePlayer(p);
             }
         } else {
+            PlayerUtils.clean(p);
             p.setGameMode(GameMode.SURVIVAL);
-            p.setAllowFlight(false);
-            p.setFlying(false);
 
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.showPlayer(p);

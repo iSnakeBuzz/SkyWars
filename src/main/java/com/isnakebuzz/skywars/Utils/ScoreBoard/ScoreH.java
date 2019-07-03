@@ -3,7 +3,6 @@ package com.isnakebuzz.skywars.Utils.ScoreBoard;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Scoreboard.common.EntryBuilder;
-import com.isnakebuzz.skywars.Scoreboard.common.animate.HighlightedString;
 import com.isnakebuzz.skywars.Scoreboard.type.Entry;
 import com.isnakebuzz.skywars.Scoreboard.type.ScoreboardHandler;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
@@ -23,7 +22,7 @@ public class ScoreH implements ScoreboardHandler {
     private ScoreboardType scoreboardType;
 
     //Scoreboard information
-    private HighlightedString title;
+    private String title;
 
     public ScoreH(Main plugin, ScoreboardType scoreboardType) {
         this.plugin = plugin;
@@ -32,12 +31,12 @@ public class ScoreH implements ScoreboardHandler {
         this.config = plugin.getConfigUtils().getConfig(plugin, "Extra/ScoreBoards");
 
         //Scoreboard information
-        this.title = new HighlightedString(this.config.getString(scoreboardType.toString() + ".title"), "&f&l", "&e&l");
+        this.title = c(this.config.getString(scoreboardType.toString() + ".title"));
     }
 
     @Override
     public String getTitle(Player player) {
-        return title.next();
+        return title;
     }
 
     @Override
