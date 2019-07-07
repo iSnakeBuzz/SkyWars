@@ -86,7 +86,7 @@ public class PacketsAPI {
     }
 
     public static void sendClean(Player p) {
-        p.setGameMode(GameMode.SURVIVAL);
+        p.setGameMode(GameMode.ADVENTURE);
         p.setAllowFlight(false);
         p.setFlying(false);
     }

@@ -251,6 +251,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
     }
 
     public void setTeam(Team team) {
+        team.addPlayer(this);
         this.team = team;
     }
 

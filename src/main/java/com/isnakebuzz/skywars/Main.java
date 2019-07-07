@@ -7,6 +7,7 @@ import com.isnakebuzz.skywars.Configurations.ConfigCreator;
 import com.isnakebuzz.skywars.Configurations.ConfigUtils;
 import com.isnakebuzz.skywars.Database.Database;
 import com.isnakebuzz.skywars.Kits.KitLoader;
+import com.isnakebuzz.skywars.Teams.TeamManager;
 import com.isnakebuzz.skywars.Utils.Manager.*;
 import com.isnakebuzz.skywars.Listeners.ListenerManager;
 import com.isnakebuzz.skywars.Inventory.Inventories;
@@ -34,6 +35,7 @@ public final class Main extends JavaPlugin {
     private ScoreBoardAPI scoreBoardAPI2;
 
 
+    // Other classes
     private Inventories inventories;
     private ArenaSetup arenaSetup;
     private ListenerManager listenerManager;
@@ -46,8 +48,10 @@ public final class Main extends JavaPlugin {
     private ChestRefillManager chestRefillManager;
     private KitLoader kitLoader;
     private Utils utils;
+    private TeamManager teamManager;
 
     public Main() {
+        this.teamManager = new TeamManager(this);
         this.utils = new Utils(this);
         this.kitLoader = new KitLoader(this);
         this.chestRefillManager = new ChestRefillManager(this);
@@ -213,6 +217,10 @@ public final class Main extends JavaPlugin {
         return utils;
     }
 
+    public TeamManager getTeamManager() {
+        return teamManager;
+    }
+
     public KitLoader getKitLoader() {
         return kitLoader;
     }
@@ -222,6 +230,8 @@ public final class Main extends JavaPlugin {
         this.skyWarsArena = new SkyWarsArena(this);
         this.voteManager = new VoteManager(this);
         this.chestRefillManager = new ChestRefillManager(this);
+        this.teamManager = new TeamManager(this);
+        this.teamManager.loadTeams();
         Runtime.getRuntime().gc();
     }
 

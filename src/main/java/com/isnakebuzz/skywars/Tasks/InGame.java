@@ -23,7 +23,7 @@ public class InGame extends BukkitRunnable {
             this.cancel();
         }
 
-        if (plugin.getSkyWarsArena().getGamePlayers().size() < plugin.getSkyWarsArena().getMinPlayers() && !plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.FINISH)) {
+        if (plugin.getSkyWarsArena().getGamePlayers().size() < 2 && !plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.FINISH)) {
             this.cancel();
             plugin.resetArena();
         }

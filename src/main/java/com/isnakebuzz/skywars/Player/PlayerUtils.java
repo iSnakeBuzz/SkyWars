@@ -16,7 +16,6 @@ public class PlayerUtils {
         p.getInventory().clear();
         p.setGameSpect(false);
         p.getInventory().setArmorContents(null);
-        p.setGameMode(GameMode.ADVENTURE);
         //p.setVelocity(new Vector(0, 0, 0).normalize());
         if (!p.getActivePotionEffects().isEmpty()) {
             p.getActivePotionEffects().forEach(potionEffect -> {

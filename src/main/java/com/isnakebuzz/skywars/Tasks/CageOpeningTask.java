@@ -5,6 +5,7 @@ import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,13 +35,6 @@ public class CageOpeningTask extends BukkitRunnable {
         }
 
         if (plugin.getSkyWarsArena().getCageOpens() <= 1) {
-            /*for (int id = 0; id <= plugin.getSkyWarsArena().getGamePlayers().size(); id++) {
-                int finalId = id;
-                if (id > plugin.getSkyWarsArena().getGamePlayers().size()) return;
-                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(finalId);
-
-                plugin.getSkyWarsArena().deleteCage(location);
-            } OLD CODE */
             plugin.getCagesManager().deleteAllCages();
             plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
             plugin.getListenerManager().unloadPrelobby();
@@ -63,6 +57,7 @@ public class CageOpeningTask extends BukkitRunnable {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
                 plugin.getKitLoader().giveKit(skyPlayer);
+                Bukkit.getScheduler().runTask(plugin, () -> player.setGameMode(GameMode.SURVIVAL));
             }
 
 

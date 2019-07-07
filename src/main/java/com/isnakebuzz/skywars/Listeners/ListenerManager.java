@@ -119,6 +119,9 @@ public class ListenerManager {
             registerListener(this.protector);
             registerListener(this.lobbyItems);
             registerListener(this.spectatorEvents);
+            registerListener(this.voidTP);
+            registerListener(this.deathMsgEvent);
+            registerListener(this.tagging);
 
             // Create new skywars arena
             plugin.resetArena();

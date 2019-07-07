@@ -40,13 +40,16 @@ public class StartingTask extends BukkitRunnable {
         }
 
         if (plugin.getSkyWarsArena().getStartingTime() <= 1) {
-            int id = 0;
-            for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
-                int finalId = id;
-                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(finalId);
 
+            // Giving teams to players :)
+            plugin.getTeamManager().giveTeams();
+
+            for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame);
-                Cage cage = new Cage(plugin, location, skyPlayer.getCageName());
+                plugin.debug("Team of Skyplayer: " + skyPlayer.getTeam());
+                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID());
+
+                Cage cage = new Cage(plugin, location, skyPlayer.getTeam().getCage());
                 cage.paste();
                 plugin.getCagesManager().addCage(cage);
 
@@ -55,7 +58,6 @@ public class StartingTask extends BukkitRunnable {
                     inGame.getInventory().clear();
                     plugin.getScoreBoardAPI2().setScoreBoard(inGame, ScoreboardType.INGAME, true, false, true);
                 });
-                id++;
             }
 
             /* REMOVING LOBBY */
