@@ -1,5 +1,6 @@
 package com.isnakebuzz.skywars.Utils;
 
+import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import org.bukkit.Bukkit;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public class Statics {
 
     public static String logPrefix = "SkyWars";
-    public static String skyMode = "SOLO";
+    public static GameType skyMode = GameType.SOLO;
     public static String baseMode = "MYSQL";
     public static Boolean isFawe = false;
     public static boolean isCCSings = false;

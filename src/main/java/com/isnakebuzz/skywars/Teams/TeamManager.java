@@ -2,11 +2,12 @@ package com.isnakebuzz.skywars.Teams;
 
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Strings.Alphabet;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,22 +26,24 @@ public class TeamManager {
     public void loadTeams() {
         ConfigurationSection arena = plugin.getConfig("Extra/Arena").getConfigurationSection("Teams");
 
-        boolean enabledTeams = arena.getBoolean("enabled", false);
         boolean alphabeticNames = arena.getBoolean("alphabetic names", true);
         int teamSize = arena.getInt("size", 2);
         int maxTeams = plugin.getSkyWarsArena().getMaxPlayers() / teamSize;
-        this.teamSize = maxTeams;
+        this.teamSize = teamSize;
 
-        if (enabledTeams) {
-            for (int i = 1; i < maxTeams; i++) {
+        plugin.debug("Arena Mode: " + plugin.getSkyWarsArena().getGameType().toString());
+
+        if (plugin.getSkyWarsArena().getGameType().equals(GameType.TEAM)) {
+            for (int i = 1; i <= maxTeams; i++) {
                 String teamName;
-                if (alphabeticNames) teamName = Alphabet.valueOf(i).toString();
+                if (alphabeticNames) teamName = Alphabet.getById(i).getName();
                 else teamName = String.valueOf(i);
                 Team team = new Team(teamName, i);
                 this.teamMap.put(teamName, team);
+                plugin.debug("Creating team: " + team.getName() + ":" + i);
             }
         } else {
-            for (int i = 1; i < plugin.getSkyWarsArena().getMaxPlayers(); i++) {
+            for (int i = 1; i <= plugin.getSkyWarsArena().getMaxPlayers(); i++) {
                 String teamName = String.valueOf(i);
                 Team team = new Team(teamName, i);
                 this.teamMap.put(teamName, team);
@@ -51,42 +54,55 @@ public class TeamManager {
 
     public void giveTeams() {
         ConfigurationSection arena = plugin.getConfig("Extra/Arena").getConfigurationSection("Teams");
-        boolean enabledTeams = arena.getBoolean("enabled", false);
 
-        if (enabledTeams) {
-
+        if (plugin.getSkyWarsArena().getGameType().equals(GameType.TEAM)) {
             /*
              * Posiblemente tenga que cambiar esto, pero si funciona bien nice :v
              */
 
-            int i = 0;
+            int i = 1;
             for (Player player : plugin.getSkyWarsArena().getGamePlayers()) {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
-                Team team = getTeams().toArray(new Team[getTeams().size()])[i];
-                int teamSize_local = team.getTeamPlayers().size();
+                Team team = getTeam(i);
 
-                if (this.teamSize < teamSize_local) {
+                plugin.debug("Team Size: " + team.getName() + " | " + team.getTeamPlayers().size());
+                plugin.debug("Math Value: " + team.getTeamPlayers().size() + " < " + this.teamSize + " = " + (team.getTeamPlayers().size() < this.teamSize));
+
+                if (team.getTeamPlayers().size() < this.teamSize) {
                     skyPlayer.setTeam(team);
+                    plugin.debug("Adding player to team; " + "ID: " + i + ", NAME: " + team.getName() + ", SIZE: " + team.getTeamPlayers().size());
                 } else {
                     i++;
-                    Team team2 = getTeams().toArray(new Team[getTeams().size()])[i];
+                    Team team2 = getTeam(i);
                     skyPlayer.setTeam(team2);
+                    plugin.debug("Adding player to new team; " + "ID: " + i + ", NAME: " + team2.getName() + ", SIZE: " + team2.getTeamPlayers().size());
                 }
+
             }
 
         } else {
             int i = 0;
             for (Player player : plugin.getSkyWarsArena().getGamePlayers()) {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
-                skyPlayer.setTeam(getTeams().toArray(new Team[getTeams().size()])[i]);
+                skyPlayer.setTeam(getTeam(i));
 
-                if (this.getTeams().size() < plugin.getSkyWarsArena().getGamePlayers().size()) i++;
+                if (this.getTeamMap().size() < plugin.getSkyWarsArena().getGamePlayers().size()) i++;
             }
         }
     }
 
-    public Collection<Team> getTeams() {
-        return teamMap.values();
+    public Team getTeam(int id) {
+        ConfigurationSection arena = plugin.getConfig("Extra/Arena").getConfigurationSection("Teams");
+        boolean alphabeticNames = arena.getBoolean("alphabetic names", true);
+
+        String name;
+        if (alphabeticNames) name = Alphabet.getById(id).getName();
+        else name = String.valueOf(id);
+
+        return this.teamMap.getOrDefault(name, null);
     }
 
+    public Map<String, Team> getTeamMap() {
+        return teamMap;
+    }
 }

@@ -7,7 +7,6 @@ import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
-import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -46,7 +45,7 @@ public class StartingTask extends BukkitRunnable {
 
             for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame);
-                plugin.debug("Team of Skyplayer: " + skyPlayer.getTeam());
+                plugin.debug("Team of Skyplayer: " + skyPlayer.getTeam().getID());
                 Location location = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID());
 
                 Cage cage = new Cage(plugin, location, skyPlayer.getTeam().getCage());

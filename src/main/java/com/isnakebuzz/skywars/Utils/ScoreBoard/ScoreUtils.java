@@ -2,6 +2,7 @@ package com.isnakebuzz.skywars.Utils.ScoreBoard;
 
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,6 +29,7 @@ public class ScoreUtils {
     //Teams
     private Map<String, Team> friendlyTeam;
     private Map<String, Team> enemyTeam;
+    private Map<String, Team> spectatorTeam;
 
     //Solitaries teams
     private Team spectator;
@@ -49,17 +51,33 @@ public class ScoreUtils {
         }
 
         if (spect) {
-            this.spectator = this.scoreboard.registerNewTeam("Spectator");
-            this.spectator.setPrefix(color("&7"));
-            this.spectator.setCanSeeFriendlyInvisibles(true);
-            this.spectator.setAllowFriendlyFire(false);
+
+            if (!plugin.getSkyWarsArena().getGameType().equals(GameType.TEAM)) {
+                this.spectator = this.scoreboard.registerNewTeam("Spectator");
+                this.spectator.setPrefix(color("&7"));
+                this.spectator.setCanSeeFriendlyInvisibles(true);
+                this.spectator.setAllowFriendlyFire(false);
+            } else {
+                this.spectatorTeam = new HashMap<>();
+
+                String spectator = "&7[:name:] ";
+
+                for (com.isnakebuzz.skywars.Teams.Team team : plugin.getTeamManager().getTeamMap().values()) {
+                    // Spectator Team
+                    Team sTeam = this.scoreboard.registerNewTeam("B-" + team.getName() + "-s");
+                    sTeam.setPrefix(color(spectator.replaceAll(":name:", team.getName())));
+                    sTeam.setCanSeeFriendlyInvisibles(true);
+                    sTeam.setAllowFriendlyFire(false);
+
+
+                    this.spectatorTeam.put(team.getName(), sTeam);
+                }
+            }
+
         }
 
         if (gameTags) {
-            ConfigurationSection arena = plugin.getConfig("Extra/Arena").getConfigurationSection("Teams");
-            boolean enabledTeams = arena.getBoolean("enabled");
-
-            if (!enabledTeams) {
+            if (!plugin.getSkyWarsArena().getGameType().equals(GameType.TEAM)) {
 
                 // Enemy spot
                 this.enemySpot = this.scoreboard.registerNewTeam("friendly");
@@ -82,9 +100,9 @@ public class ScoreUtils {
                 String friendly = "&a[:name:] ";
                 String enemy = "&c[:name:] ";
 
-                for (com.isnakebuzz.skywars.Teams.Team team : plugin.getTeamManager().getTeams()) {
+                for (com.isnakebuzz.skywars.Teams.Team team : plugin.getTeamManager().getTeamMap().values()) {
                     // Friendly team
-                    Team fTeam = this.scoreboard.registerNewTeam(team.getName() + "-f");
+                    Team fTeam = this.scoreboard.registerNewTeam("A-" + team.getName() + "-f");
                     fTeam.setPrefix(color(friendly.replaceAll(":name:", team.getName())));
                     fTeam.setCanSeeFriendlyInvisibles(true);
                     fTeam.setAllowFriendlyFire(false);
@@ -92,7 +110,7 @@ public class ScoreUtils {
 
                     this.friendlyTeam.put(team.getName(), fTeam);
                     // Enemy team
-                    Team eTeam = this.scoreboard.registerNewTeam(team.getName() + "-e");
+                    Team eTeam = this.scoreboard.registerNewTeam("C-" + team.getName() + "-e");
                     eTeam.setPrefix(color(enemy.replaceAll(":name:", team.getName())));
                     eTeam.setCanSeeFriendlyInvisibles(true);
                     eTeam.setAllowFriendlyFire(false);
@@ -115,7 +133,7 @@ public class ScoreUtils {
 
     }
 
-    public void updatelife(Main plugin) {
+    public void updatelife() {
         for (Player onlinePlayers : plugin.getSkyWarsArena().getGamePlayers()) {
             final Player player2;
             final Player player = player2 = onlinePlayers;
@@ -125,32 +143,52 @@ public class ScoreUtils {
     }
 
     public void updatespect(Player p) {
-        if (!spectator.hasPlayer(p)) {
-            this.spectator.addPlayer(p);
+        if (!plugin.getSkyWarsArena().getGameType().equals(GameType.TEAM)) {
+            if (!spectator.hasPlayer(p)) {
+                this.spectator.addPlayer(p);
+            }
+        } else {
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+            Team spectator = this.spectatorTeam.get(skyPlayer.getTeam().getName());
+            if (!spectator.hasPlayer(p)) {
+                spectator.addPlayer(p);
+            }
         }
     }
 
     public void updateGameTAG(Player p) {
-        if (!this.spect) {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
 
+        if (!this.spect) {
             if (this.friendlyTeam.containsKey(skyPlayer.getTeam().getName())) {
                 Team team = this.friendlyTeam.get(skyPlayer.getTeam().getName());
                 if (!team.hasPlayer(p)) {
+                    plugin.debug("Setting tag to " + p.getName() + ", TEAM: " + team.getName());
                     team.addPlayer(p);
                 }
             }
 
         }
         for (Player p2 : plugin.getSkyWarsArena().getGamePlayers()) {
-            if (p2 != p) {
+            if (!p.equals(p2)) {
                 SkyPlayer skyPlayer2 = plugin.getPlayerManager().getPlayer(p2);
                 if (!skyPlayer2.isDead()) {
                     if (this.enemyTeam.containsKey(skyPlayer2.getTeam().getName())) {
-                        Team team = this.enemyTeam.get(skyPlayer2.getTeam().getName());
-                        if (!team.hasPlayer(p)) {
-                            team.addPlayer(p);
+
+                        if (skyPlayer.getTeam().equals(skyPlayer2.getTeam())) {
+                            Team team = this.friendlyTeam.get(skyPlayer.getTeam().getName());
+                            if (!team.hasPlayer(p2)) {
+                                plugin.debug("Setting tag to " + p.getName() + ", TEAM: " + team.getName());
+                                team.addPlayer(p2);
+                            }
+                        } else {
+                            Team team = this.enemyTeam.get(skyPlayer2.getTeam().getName());
+                            if (!team.hasPlayer(p2)) {
+                                plugin.debug("Setting tag to " + p.getName() + ", TEAM: " + team.getName());
+                                team.addPlayer(p2);
+                            }
                         }
+
                     }
                 }
             }

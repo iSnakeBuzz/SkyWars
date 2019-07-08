@@ -9,9 +9,12 @@ import java.util.Random;
 
 public class Team {
 
-    private List<SkyPlayer> teamPlayers;
     private String name;
     private int teamID;
+
+    //Team settings
+    private List<SkyPlayer> teamPlayers;
+    private boolean isDead;
 
     public Team(String name, int teamID) {
         this.name = name;
@@ -19,7 +22,7 @@ public class Team {
 
         //Internal uses
         this.teamPlayers = new ArrayList<>();
-
+        this.isDead = false;
     }
 
     public String getName() {
@@ -47,7 +50,7 @@ public class Team {
         return random.getCageName();
     }
 
-    public int getTeamID() {
+    public int getID() {
         return teamID;
     }
 
@@ -64,6 +67,14 @@ public class Team {
     }
 
     public int getSpawnID() {
-        return Math.min(0, (this.getTeamID() - 1));
+        return (this.getID() - 1) < 0 ? 0 : (this.getID() - 1);
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 }

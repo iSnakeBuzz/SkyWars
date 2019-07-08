@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Utils.ScoreBoard;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Scoreboard.ScoreboardLib;
 import com.isnakebuzz.skywars.Scoreboard.type.Scoreboard;
+import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,22 +24,19 @@ public class ScoreBoardAPI {
     }
 
     public void setScoreBoard(Player p, ScoreboardType scoreboardType, boolean health, boolean spect, boolean gamePlayers) {
-        ConfigurationSection arena = plugin.getConfig("Extra/Arena").getConfigurationSection("Teams");
-        boolean enabledTeams = arena.getBoolean("enabled");
-
-
         removeScoreBoard(p);
         Scoreboard scoreboard = ScoreboardLib.createScoreboard(plugin, p).setHandler(new ScoreH(plugin, scoreboardType)).setUpdateInterval(20);
         scoreboard.activate();
 
         ScoreUtils scoreUtils = new ScoreUtils(plugin, p, health, spect, gamePlayers);
+        if (gamePlayers) {
+            if (plugin.getSkyWarsArena().getGameType().equals(GameType.TEAM)) scoreUtils.updateGameTAG(p);
+            else scoreUtils.updategames(p);
+        }
+        if (spect) scoreUtils.updatespect(p);
+
         int taskID = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            if (health) scoreUtils.updatelife(plugin);
-            if (spect) scoreUtils.updatespect(p);
-            if (gamePlayers) {
-                if (enabledTeams) scoreUtils.updateGameTAG(p);
-                else scoreUtils.updategames(p);
-            }
+            if (health) scoreUtils.updatelife();
         }, 0, 20).getTaskId();
 
         scoreUtils.build(p);

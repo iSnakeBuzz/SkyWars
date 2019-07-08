@@ -8,6 +8,7 @@ import com.isnakebuzz.skywars.Configurations.ConfigUtils;
 import com.isnakebuzz.skywars.Database.Database;
 import com.isnakebuzz.skywars.Kits.KitLoader;
 import com.isnakebuzz.skywars.Teams.TeamManager;
+import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Manager.*;
 import com.isnakebuzz.skywars.Listeners.ListenerManager;
 import com.isnakebuzz.skywars.Inventory.Inventories;
@@ -90,11 +91,13 @@ public final class Main extends JavaPlugin {
         Configuration settings = this.getConfig("Settings");
         Configuration database = this.getConfig("Extra/Database");
         Configuration arena = this.getConfig("Extra/Arena");
-        Statics.skyMode = settings.getString("Mode").toUpperCase();
+        Statics.skyMode = GameType.valueOf(settings.getString("Mode").toUpperCase());
         Statics.baseMode = database.getString("Type").toUpperCase();
         Statics.BungeeID = settings.getString("BungeeID", "none");
         Statics.lobbies = settings.getStringList("Lobbies");
         Statics.mapName = arena.getString("MapName", "none");
+
+        this.debug("Settings Mode: " + settings.getString("Mode").toUpperCase());
 
         //Loading database
         this.dataManager.loadDatabase();

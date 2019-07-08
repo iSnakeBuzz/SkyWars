@@ -18,6 +18,8 @@ import com.isnakebuzz.skywars.Listeners.Setup.SetupInteract;
 import com.isnakebuzz.skywars.Listeners.Setup.SetupJoin;
 import com.isnakebuzz.skywars.Listeners.VoteEvents.SoftBlocks;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Teams.Team;
+import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -82,13 +84,13 @@ public class ListenerManager {
     public synchronized void loadInitialsEvents() {
         plugin.log(Statics.logPrefix, "Loading listeners..");
 
-        if (Statics.skyMode.equalsIgnoreCase("SETUP")) {
+        if (Statics.skyMode.equals(GameType.SETUP)) {
             registerListener(new WorldEvents(plugin));
             registerListener(new SetupInteract(plugin));
             registerListener(new SetupJoin(plugin));
             plugin.getCommand("SkyWars").setExecutor(new SetupCommands(plugin));
-        } else if (Statics.skyMode.equalsIgnoreCase("LOBBY")) {
-        } else if (Statics.skyMode.equalsIgnoreCase("SOLO")) {
+        } else if (Statics.skyMode.equals(GameType.LOBBY)) {
+        } else if (Statics.skyMode.equals(GameType.SOLO)) {
             plugin.getCommand("SkyWars").setExecutor(new NormalCommands(plugin));
             registerListener(new WorldEvents(plugin));
             registerListener(this.joinAndLeave);
@@ -113,7 +115,7 @@ public class ListenerManager {
                     SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
                 }
             });
-        } else if (Statics.skyMode.equalsIgnoreCase("TEAM")) {
+        } else if (Statics.skyMode.equals(GameType.TEAM)) {
             registerListener(new WorldEvents(plugin));
             registerListener(this.joinAndLeave);
             registerListener(this.protector);

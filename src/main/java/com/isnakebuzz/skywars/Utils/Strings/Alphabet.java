@@ -1,5 +1,6 @@
 package com.isnakebuzz.skywars.Utils.Strings;
 
+import java.security.AlgorithmParameterGenerator;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -48,10 +49,11 @@ public enum Alphabet {
         return name;
     }
 
-    public static Optional<Alphabet> valueOf(int value) {
-        return Arrays.stream(values())
-                .filter(alphabet -> alphabet.id == value)
-                .findFirst();
+    public static Alphabet getById(Integer id) {
+        for (Alphabet e : values()) {
+            if (e.id == id) return e;
+        }
+        return A;
     }
 
 }

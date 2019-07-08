@@ -1,9 +1,11 @@
 package com.isnakebuzz.skywars.Arena;
 
+import com.google.common.collect.Lists;
 import com.isnakebuzz.ccsigns.Enums.GameStates;
 import com.isnakebuzz.ccsigns.Enums.PacketType;
 import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cuboid;
 import com.isnakebuzz.skywars.Utils.Enums.*;
 import com.isnakebuzz.skywars.Utils.LocUtils;
@@ -250,7 +252,7 @@ public class SkyWarsArena {
         return chestType;
     }
 
-    public boolean checkStart() {
+    public synchronized boolean checkStart() {
         if (!this.started) {
             if (this.getGamePlayers().size() >= this.getMinPlayers()) {
                 this.started = true;
@@ -265,15 +267,13 @@ public class SkyWarsArena {
     public boolean checkWin() {
         if (this.gameType.equals(GameType.SOLO)) {
             return this.getGamePlayers().size() <= 1;
+        } else if (this.gameType.equals(GameType.TEAM)) {
+            List<Team> aliveTeams = Lists.newArrayList();
+            for (Team team : plugin.getTeamManager().getTeamMap().values()) if (!team.isDead()) aliveTeams.add(team);
+
+            return aliveTeams.size() <= 1;
         }
         return false;
-    }
-
-    public int getTimer() {
-        if (this.getGameStatus().equals(GameStatus.CAGEOPENING)) {
-            return this.getCageOpens();
-        }
-        return -600;
     }
 
     public void fillChests() {
@@ -303,6 +303,10 @@ public class SkyWarsArena {
 
     public HashMap<LivingEntity, LivingEntity> getLastDamager() {
         return lastDamager;
+    }
+
+    public GameType getGameType() {
+        return gameType;
     }
 
     public void removeLobby() {
