@@ -4,6 +4,8 @@ import com.isnakebuzz.skywars.Teams.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +131,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
 
         Player p = Bukkit.getPlayer(this.uuid);
         if (staff) {
-            PlayerUtils.clean(p);
+            PlayerUtils.clean(p, new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
 
             p.setGameMode(GameMode.ADVENTURE);
             p.setAllowFlight(true);
@@ -154,7 +156,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
 
         Player p = Bukkit.getPlayer(this.uuid);
         if (spectator) {
-            PlayerUtils.clean(p);
+            PlayerUtils.clean(p, new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
 
             p.setGameMode(GameMode.ADVENTURE);
             p.setAllowFlight(true);

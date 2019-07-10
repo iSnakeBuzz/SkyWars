@@ -4,12 +4,14 @@ L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Cuboids\Basic
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Scoreboard\ScoreboardLib.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Tasks\InGame.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Listeners\Game\JoinAndQuit.java
+L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Schematics\ISnakeSchem.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Scoreboard\type\SimpleScoreboard.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Scoreboard\common\animate\AnimatableString.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Statics.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Commands\SetupCommands.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Database\Versions\vMySQL.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Holograms\event\TruenoHologramClickEvent.java
+L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Schematics\SchematicManager.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Player\PlayerUtils.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Listeners\Setup\SetupJoin.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Listeners\Lobby\VoidTP.java
@@ -30,6 +32,7 @@ L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Player\SkyPlayer.ja
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Scoreboard\type\Scoreboard.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Listeners\VoteEvents\SoftBlocks.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Kits\Kit.java
+L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Schematics\Utils\Cuboid.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Calls\Events\ChestOpenEvent.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Listeners\Commons\WorldEvents.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Kits\KitLoader.java
@@ -61,6 +64,7 @@ L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Listeners\Lobby\Spe
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Calls\Events\SkyCagesOpenEvent.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Chest\SettingsManager.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Manager\SetupManager.java
+L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Schematics\SchemUtils.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Inventory\Inventories.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Utils.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Arena\ArenaSetup.java
@@ -73,8 +77,10 @@ L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Scoreboard\common\a
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Tasks\ExampleTask.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Enums\VoteType.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Teams\TeamManager.java
+L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Schematics\SnakeSchem.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Chest\ChestController.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\ScoreBoard\ScoreH.java
+L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Schematics\Schematic.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Enums\TimeType.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Manager\CagesManager.java
 L:\IntellijIDEA\SkyWars\src\main\java\com\isnakebuzz\skywars\Utils\Enums\ChestType.java

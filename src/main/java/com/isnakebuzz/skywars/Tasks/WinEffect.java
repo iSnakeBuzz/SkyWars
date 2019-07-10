@@ -1,22 +1,22 @@
 package com.isnakebuzz.skywars.Tasks;
 
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class WinEffect extends BukkitRunnable {
 
     private Main plugin;
-    private Player player;
+    private Team team;
 
-    public WinEffect(Main plugin, Player player) {
+    public WinEffect(Main plugin, Team team) {
         this.plugin = plugin;
-        this.player = player;
+        this.team = team;
     }
 
     @Override
@@ -24,16 +24,23 @@ public class WinEffect extends BukkitRunnable {
         if (!plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.FINISH)) {
             this.cancel();
             return;
-        } else if (this.player == null) {
+        } else if (this.team == null) {
             this.cancel();
             return;
         }
 
-        this.spawnFireworks(player.getLocation());
+        spawnFireworks();
     }
 
-    private void spawnFireworks(Location location) {
-        Firework fw = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
+    private void spawnFireworks() {
+        this.team.getTeamPlayers().forEach(skyPlayer -> {
+            if (skyPlayer.getPlayer() != null)
+                spawnFireworks(skyPlayer.getPlayer().getLocation());
+        });
+    }
+
+    private void spawnFireworks(Location loc) {
+        Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
         FireworkMeta fwm = fw.getFireworkMeta();
 
         fwm.setPower(1);

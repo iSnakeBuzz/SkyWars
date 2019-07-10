@@ -34,7 +34,7 @@ public class CageOpeningTask extends BukkitRunnable {
             }
         }
 
-        if (plugin.getSkyWarsArena().getCageOpens() <= 1) {
+        if (plugin.getSkyWarsArena().getCageOpens() == 1) {
             plugin.getCagesManager().deleteAllCages();
             plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
             plugin.getListenerManager().unloadPrelobby();
@@ -66,7 +66,6 @@ public class CageOpeningTask extends BukkitRunnable {
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getListenerManager().unloadCageOpens(), 20 * 5);
             this.cancel();
-            return;
         }
 
         if (plugin.getSkyWarsArena().getGamePlayers().size() < plugin.getSkyWarsArena().getMinPlayers() && !plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.FINISH)) {

@@ -18,7 +18,6 @@ import com.isnakebuzz.skywars.Listeners.Setup.SetupInteract;
 import com.isnakebuzz.skywars.Listeners.Setup.SetupJoin;
 import com.isnakebuzz.skywars.Listeners.VoteEvents.SoftBlocks;
 import com.isnakebuzz.skywars.Main;
-import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
@@ -47,6 +46,7 @@ public class ListenerManager {
     private Tagging tagging;
     private ChestUtils chestUtils;
     private SkyStats skyStats;
+    private GameItems gameItems;
 
     //Vote events
     private SoftBlocks softBlocks;
@@ -73,6 +73,7 @@ public class ListenerManager {
         this.tagging = new Tagging(plugin);
         this.chestUtils = new ChestUtils(plugin);
         this.skyStats = new SkyStats(plugin);
+        this.gameItems = new GameItems(plugin);
 
         //Vote listeners
         this.softBlocks = new SoftBlocks(plugin);
@@ -188,6 +189,7 @@ public class ListenerManager {
         registerListener(this.gameEvents);
         registerListener(this.chestUtils);
         registerListener(this.skyStats);
+        registerListener(this.gameItems);
     }
 
     public void unloadIngame() {
@@ -195,6 +197,7 @@ public class ListenerManager {
         unregisterListener(this.gameEvents);
         unregisterListener(this.chestUtils);
         unregisterListener(this.skyStats);
+        unregisterListener(this.gameItems);
     }
 
     public void loadVoteEvents() {

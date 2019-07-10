@@ -2,6 +2,7 @@ package com.isnakebuzz.skywars.Listeners.Setup;
 
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.LocUtils;
+import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,13 +33,27 @@ public class SetupInteract implements Listener {
             Block b = e.getClickedBlock();
 
             if (itemStack.getItemMeta().hasDisplayName()) {
-                if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase(c("&aWand"))) {
+                if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase(c("&aLobby Area"))) {
                     Player p = e.getPlayer();
 
                     if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                         plugin.getArenaSetup().setSettings(p, "LobbyArea.1", LocUtils.locToString(b.getLocation()));
+                        e.setCancelled(true);
                     } else if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
                         plugin.getArenaSetup().setSettings(p, "LobbyArea.2", LocUtils.locToString(b.getLocation()));
+                        e.setCancelled(true);
+                    }
+                } else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase(c("&6Cagenator"))) {
+                    Player p = e.getPlayer();
+
+                    if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                        Statics.cage_loc2 = b.getLocation();
+                        p.sendMessage(c("&a&lSkyWars &8| &eHas been selected pos#2"));
+                        e.setCancelled(true);
+                    } else if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+                        Statics.cage_loc1 = b.getLocation();
+                        p.sendMessage(c("&a&lSkyWars &8| &eHas been selected pos#1"));
+                        e.setCancelled(true);
                     }
                 } else if (itemStack.getItemMeta().getDisplayName().equalsIgnoreCase(c("&aCenter Chests"))) {
                     Player p = e.getPlayer();

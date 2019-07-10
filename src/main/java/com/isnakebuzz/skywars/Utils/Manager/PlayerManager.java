@@ -25,11 +25,15 @@ public class PlayerManager {
         }
     }
 
-    public void removePlayer(Player p) {
-        if (this.skyPlayerMap.containsKey(p.getUniqueId())) {
-            this.skyPlayerMap.remove(p.getUniqueId());
-        }
-    }
+    /*
+     * Removed for good reason, please can't add this :)
+     *
+     * public void removePlayer(Player p) {
+     *   if (this.skyPlayerMap.containsKey(p.getUniqueId())) {
+     *      this.skyPlayerMap.remove(p.getUniqueId());
+     *   }
+     * }
+     */
 
     public boolean containsPlayer(Player p) {
         return this.skyPlayerMap.containsKey(p.getUniqueId());

@@ -75,7 +75,6 @@
             <id>dmulloy2-repo</id>
             <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
         </repository>
-
     </repositories>
 
     <dependencies>
@@ -125,6 +124,15 @@
             <version>1.0</version>
             <systemPath>${project.basedir}/Lib/CCSigns-1.0-SNAPSHOT.jar</systemPath>
         </dependency>
+
+
+        <dependency>
+            <groupId>jnbt</groupId>
+            <artifactId>jnbt-api</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>

@@ -67,7 +67,7 @@ public class vMySQL implements Database {
                     "WHERE UUID='" + uuid + "'"
             );
 
-            plugin.getPlayerManager().removePlayer(p);
+            //plugin.getPlayerManager().removePlayer(p);
         });
 
 

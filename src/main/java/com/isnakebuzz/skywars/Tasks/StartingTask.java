@@ -4,6 +4,7 @@ import com.isnakebuzz.ccsigns.Enums.PacketType;
 import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
@@ -38,19 +39,24 @@ public class StartingTask extends BukkitRunnable {
             }
         }
 
-        if (plugin.getSkyWarsArena().getStartingTime() <= 1) {
+        if (plugin.getSkyWarsArena().getStartingTime() == 1) {
 
             // Giving teams to players :)
             plugin.getTeamManager().giveTeams();
 
-            for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
-                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame);
-                plugin.debug("Team of Skyplayer: " + skyPlayer.getTeam().getID());
-                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID());
-
-                Cage cage = new Cage(plugin, location, skyPlayer.getTeam().getCage());
+            // Spawning cages
+            for (Team team : plugin.getTeamManager().getTeamMap().values()) {
+                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(team.getSpawnID());
+                Cage cage = new Cage(plugin, location, team.getCage());
                 cage.paste();
                 plugin.getCagesManager().addCage(cage);
+            }
+
+            // Teleporting players
+            for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
+                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame);
+                //Removed for other things... plugin.debug("Team of Skyplayer: " + skyPlayer.getTeam().getID());
+                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID());
 
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     inGame.teleport(location);
@@ -62,19 +68,20 @@ public class StartingTask extends BukkitRunnable {
             /* REMOVING LOBBY */
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getSkyWarsArena().removeLobby());
 
+            plugin.debug("BUG CHECK. IF THIS MESSAGE APPEAR MORE ONE TIME, GAME BUGGED; PLEASE CHECK CODE :(");
+
             /* OTHER THINGS */
             plugin.getSkyWarsArena().setGameStatus(GameStatus.CAGEOPENING);
-            Bukkit.getScheduler().runTask(plugin, () -> new CageOpeningTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20));
             plugin.getListenerManager().loadCageOpens();
             plugin.getListenerManager().loadInGame();
             plugin.getVoteManager().checkVotes();
             plugin.getChestController().load();
             plugin.closeInventory();
-            this.cancel();
+            new CageOpeningTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
             if (Statics.isCCSings) {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID), 20 * 3);
             }
-            return;
+            this.cancel();
         }
 
         plugin.getSkyWarsArena().setStatrtingTime(plugin.getSkyWarsArena().getStartingTime() - 1);

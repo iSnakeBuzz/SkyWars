@@ -5,11 +5,8 @@ import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 import java.util.Set;
@@ -48,7 +45,6 @@ public class Inventories {
     }
 
     public void setSpectInventory(Player p) {
-        PlayerUtils.clean(p, new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             Configuration config = plugin.getConfigUtils().getConfig(plugin, "Extra/Inventory");
             Set<String> key;

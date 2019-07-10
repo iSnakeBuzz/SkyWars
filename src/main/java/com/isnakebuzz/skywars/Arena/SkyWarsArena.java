@@ -82,7 +82,7 @@ public class SkyWarsArena {
         this.refillTimer = arena.getInt("Timers.ChestRefill");
 
         this.lobbyLocation = LocUtils.stringToLoc(arena.getString("Lobby"));
-        this.gameType = GameType.SOLO;
+        this.gameType = Statics.skyMode;
         this.chestType = ChestType.NORMAL;
         this.timeType = TimeType.DAY;
         this.projectileType = ProjectileType.NORMAL;
@@ -123,7 +123,7 @@ public class SkyWarsArena {
 
         this.startingTime = arena.getInt("Timers.Starting");
         this.cageOpens = arena.getInt("Timers.CageOpens");
-        this.gameType = GameType.SOLO;
+        this.gameType = Statics.skyMode;
         this.chestType = ChestType.NORMAL;
         this.timeType = TimeType.DAY;
         this.projectileType = ProjectileType.NORMAL;
@@ -264,16 +264,17 @@ public class SkyWarsArena {
         return false;
     }
 
-    public boolean checkWin() {
-        if (this.gameType.equals(GameType.SOLO)) {
-            return this.getGamePlayers().size() <= 1;
-        } else if (this.gameType.equals(GameType.TEAM)) {
-            List<Team> aliveTeams = Lists.newArrayList();
-            for (Team team : plugin.getTeamManager().getTeamMap().values()) if (!team.isDead()) aliveTeams.add(team);
-
-            return aliveTeams.size() <= 1;
+    public Team checkWin() {
+        List<Team> aliveTeams = Lists.newArrayList();
+        for (Team team : plugin.getTeamManager().getTeamMap().values()) {
+            if (!team.isDead() && team.getTeamPlayers().size() >= 1) aliveTeams.add(team);
         }
-        return false;
+
+        //If aliveTeams is empty, return first team
+        if (aliveTeams.isEmpty()) return plugin.getTeamManager().getTeam(1);
+
+        plugin.debug("Check - Win: " + "Alive TEAMS: " + aliveTeams.size() + ", Is true?: " + ((aliveTeams.size() <= 1) ? aliveTeams.get(0).getName() : "none"));
+        return (aliveTeams.size() <= 1) ? aliveTeams.get(0) : null;
     }
 
     public void fillChests() {

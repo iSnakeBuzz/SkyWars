@@ -1,8 +1,14 @@
 package com.isnakebuzz.skywars.Utils;
 
+import com.isnakebuzz.skywars.Schematics.Utils.Cuboid;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LocUtils {
 
@@ -32,6 +38,26 @@ public class LocUtils {
 
     public static Location fixLocation(Location loc) {
         return new Location(loc.getWorld(), loc.getX() + 0.5, loc.getY(), loc.getZ() + 0.5);
+    }
+
+    public static List<Location> stringsToLocs(List<String> locs) {
+        return locs.stream().map(LocUtils::stringToLoc).collect(Collectors.toList());
+    }
+
+    public static ArrayList<Block> getBlocks(Location loc1, Location loc2) {
+        return new Cuboid(loc1, loc2).getBlocks();
+    }
+
+    public static List<Location> getLocsFromBlocks(List<Block> blocks) {
+        return blocks.stream().map(Block::getLocation).collect(Collectors.toList());
+    }
+
+    public static List<Integer> getBlocksIDS(List<Block> blocks) {
+        return blocks.stream().map(Block::getTypeId).collect(Collectors.toList());
+    }
+
+    public static List<Byte> getBlocksDATA(List<Block> blocks) {
+        return blocks.stream().map(Block::getData).collect(Collectors.toList());
     }
 
 }

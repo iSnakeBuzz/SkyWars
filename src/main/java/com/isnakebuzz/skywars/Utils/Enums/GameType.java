@@ -1,5 +1,5 @@
 package com.isnakebuzz.skywars.Utils.Enums;
 
 public enum GameType {
-    SOLO, TEAM, SETUP, LOBBY;
+    SOLO, TEAM, SETUP, LOBBY
 }

@@ -55,7 +55,7 @@ public class ChestUtils implements Listener {
     @EventHandler
     public void InventoryOpen(InventoryOpenEvent e) {
         Player player = (Player) e.getPlayer();
-        plugin.debug("Player opened: " + e.getInventory().getName());
+        // plugin.debug("Player opened: " + e.getInventory().getName());
         if (e.getInventory().getName().equalsIgnoreCase("container.chest")) {
             if (e.getInventory().getType().equals(InventoryType.CHEST)) {
                 Chest chest = (Chest) e.getInventory().getHolder();
@@ -69,7 +69,7 @@ public class ChestUtils implements Listener {
     @EventHandler
     public void InventoryCLose(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
-        plugin.debug("Player closed: " + e.getInventory().getName());
+        // plugin.debug("Player closed: " + e.getInventory().getName());
         if (e.getInventory().getName().equalsIgnoreCase("container.chest")) {
             if (e.getInventory().getType().equals(InventoryType.CHEST)) {
                 Chest chest = (Chest) e.getInventory().getHolder();

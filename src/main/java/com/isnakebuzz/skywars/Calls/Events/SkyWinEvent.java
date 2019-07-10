@@ -1,6 +1,7 @@
 package com.isnakebuzz.skywars.Calls.Events;
 
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Teams.Team;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -12,14 +13,14 @@ public class SkyWinEvent extends Event implements Cancellable {
     private boolean isCancelled = false;
 
     //Public usages
-    private SkyPlayer skyPlayer;
+    private Team team;
 
-    public SkyWinEvent(SkyPlayer skyPlayer) {
-        this.skyPlayer = skyPlayer;
+    public SkyWinEvent(Team team) {
+        this.team = team;
     }
 
-    public SkyPlayer getSkyPlayer() {
-        return skyPlayer;
+    public Team getTeam() {
+        return team;
     }
 
     public static HandlerList getHandlerList() {

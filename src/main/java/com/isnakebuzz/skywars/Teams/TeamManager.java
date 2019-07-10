@@ -65,8 +65,12 @@ public class TeamManager {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
                 Team team = getTeam(i);
 
-                plugin.debug("Team Size: " + team.getName() + " | " + team.getTeamPlayers().size());
-                plugin.debug("Math Value: " + team.getTeamPlayers().size() + " < " + this.teamSize + " = " + (team.getTeamPlayers().size() < this.teamSize));
+                //plugin.debug("Team Size: " + team.getName() + " | " + team.getTeamPlayers().size());
+                //plugin.debug("Math Value: " + team.getTeamPlayers().size() + " < " + this.teamSize + " = " + (team.getTeamPlayers().size() < this.teamSize));
+
+                if (skyPlayer.getTeam() != null){
+                    continue;
+                }
 
                 if (team.getTeamPlayers().size() < this.teamSize) {
                     skyPlayer.setTeam(team);

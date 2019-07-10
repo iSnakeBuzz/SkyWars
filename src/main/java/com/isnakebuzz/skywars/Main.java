@@ -6,12 +6,12 @@ import com.isnakebuzz.skywars.Chest.ChestController;
 import com.isnakebuzz.skywars.Configurations.ConfigCreator;
 import com.isnakebuzz.skywars.Configurations.ConfigUtils;
 import com.isnakebuzz.skywars.Database.Database;
+import com.isnakebuzz.skywars.Inventory.Inventories;
 import com.isnakebuzz.skywars.Kits.KitLoader;
+import com.isnakebuzz.skywars.Listeners.ListenerManager;
 import com.isnakebuzz.skywars.Teams.TeamManager;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Manager.*;
-import com.isnakebuzz.skywars.Listeners.ListenerManager;
-import com.isnakebuzz.skywars.Inventory.Inventories;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.skywars.Utils.Utils;
@@ -33,8 +33,6 @@ public final class Main extends JavaPlugin {
 
     //Scoreboard
     private ScoreBoardAPI scoreBoardAPI;
-    private ScoreBoardAPI scoreBoardAPI2;
-
 
     // Other classes
     private Inventories inventories;
@@ -65,7 +63,6 @@ public final class Main extends JavaPlugin {
         this.arenaSetup = new ArenaSetup(this);
         this.inventories = new Inventories(this);
         this.scoreBoardAPI = new ScoreBoardAPI(this);
-        this.scoreBoardAPI2 = new ScoreBoardAPI(this);
         this.dataManager = new DataManager(this);
         this.playerManager = new PlayerManager(this);
         this.configUtils = new ConfigUtils();
@@ -168,12 +165,8 @@ public final class Main extends JavaPlugin {
         return dataManager.getDatabase();
     }
 
-    public ScoreBoardAPI getScoreBoardAPI() {
-        return scoreBoardAPI;
-    }
-
     public ScoreBoardAPI getScoreBoardAPI2() {
-        return scoreBoardAPI2;
+        return scoreBoardAPI;
     }
 
     public ArenaSetup getArenaSetup() {
@@ -234,6 +227,7 @@ public final class Main extends JavaPlugin {
         this.voteManager = new VoteManager(this);
         this.chestRefillManager = new ChestRefillManager(this);
         this.teamManager = new TeamManager(this);
+        this.playerManager = new PlayerManager(this);
         this.teamManager.loadTeams();
         Runtime.getRuntime().gc();
     }

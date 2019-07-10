@@ -4,6 +4,7 @@ import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,10 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.*;
 
 public class SpectatorEvents implements Listener {
 
@@ -35,6 +33,7 @@ public class SpectatorEvents implements Listener {
 
             if (e.getRightClicked() instanceof Player && !skyPlayer.isSpectating()) {
                 Player interacted = (Player) e.getRightClicked();
+                skyPlayer.getPlayer().setGameMode(GameMode.SPECTATOR);
                 PacketsAPI.setSpectating(p, interacted, true);
                 skyPlayer.setSpectating(true);
                 PacketsAPI.sendTitle(
@@ -58,6 +57,9 @@ public class SpectatorEvents implements Listener {
         if (skyPlayer.isSpectator()) {
             if (skyPlayer.isSpectating()) {
                 Configuration lang = plugin.getConfig("Lang");
+                skyPlayer.getPlayer().setGameMode(GameMode.ADVENTURE);
+                skyPlayer.getPlayer().setAllowFlight(true);
+                skyPlayer.getPlayer().setFlying(true);
                 PacketsAPI.setSpectating(e.getPlayer(), null, false);
                 skyPlayer.setSpectating(false);
                 PacketsAPI.sendTitle(
@@ -70,6 +72,14 @@ public class SpectatorEvents implements Listener {
                         lang.getInt("Spectating Titles.Exiting.FadeOut")
                 );
             }
+        }
+    }
+
+    @EventHandler
+    public void spectatorInteract(PlayerInteractEvent e) {
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer());
+        if (skyPlayer.isSpectator()) {
+            e.setCancelled(true);
         }
     }
 

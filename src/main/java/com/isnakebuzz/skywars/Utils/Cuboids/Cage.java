@@ -1,56 +1,23 @@
 package com.isnakebuzz.skywars.Utils.Cuboids;
 
-import com.google.common.base.Preconditions;
 import com.isnakebuzz.skywars.Main;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.bukkit.BukkitUtil;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.isnakebuzz.skywars.Schematics.SnakeSchem;
 import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.util.Vector;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
-public class Cage {
-
-    //Public assets
-    private Main plugin;
-    private String schematicName;
-    private Location location;
-    private Vector position;
-
-    //Internal usages
-    private EditSession editSession;
+public class Cage extends SnakeSchem {
 
     public Cage(Main plugin, Location location, String schematicName) {
-        this.plugin = plugin;
-        this.location = location;
-        this.schematicName = schematicName;
+        super(plugin, location);
+        FileConfiguration config = YamlConfiguration.loadConfiguration(plugin.getCagesManager().getCage(schematicName));
+        this.setBlocks(config.getIntegerList("Blocks"));
+        this.setBlockIDs(config.getByteList("Block IDS"));
+        this.setLocations(((List<Vector>) config.get("Locations")));
     }
 
-    public void paste() {
-        this.position = BukkitUtil.toVector(location);
-        File schematic = plugin.getCagesManager().getCage(this.schematicName);
-        try {
-            Preconditions.checkNotNull(location, "Location is null, please contact with developer");
-            Preconditions.checkNotNull(schematic, "A cage is null, please contact with developer");
-            editSession = ClipboardFormat.findByFile(schematic)
-                    .load(schematic)
-                    .paste(
-                            new BukkitWorld(this.location.getWorld())
-                            , position
-                            , true
-                            , true
-                            , null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void undo() {
-        this.editSession.undo(editSession);
-    }
 
 }

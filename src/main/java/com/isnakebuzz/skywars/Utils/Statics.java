@@ -2,13 +2,14 @@ package com.isnakebuzz.skywars.Utils;
 
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 import java.util.List;
 
 public class Statics {
 
     public static String logPrefix = "SkyWars";
-    public static GameType skyMode = GameType.SOLO;
+    public static GameType skyMode;
     public static String baseMode = "MYSQL";
     public static Boolean isFawe = false;
     public static boolean isCCSings = false;
@@ -20,5 +21,8 @@ public class Statics {
 
     //For setup
     public static String BOT_NAME = "Billy";
+
+    public static Location cage_loc1;
+    public static Location cage_loc2;
 
 }

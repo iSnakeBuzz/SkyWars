@@ -1,5 +1,6 @@
 package com.isnakebuzz.skywars.Teams;
 
+import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import org.bukkit.entity.Player;
 
@@ -46,6 +47,7 @@ public class Team {
     }
 
     public String getCage() {
+        if (this.getTeamPlayers().isEmpty()) return "default";
         SkyPlayer random = this.getTeamPlayers().get(new Random().nextInt(this.getTeamPlayers().size()));
         return random.getCageName();
     }
@@ -76,5 +78,18 @@ public class Team {
 
     public boolean isDead() {
         return isDead;
+    }
+
+    public void checkDead() {
+        List<SkyPlayer> playersDead = Lists.newArrayList();
+        for (SkyPlayer skyPlayer : this.getTeamPlayers()) if (skyPlayer.isDead()) playersDead.add(skyPlayer);
+
+        if (playersDead.size() >= this.getTeamPlayers().size()) setDead(true);
+    }
+
+    public void addWin() {
+        for (SkyPlayer skyPlayer : getTeamPlayers()) {
+            skyPlayer.addWins(1);
+        }
     }
 }

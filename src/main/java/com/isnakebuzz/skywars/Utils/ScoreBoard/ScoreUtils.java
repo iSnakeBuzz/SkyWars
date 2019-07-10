@@ -3,15 +3,15 @@ package com.isnakebuzz.skywars.Utils.ScoreBoard;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,11 +35,18 @@ public class ScoreUtils {
     private Team spectator;
     private Team friendlySpot;
     private Team enemySpot;
+    private Team staffTeam;
 
     public ScoreUtils(Main plugin, Player player, boolean health, boolean spect, boolean gameTags) {
         this.scoreboard = player.getScoreboard();
         this.spect = spect;
         this.plugin = plugin;
+
+        //Setting up staff team
+        this.staffTeam = this.scoreboard.registerNewTeam("Staff");
+        this.staffTeam.setPrefix(color("&C&lSTAFF&7 "));
+        this.staffTeam.setAllowFriendlyFire(false);
+        this.staffTeam.setCanSeeFriendlyInvisibles(true);
 
         if (health) {
             this.nameHealthObj = this.scoreboard.registerNewObjective("namelife", "health");
@@ -143,12 +150,19 @@ public class ScoreUtils {
     }
 
     public void updatespect(Player p) {
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+        if (skyPlayer.isStaff()) {
+            if (!staffTeam.hasPlayer(p)) {
+                this.staffTeam.addPlayer(p);
+            }
+            return;
+        }
+
         if (!plugin.getSkyWarsArena().getGameType().equals(GameType.TEAM)) {
             if (!spectator.hasPlayer(p)) {
                 this.spectator.addPlayer(p);
             }
         } else {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
             Team spectator = this.spectatorTeam.get(skyPlayer.getTeam().getName());
             if (!spectator.hasPlayer(p)) {
                 spectator.addPlayer(p);
@@ -163,7 +177,7 @@ public class ScoreUtils {
             if (this.friendlyTeam.containsKey(skyPlayer.getTeam().getName())) {
                 Team team = this.friendlyTeam.get(skyPlayer.getTeam().getName());
                 if (!team.hasPlayer(p)) {
-                    plugin.debug("Setting tag to " + p.getName() + ", TEAM: " + team.getName());
+                    //plugin.debug("Setting tag to " + p.getName() + ", TEAM: " + team.getName());
                     team.addPlayer(p);
                 }
             }
@@ -178,13 +192,13 @@ public class ScoreUtils {
                         if (skyPlayer.getTeam().equals(skyPlayer2.getTeam())) {
                             Team team = this.friendlyTeam.get(skyPlayer.getTeam().getName());
                             if (!team.hasPlayer(p2)) {
-                                plugin.debug("Setting tag to " + p.getName() + ", TEAM: " + team.getName());
+                                //plugin.debug("Setting tag to " + p.getName() + ", TEAM: " + team.getName());
                                 team.addPlayer(p2);
                             }
                         } else {
                             Team team = this.enemyTeam.get(skyPlayer2.getTeam().getName());
                             if (!team.hasPlayer(p2)) {
-                                plugin.debug("Setting tag to " + p.getName() + ", TEAM: " + team.getName());
+                                //plugin.debug("Setting tag to " + p.getName() + ", TEAM: " + team.getName());
                                 team.addPlayer(p2);
                             }
                         }

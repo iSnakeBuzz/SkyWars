@@ -33,13 +33,13 @@ public class CagesManager {
     }
 
     public File getCage(String cageName) {
-        File cage = new File(plugin.getDataFolder(), "Cages/" + cageName + ".schematic");
+        File cage = new File(plugin.getDataFolder(), "Cages/" + cageName + ".snakeschem");
         return getOrDefault(cage);
     }
 
     private File getOrDefault(File file) {
         if (!file.exists()) {
-            return new File(plugin.getDataFolder(), "Cages/default.schematic");
+            return new File(plugin.getDataFolder(), "Cages/default.snakeschem");
         }
         return file;
     }

@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Listeners.Game;
 import com.isnakebuzz.skywars.Calls.Events.SkyWinEvent;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
@@ -30,13 +31,10 @@ public class DeathSystem implements Listener {
     @EventHandler
     public void DeathCheckWin(PlayerDeathEvent e) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            if (plugin.getSkyWarsArena().checkWin()) {
-                if (plugin.getSkyWarsArena().getGamePlayers().isEmpty()) {
-                    Bukkit.getPluginManager().callEvent(new SkyWinEvent(null));
-                    return;
-                }
-                Player winner = plugin.getSkyWarsArena().getGamePlayers().get(0);
-                Bukkit.getPluginManager().callEvent(new SkyWinEvent(plugin.getPlayerManager().getPlayer(winner)));
+            Team team = plugin.getSkyWarsArena().checkWin();
+
+            if (team != null) {
+                Bukkit.getPluginManager().callEvent(new SkyWinEvent(team));
             }
         });
     }
@@ -54,10 +52,11 @@ public class DeathSystem implements Listener {
         }
 
         skyPlayer.setDead(true);
+        skyPlayer.getTeam().checkDead();
         plugin.getScoreBoardAPI2().setScoreBoard(p, ScoreboardType.INGAME, true, true, true);
         plugin.getInventories().setSpectInventory(p);
         plugin.getSkyWarsArena().getGamePlayers().remove(p);
-        
+
         PacketsAPI.sendTitle(
                 plugin,
                 p,
