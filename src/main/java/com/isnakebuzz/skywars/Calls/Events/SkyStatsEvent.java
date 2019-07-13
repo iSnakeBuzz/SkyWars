@@ -1,32 +1,32 @@
 package com.isnakebuzz.skywars.Calls.Events;
 
-import org.bukkit.block.Chest;
-import org.bukkit.entity.Player;
+import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Utils.Enums.StatType;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class ChestOpenEvent extends Event implements Cancellable {
+public class SkyStatsEvent extends Event implements Cancellable {
 
     //Internal usages
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled = false;
 
     //Public usages
-    private Player player;
-    private Chest chest;
+    private SkyPlayer skyPlayer;
+    private StatType statType;
 
-    public ChestOpenEvent(Player player, Chest chest) {
-        this.player = player;
-        this.chest = chest;
+    public SkyStatsEvent(SkyPlayer skyPlayer, StatType statType) {
+        this.skyPlayer = skyPlayer;
+        this.statType = statType;
     }
 
-    public Player getPlayer() {
-        return player;
+    public SkyPlayer getSkyPlayer() {
+        return skyPlayer;
     }
 
-    public Chest getChest() {
-        return chest;
+    public StatType getStatType() {
+        return statType;
     }
 
     public static HandlerList getHandlerList() {
@@ -45,6 +45,6 @@ public class ChestOpenEvent extends Event implements Cancellable {
 
     @Override
     public void setCancelled(boolean cancelled) {
-        this.isCancelled = cancelled;
+        isCancelled = cancelled;
     }
 }

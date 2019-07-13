@@ -9,6 +9,7 @@ import com.isnakebuzz.skywars.Database.Database;
 import com.isnakebuzz.skywars.Inventory.Inventories;
 import com.isnakebuzz.skywars.Kits.KitLoader;
 import com.isnakebuzz.skywars.Listeners.ListenerManager;
+import com.isnakebuzz.skywars.QueueEvents.EventsManager;
 import com.isnakebuzz.skywars.Teams.TeamManager;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Manager.*;
@@ -48,6 +49,7 @@ public final class Main extends JavaPlugin {
     private KitLoader kitLoader;
     private Utils utils;
     private TeamManager teamManager;
+    private EventsManager eventsManager;
 
     public Main() {
         this.teamManager = new TeamManager(this);
@@ -66,6 +68,7 @@ public final class Main extends JavaPlugin {
         this.dataManager = new DataManager(this);
         this.playerManager = new PlayerManager(this);
         this.configUtils = new ConfigUtils();
+        this.eventsManager = new EventsManager(this);
     }
 
     @Override
@@ -84,6 +87,7 @@ public final class Main extends JavaPlugin {
         ConfigCreator.get().setup(this, "Extra/Arena");
         ConfigCreator.get().setup(this, "Extra/Inventory");
         ConfigCreator.get().setup(this, "Extra/MenuCreator");
+        ConfigCreator.get().setup(this, "Extra/QueuedEvents");
 
         Configuration settings = this.getConfig("Settings");
         Configuration database = this.getConfig("Extra/Database");
@@ -217,6 +221,10 @@ public final class Main extends JavaPlugin {
         return teamManager;
     }
 
+    public EventsManager getEventsManager() {
+        return eventsManager;
+    }
+
     public KitLoader getKitLoader() {
         return kitLoader;
     }
@@ -228,7 +236,9 @@ public final class Main extends JavaPlugin {
         this.chestRefillManager = new ChestRefillManager(this);
         this.teamManager = new TeamManager(this);
         this.playerManager = new PlayerManager(this);
+        this.eventsManager = new EventsManager(this);
         this.teamManager.loadTeams();
+        this.getEventsManager().loadQueueEvents();
         Runtime.getRuntime().gc();
     }
 

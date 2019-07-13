@@ -1,10 +1,74 @@
 # # # # # # # # # # # # # # # # # # # # # #
 #                                         #
-#                HubCore                  #
+#              Snake Skywars              #
 #                                         #
 # # # # # # # # # # # # # # # # # # # # # #
 
 MenuCreator:
+  #
+  # Spectator settings menu
+  #
+  SpectatorSettings:
+    title: 'Spectator Settings'
+    rows: 3
+    # This menu need this :)
+    update:
+      enabled: false
+      time: 20 # In ticks!
+    items:
+      speed:
+        # 'ID:DATA'
+        item: '301:0'
+        slot: 11
+        amount: 1
+        name: '&aNo speed'
+        lore: []
+        # Actions: CMD:SAY TEST, OPEN:TEST, SPEED: 0.1 [Speeds types: 0.0-0.9]
+        perms: 'none'
+        action: 'SPEED:0.0'
+      speed1:
+        # 'ID:DATA'
+        item: '305:0'
+        slot: 12
+        amount: 1
+        name: '&aSpeed I'
+        lore: []
+        # Actions: CMD:SAY TEST, OPEN:TEST, SPEED: 0.1 [Speeds types: 0.0-0.9]
+        perms: 'none'
+        action: 'SPEED:0.1'
+      speed2:
+        # 'ID:DATA'
+        item: '309:0'
+        slot: 13
+        amount: 1
+        name: '&aSpeed II'
+        lore: []
+        # Actions: CMD:SAY TEST, OPEN:TEST, SPEED: 0.1 [Speeds types: 0.0-0.9]
+        perms: 'none'
+        action: 'SPEED:0.2'
+      speed3:
+        # 'ID:DATA'
+        item: '317:0'
+        slot: 14
+        amount: 1
+        name: '&aSpeed III'
+        lore: []
+        # Actions: CMD:SAY TEST, OPEN:TEST, SPEED: 0.1 [Speeds types: 0.0-0.9]
+        perms: 'none'
+        action: 'SPEED:0.3'
+      speed4:
+        # 'ID:DATA'
+        item: '313:0'
+        slot: 15
+        amount: 1
+        name: '&aSpeed IV'
+        lore: []
+        # Actions: CMD:SAY TEST, OPEN:TEST, SPEED: 0.1 [Speeds types: 0.0-0.9]
+        perms: 'none'
+        action: 'SPEED:0.4'
+#
+# Votes menus
+#
   GameSettings:
     title: 'Game Settings'
     rows: 3
@@ -224,6 +288,13 @@ MenuCreator:
         - '&7menu'
         perms: 'none'
         action: 'open:GameSettings'
+#
+# These menus are not 100% editable as they contain items that can or are there
+# Don't change that menu names, If you change it the menu will stop working
+#
   Kits:
     title: 'Kits'
     rows: 4
+  Teleporter:
+    title: 'Teleporter'
+    size: 2

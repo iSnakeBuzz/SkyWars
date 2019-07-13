@@ -1,16 +1,16 @@
 package com.isnakebuzz.skywars.Listeners.Game;
 
+import com.isnakebuzz.skywars.Calls.Events.SkyEndEvent;
+import com.isnakebuzz.skywars.Calls.Events.SkyWinEffectEvent;
 import com.isnakebuzz.skywars.Calls.Events.SkyWinEvent;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Tasks.EndTask;
 import com.isnakebuzz.skywars.Tasks.WinEffect;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
-import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -35,12 +35,22 @@ public class GameEvents implements Listener {
         plugin.getListenerManager().unloadIngame();
         plugin.getSkyWarsArena().setGameStatus(GameStatus.FINISH);
         plugin.getListenerManager().loadEnd();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> Bukkit.getPluginManager().callEvent(new SkyEndEvent(e.getTeam())));
+
         new EndTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
 
 
         if (e.getTeam() != null) {
             e.getTeam().addWin();
-            new WinEffect(plugin, e.getTeam()).runTaskTimer(plugin, 0, 20);
+
+            //Win effect event
+            SkyWinEffectEvent effectEvent = new SkyWinEffectEvent();
+
+            if (!effectEvent.isCancelled()) {
+                new WinEffect(plugin, e.getTeam()).runTaskTimer(plugin, 0, 20);
+            }
+
+            Bukkit.getPluginManager().callEvent(effectEvent);
 
             broadCastWin(lang, e);
         }

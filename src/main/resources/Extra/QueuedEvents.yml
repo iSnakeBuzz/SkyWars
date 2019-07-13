@@ -1,0 +1,36 @@
+# # # # # # # # # # # # # # # # # # # # # #
+#                                         #
+#              Snake Skywars              #
+#                                         #
+# # # # # # # # # # # # # # # # # # # # # #
+
+# If you disable this events, use "Enabled: false", and you will be disable all events
+Enabled: true
+
+# never leave empty please =)
+Events:
+  # Event name
+  Refill-1:
+    # Active this at 180 seconds (3 minutes) left after start game
+    time: 180
+    # REFILL, CUSTOM (You need a custom plugin for use this function)
+    event settings:
+      type: 'REFILL'
+      name: 'Refill'
+    placeholder: '&aRefill %queue_time%'
+  Refill-2:
+    # Active this at 180 seconds (3 minutes) left after start game
+    time: 180
+    # REFILL, CUSTOM (You need a custom plugin for use this function)
+    event settings:
+      type: 'REFILL'
+      name: 'Refill'
+    placeholder: '&aRefill %queue_time%'
+  Refill-3:
+    # Active this at 180 seconds (3 minutes) left after start game
+    time: 180
+    # REFILL, CUSTOM (You need a custom plugin for use this function)
+    event settings:
+      type: 'REFILL'
+      name: 'Refill'
+    placeholder: '&aRefill %queue_time%'

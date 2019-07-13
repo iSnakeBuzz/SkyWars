@@ -2,6 +2,7 @@ package com.isnakebuzz.skywars.Inventory.MenuManager;
 
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Player.PlayerUtils;
 import com.isnakebuzz.skywars.Utils.Enums.ChestType;
 import com.isnakebuzz.skywars.Utils.Enums.ProjectileType;
 import com.isnakebuzz.skywars.Utils.Enums.TimeType;
@@ -12,6 +13,8 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +64,18 @@ public class MenuCreator extends Menu {
                 } else if (action.split(":")[0].equalsIgnoreCase("cmd")) {
                     String cmd = "/" + action.split(":")[1];
                     p.chat(cmd);
-                } else if (action.split(":")[0].equalsIgnoreCase("velocity")) {
+                } else if (action.split(":")[0].equalsIgnoreCase("speed")) {
                     float speed = Float.valueOf(action.split(":")[1]);
-                    p.setWalkSpeed(speed);
-                } else if (action.split(":")[0].equalsIgnoreCase("flyspeed")) {
-                    float speed = Float.valueOf(action.split(":")[1]);
-                    p.setFlySpeed(speed);
+                    int speedLevel = Integer.valueOf(action.split("\\.")[1]);
+                    plugin.debug("Player Actual velocity is: " + p.getFlySpeed());
+                    if (speed == 0.0) {
+                        PlayerUtils.removePotionEffect(p, PotionEffectType.SPEED);
+                        p.setFlySpeed(0.1f);
+                    } else {
+                        PlayerUtils.removePotionEffect(p, PotionEffectType.SPEED);
+                        PlayerUtils.addEffects(p, new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, (speedLevel - 1), false, false));
+                        p.setFlySpeed(speed);
+                    }
                 } else if (action.split(":")[0].equalsIgnoreCase("close")) {
                     p.closeInventory();
                 } else if (action.split(":")[0].equalsIgnoreCase("vote")) {

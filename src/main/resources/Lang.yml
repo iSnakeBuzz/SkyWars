@@ -1,3 +1,9 @@
+# # # # # # # # # # # # # # # # # # # # # #
+#                                         #
+#              Snake Skywars              #
+#                                         #
+# # # # # # # # # # # # # # # # # # # # # #
+
 JoinMessage: '&7%player%&e has joined (&b%online%&e/&b%max%&e)!'
 LeaveMessage: '&7%player%&e has quit (&b%online%&e/&b%max%&e)!'
 

@@ -91,6 +91,16 @@ public class PacketsAPI {
         p.setFlying(false);
     }
 
+    public static void setField(String name, Object accessible, Object inject) {
+        Field field = null;
+        try {
+            field = accessible.getClass().getDeclaredField(name);
+            field.setAccessible(true);
+            field.set(accessible, inject);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void connect(Main plugin, Player p, String server) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();

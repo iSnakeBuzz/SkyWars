@@ -2,6 +2,7 @@ package com.isnakebuzz.skywars.Utils.Manager;
 
 import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.QueueEvents.QueueEvent;
 import com.isnakebuzz.skywars.Utils.Holograms.TruenoHologram;
 import com.isnakebuzz.skywars.Utils.Holograms.TruenoHologramAPI;
 import com.isnakebuzz.skywars.Utils.LocUtils;
@@ -24,11 +25,21 @@ public class ChestRefillManager {
 
     private Main plugin;
     private HashMap<Location, TruenoHologram> hologramHashMap;
+    private Boolean actived;
 
     public ChestRefillManager(Main plugin) {
         this.plugin = plugin;
 
         this.hologramHashMap = new HashMap<>();
+        this.actived = false;
+    }
+
+    public void setActived(Boolean actived) {
+        this.actived = actived;
+    }
+
+    public Boolean isActived() {
+        return actived;
     }
 
     public void updateChest(Chest chest, boolean broken, boolean open) {
@@ -38,6 +49,7 @@ public class ChestRefillManager {
         plugin.debug("Broken?: " + broken + " " + locFixed);
         if (plugin.getSkyWarsArena().getCenterChestLocs().contains(LocUtils.stringToLoc(locFixed))
                 || plugin.getSkyWarsArena().getIslandChestLocs().contains(LocUtils.stringToLoc(locFixed))) {
+            if (!this.isActived()) return;
             checkChest(chest, broken);
             playChestAction(chest, open);
             plugin.debug("Checking chest");
@@ -126,15 +138,6 @@ public class ChestRefillManager {
         return empty;
     }
 
-    private List<String> transformTo(List<String> chars) {
-        List<String> transformed = new ArrayList<>();
-        for (String msg : chars) {
-            String timer = plugin.getTimerManager().transformToDate(plugin.getSkyWarsArena().getRefillTimer());
-            transformed.add(c(msg.replaceAll("%timer%", timer)));
-        }
-        return transformed;
-    }
-
     public void reset() {
         for (TruenoHologram hologram : this.hologramHashMap.values()) {
             hologram.delete();
@@ -151,7 +154,12 @@ public class ChestRefillManager {
     }
 
     private String c(String s) {
-        String timer = plugin.getTimerManager().transformToDate(plugin.getSkyWarsArena().getRefillTimer());
+        String timer = "";
+
+        if (plugin.getEventsManager().getActualQueue() != null) {
+            QueueEvent queueEvent = plugin.getEventsManager().getActualQueue();
+            timer = plugin.getTimerManager().transformToDate(queueEvent.getEventTime());
+        }
         return ChatColor.translateAlternateColorCodes('&', s.replaceAll("%timer%", timer));
     }
 

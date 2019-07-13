@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Listeners;
 import com.isnakebuzz.ccsigns.Enums.GameStates;
 import com.isnakebuzz.ccsigns.Enums.PacketType;
 import com.isnakebuzz.ccsigns.utils.SignsAPI;
+import com.isnakebuzz.skywars.Calls.Events.SkyInitsEvent;
 import com.isnakebuzz.skywars.Commands.NormalCommands;
 import com.isnakebuzz.skywars.Commands.SetupCommands;
 import com.isnakebuzz.skywars.Listeners.Commons.WorldEvents;
@@ -47,6 +48,7 @@ public class ListenerManager {
     private ChestUtils chestUtils;
     private SkyStats skyStats;
     private GameItems gameItems;
+    private RefillingChests refillingChests;
 
     //Vote events
     private SoftBlocks softBlocks;
@@ -84,6 +86,9 @@ public class ListenerManager {
 
     public synchronized void loadInitialsEvents() {
         plugin.log(Statics.logPrefix, "Loading listeners..");
+
+        //Loading events after bugs
+        this.refillingChests = new RefillingChests(plugin);
 
         if (Statics.skyMode.equals(GameType.SETUP)) {
             registerListener(new WorldEvents(plugin));
@@ -150,6 +155,10 @@ public class ListenerManager {
         } catch (Exception ex) {
             plugin.log("&c&lError", "Error loading world with name: \"world\"");
         }
+
+        //Calling SkyInitsEvent
+        Bukkit.getPluginManager().callEvent(new SkyInitsEvent(plugin.getSkyWarsArena(), plugin.getPlayerManager()));
+
     }
 
     public void reset() {
@@ -190,6 +199,7 @@ public class ListenerManager {
         registerListener(this.chestUtils);
         registerListener(this.skyStats);
         registerListener(this.gameItems);
+        registerListener(this.refillingChests);
     }
 
     public void unloadIngame() {
@@ -198,6 +208,7 @@ public class ListenerManager {
         unregisterListener(this.chestUtils);
         unregisterListener(this.skyStats);
         unregisterListener(this.gameItems);
+        unregisterListener(this.refillingChests);
     }
 
     public void loadVoteEvents() {

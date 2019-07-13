@@ -2,9 +2,7 @@ package com.isnakebuzz.skywars.Tasks;
 
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
-import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -30,9 +28,13 @@ public class RefillTask extends BukkitRunnable {
             this.cancel();
         }
 
+        /*
         plugin.getChestRefillManager().update(changeTo.replaceAll("%timer%", plugin.getSkyWarsArena().getParsedRefill()));
+         */
 
+        /*
         if (plugin.getSkyWarsArena().getRefillTimer() == 1) {
+
             Configuration arena = plugin.getConfig("Extra/Arena");
             plugin.getSkyWarsArena().setRefillTimer(arena.getInt("Timers.ChestRefill"));
             plugin.getSkyWarsArena().fillChests();
@@ -49,7 +51,7 @@ public class RefillTask extends BukkitRunnable {
             );
         } else {
             plugin.getSkyWarsArena().setRefillTimer(plugin.getSkyWarsArena().getRefillTimer() - 1);
-        }
+        }*/
 
     }
 

@@ -1,7 +1,10 @@
 package com.isnakebuzz.skywars.Listeners.Game;
 
+import com.isnakebuzz.skywars.Calls.Events.SkyStatsEvent;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Utils.Enums.StatType;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,11 +22,21 @@ public class SkyStats implements Listener {
     public void killerStats(PlayerDeathEvent e) {
         if (e.getEntity().getKiller() != null) {
             SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getEntity().getKiller());
-            skyPlayer.addKillStreak();
-            skyPlayer.addKills(1);
+            SkyStatsEvent statsEvent = new SkyStatsEvent(skyPlayer, StatType.KILL);
+            Bukkit.getPluginManager().callEvent(statsEvent);
+
+            if (!statsEvent.isCancelled()) {
+                skyPlayer.addKillStreak();
+                skyPlayer.addKills(1);
+            }
         } else if (e.getEntity().getPlayer() != null) {
             SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getEntity().getPlayer());
-            skyPlayer.addDeaths(1);
+            SkyStatsEvent statsEvent = new SkyStatsEvent(skyPlayer, StatType.DEATH);
+            Bukkit.getPluginManager().callEvent(statsEvent);
+
+            if (!statsEvent.isCancelled()){
+                skyPlayer.addDeaths(1);
+            }
         }
     }
 

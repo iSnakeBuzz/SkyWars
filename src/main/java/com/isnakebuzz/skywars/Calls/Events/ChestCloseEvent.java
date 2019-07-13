@@ -1,10 +1,10 @@
 package com.isnakebuzz.skywars.Calls.Events;
 
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.Inventory;
 
 public class ChestCloseEvent extends Event implements Cancellable {
 
@@ -14,19 +14,19 @@ public class ChestCloseEvent extends Event implements Cancellable {
 
     //Public usages
     private Player player;
-    private Inventory inventory;
+    private Chest chest;
 
-    public ChestCloseEvent(Player player, Inventory inventory) {
+    public ChestCloseEvent(Player player, Chest chest) {
         this.player = player;
-        this.inventory = inventory;
+        this.chest = chest;
     }
 
     public Player getPlayer() {
         return player;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public Chest getChest() {
+        return chest;
     }
 
     public static HandlerList getHandlerList() {

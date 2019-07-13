@@ -1,32 +1,32 @@
 package com.isnakebuzz.skywars.Calls.Events;
 
-import org.bukkit.block.Chest;
-import org.bukkit.entity.Player;
+import com.isnakebuzz.skywars.QueueEvents.QueueEvent;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class ChestOpenEvent extends Event implements Cancellable {
+public class SkyQueueFinishEvent extends Event implements Cancellable {
 
     //Internal usages
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled = false;
 
     //Public usages
-    private Player player;
-    private Chest chest;
+    private QueueEvent queueEvent;
+    private Boolean isFinal;
 
-    public ChestOpenEvent(Player player, Chest chest) {
-        this.player = player;
-        this.chest = chest;
+    public SkyQueueFinishEvent(QueueEvent queueEvent, Boolean isFinal) {
+        super(true);
+        this.queueEvent = queueEvent;
+        this.isFinal = isFinal;
     }
 
-    public Player getPlayer() {
-        return player;
+    public QueueEvent getQueueEvent() {
+        return queueEvent;
     }
 
-    public Chest getChest() {
-        return chest;
+    public boolean isFinal() {
+        return isFinal;
     }
 
     public static HandlerList getHandlerList() {

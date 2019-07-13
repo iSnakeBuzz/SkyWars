@@ -1,29 +1,46 @@
+# # # # # # # # # # # # # # # # # # # # # #
+#                                         #
+#              Snake Skywars              #
+#                                         #
+# # # # # # # # # # # # # # # # # # # # # #
+
 # Modes: LOBBY, SOLO, TEAM, SETUP
 Mode: SETUP
 
 BungeeID: ''
+
+Coins:
+  kill: 5
+  win: 30
 
 # Kit default config..
 No Purchased Logo:
   name: '&c%name%'
   item: '160:14'
   lore:
-  - ''
-  - '&c&lNot purchased yet'
+    - ''
+    - '&c&lNot purchased yet'
 Purchased Logo:
   name: '&a%name%'
   lore:
-  - ''
-  - '&eClick to select!'
+    - ''
+    - '&eClick to select!'
 Selected Logo:
   name: '&a%name%'
   lore:
-  - ''
-  - '&aSELECTED'
+    - ''
+    - '&aSELECTED'
+Spectator Item:
+  name: '&7%player%'
+  lore:
+    - '&7Health: &f%player_health%%'
+    - '&7Food: &f%player_food%%'
+    - ''
+    - '&7Right-click to teleport!'
 
 # If you have more lobbies, add more lobbies below
 Lobbies:
-- 'Lobby'
+  - 'Lobby'
 
 # If you have problems with skywars, please send a server.log with this enable :)
 debug: false

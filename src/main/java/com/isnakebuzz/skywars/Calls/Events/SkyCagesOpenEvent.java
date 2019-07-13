@@ -4,7 +4,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class SkyCagesOpenEvent extends Event implements Cancellable {
+public class SkyCagesOpenEvent extends Event  {
 
     //Internal usages
     private static final HandlerList handlers = new HandlerList();
@@ -24,13 +24,4 @@ public class SkyCagesOpenEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    @Override
-    public boolean isCancelled() {
-        return isCancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancelled) {
-        this.isCancelled = cancelled;
-    }
 }

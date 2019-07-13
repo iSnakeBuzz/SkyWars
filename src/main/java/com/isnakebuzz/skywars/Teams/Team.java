@@ -1,7 +1,10 @@
 package com.isnakebuzz.skywars.Teams;
 
 import com.google.common.collect.Lists;
+import com.isnakebuzz.skywars.Calls.Events.SkyStatsEvent;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Utils.Enums.StatType;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -89,7 +92,12 @@ public class Team {
 
     public void addWin() {
         for (SkyPlayer skyPlayer : getTeamPlayers()) {
-            skyPlayer.addWins(1);
+            SkyStatsEvent statsEvent = new SkyStatsEvent(skyPlayer, StatType.WIN);
+            Bukkit.getPluginManager().callEvent(statsEvent);
+
+            if (!statsEvent.isCancelled()) {
+                skyPlayer.addWins(1);
+            }
         }
     }
 }

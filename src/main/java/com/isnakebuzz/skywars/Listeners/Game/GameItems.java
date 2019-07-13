@@ -1,6 +1,7 @@
 package com.isnakebuzz.skywars.Listeners.Game;
 
 import com.isnakebuzz.skywars.Inventory.MenuManager.MenuCreator;
+import com.isnakebuzz.skywars.Inventory.Others.Teleporter;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
@@ -18,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,14 +42,14 @@ public class GameItems implements Listener {
         Configuration config = plugin.getConfigUtils().getConfig(plugin, "Extra/Inventory");
         Set<String> key;
         try {
-            key = config.getConfigurationSection("Lobby").getKeys(false);
+            key = config.getConfigurationSection("Spectator").getKeys(false);
         } catch (Exception ex) {
             key = null;
         }
         if (key == null | key.size() < 1) return;
         Player p = (Player) e.getWhoClicked();
         for (String item : key) {
-            String path = "Lobby." + item + ".";
+            String path = "Spectator." + item + ".";
             String _item = config.getString(path + "item");
             String _name = config.getString(path + "name");
             List<String> _lore = config.getStringList(path + "lore");
@@ -70,13 +72,13 @@ public class GameItems implements Listener {
         Configuration config = plugin.getConfigUtils().getConfig(plugin, "Extra/Inventory");
         Set<String> key;
         try {
-            key = config.getConfigurationSection("Lobby").getKeys(false);
+            key = config.getConfigurationSection("Spectator").getKeys(false);
         } catch (Exception ex) {
             key = null;
         }
         if (key == null | key.size() < 1) return;
         for (String item : key) {
-            String path = "Lobby." + item + ".";
+            String path = "Spectator." + item + ".";
             String _item = config.getString(path + "item");
             String _name = config.getString(path + "name");
             List<String> _lore = config.getStringList(path + "lore");
@@ -98,10 +100,20 @@ public class GameItems implements Listener {
         e.setCancelled(true);
     }
 
+    @EventHandler
+    public void InventoryDrag(InventoryMoveItemEvent e) {
+        if (e.getInitiator().getHolder() instanceof Player && !plugin.getPlayerManager().getPlayer(((Player) e.getInitiator().getHolder())).isSpectator())
+            return;
+        e.setCancelled(true);
+    }
 
     private void ACTIONS(Player player, String action, String args) {
         if (action.equalsIgnoreCase("menu")) {
-            new MenuCreator(player, plugin, args).open();
+            if (args.equalsIgnoreCase("teleporter")) {
+                new Teleporter(plugin, args, player).open();
+            } else {
+                new MenuCreator(player, plugin, args).open();
+            }
         } else if (action.equalsIgnoreCase("cmd")) {
             String cmd = "/" + args;
             player.chat(cmd);

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.isnakebuzz.ccsigns.Enums.GameStates;
 import com.isnakebuzz.ccsigns.Enums.PacketType;
 import com.isnakebuzz.ccsigns.utils.SignsAPI;
+import com.isnakebuzz.skywars.Calls.Events.SkyStartEvent;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cuboid;
@@ -48,7 +49,6 @@ public class SkyWarsArena {
     private int startingTime;
     private int cageOpens;
     private int endTimer;
-    private int refillTimer;
 
     //Locations
     private Location lobbyLocation;
@@ -79,7 +79,6 @@ public class SkyWarsArena {
         this.startingTime = arena.getInt("Timers.Starting");
         this.cageOpens = arena.getInt("Timers.CageOpens");
         this.endTimer = arena.getInt("Timers.End");
-        this.refillTimer = arena.getInt("Timers.ChestRefill");
 
         this.lobbyLocation = LocUtils.stringToLoc(arena.getString("Lobby"));
         this.gameType = Statics.skyMode;
@@ -164,24 +163,12 @@ public class SkyWarsArena {
         this.cageOpens = cageOpens;
     }
 
-    public int getRefillTimer() {
-        return refillTimer;
-    }
-
-    public String getParsedRefill() {
-        return plugin.getTimerManager().transformToDate(this.refillTimer);
-    }
-
     public List<Location> getCenterChestLocs() {
         return centerChestLocs;
     }
 
     public List<Location> getIslandChestLocs() {
         return islandChestLocs;
-    }
-
-    public void setRefillTimer(int refillTimer) {
-        this.refillTimer = refillTimer;
     }
 
     public int getMaxPlayers() {
@@ -256,6 +243,10 @@ public class SkyWarsArena {
         if (!this.started) {
             if (this.getGamePlayers().size() >= this.getMinPlayers()) {
                 this.started = true;
+
+                //Calling start event
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> Bukkit.getPluginManager().callEvent(new SkyStartEvent(this)));
+
                 return true;
             }
         } else {
@@ -278,7 +269,7 @@ public class SkyWarsArena {
     }
 
     public void fillChests() {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             plugin.debug("Filling chests");
             for (Location loc : this.islandChestLocs) {
                 Block block = loc.getWorld().getBlockAt(loc);

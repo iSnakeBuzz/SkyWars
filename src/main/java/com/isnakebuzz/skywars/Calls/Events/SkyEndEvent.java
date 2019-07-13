@@ -1,18 +1,24 @@
 package com.isnakebuzz.skywars.Calls.Events;
 
-import org.bukkit.event.Cancellable;
+import com.isnakebuzz.skywars.Teams.Team;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class SkyEndEvent extends Event implements Cancellable {
+public class SkyEndEvent extends Event {
 
     //Internal usages
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled = false;
 
     //Public usages
+    private Team team;
 
-    public SkyEndEvent() {
+    public SkyEndEvent(Team team) {
+        this.team = team;
+    }
+
+    public Team getTeam() {
+        return team;
     }
 
     public static HandlerList getHandlerList() {
@@ -24,13 +30,4 @@ public class SkyEndEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    @Override
-    public boolean isCancelled() {
-        return isCancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancelled) {
-        this.isCancelled = cancelled;
-    }
 }

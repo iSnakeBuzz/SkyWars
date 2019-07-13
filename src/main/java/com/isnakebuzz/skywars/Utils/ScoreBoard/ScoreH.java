@@ -2,6 +2,7 @@ package com.isnakebuzz.skywars.Utils.ScoreBoard;
 
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.QueueEvents.QueueEvent;
 import com.isnakebuzz.skywars.Scoreboard.common.EntryBuilder;
 import com.isnakebuzz.skywars.Scoreboard.type.Entry;
 import com.isnakebuzz.skywars.Scoreboard.type.ScoreboardHandler;
@@ -70,8 +71,8 @@ public class ScoreH implements ScoreboardHandler {
                         entries.next(s2);
                     }
                 }
-            } else if (s.contains("<refill>")) {
-                if (plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.INGAME)) {
+            } else if (s.contains("<queue>")) {
+                if (plugin.getEventsManager().isActived() && plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.INGAME)) {
                     if (ChatColor.stripColor(s2).isEmpty()) {
                         entries.blank();
                     } else {
@@ -106,6 +107,14 @@ public class ScoreH implements ScoreboardHandler {
             killStreak = skyPlayer.getKillStreak();
         }
 
+        String eventHolder = "Loading..";
+
+        if (plugin.getEventsManager().getActualQueue() != null) {
+            QueueEvent queueEvent = plugin.getEventsManager().getActualQueue();
+            String parsed_Time = plugin.getTimerManager().transformToDate(queueEvent.getEventTime());
+            eventHolder = queueEvent.getPlaceholder().replaceAll("%queue_time%", parsed_Time);
+        }
+
         return (c(s)
                 //Plugin holders
                 .replaceAll("%version%", plugin.getDescription().getVersion())
@@ -117,7 +126,7 @@ public class ScoreH implements ScoreboardHandler {
                 .replaceAll("%map%", plugin.getSkyWarsArena().getMapName())
                 .replaceAll("%startTime%", String.valueOf(plugin.getSkyWarsArena().getStartingTime()))
                 .replaceAll("%cageOpening%", String.valueOf(plugin.getSkyWarsArena().getCageOpens()))
-                .replaceAll("%refill_timer%", plugin.getSkyWarsArena().getParsedRefill())
+                .replaceAll("%queue_holder%", eventHolder)
 
                 //Player placeholders
                 .replaceAll("%kills%", String.valueOf(killStreak))
@@ -126,7 +135,7 @@ public class ScoreH implements ScoreboardHandler {
                 .replaceAll("<waiting>", "")
                 .replaceAll("<starting>", "")
                 .replaceAll("<cages>", "")
-                .replaceAll("<refill>", "")
+                .replaceAll("<queue>", "")
                 .replaceAll("<ended>", "")
         );
     }

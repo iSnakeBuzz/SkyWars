@@ -1,8 +1,8 @@
 package com.isnakebuzz.skywars.Player;
 
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class PlayerUtils {
 
@@ -26,6 +26,22 @@ public class PlayerUtils {
         if (potionEffects.length != 0) {
             for (PotionEffect potionEffect : potionEffects) {
                 p.addPotionEffect(potionEffect);
+            }
+        }
+    }
+
+    public static void addEffects(Player p, PotionEffect... potionEffects) {
+        if (potionEffects.length != 0) {
+            for (PotionEffect potionEffect : potionEffects) {
+                p.addPotionEffect(potionEffect);
+            }
+        }
+    }
+
+    public static void removePotionEffect(Player p, PotionEffectType... potionEffects) {
+        if (potionEffects.length != 0) {
+            for (PotionEffectType potionEffect : potionEffects) {
+                p.removePotionEffect(potionEffect);
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.isnakebuzz.skywars.Tasks;
 
+import com.isnakebuzz.skywars.Calls.Events.SkyCagesOpenEvent;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
@@ -35,6 +36,9 @@ public class CageOpeningTask extends BukkitRunnable {
         }
 
         if (plugin.getSkyWarsArena().getCageOpens() == 1) {
+            //Calling SkyCagesOPenEvent
+            Bukkit.getPluginManager().callEvent(new SkyCagesOpenEvent());
+
             plugin.getCagesManager().deleteAllCages();
             plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
             plugin.getListenerManager().unloadPrelobby();
@@ -62,7 +66,10 @@ public class CageOpeningTask extends BukkitRunnable {
 
 
             new InGame(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
-            Bukkit.getScheduler().runTask(plugin, () -> new RefillTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20));
+
+            //Bukkit.getScheduler().runTask(plugin, () -> new RefillTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20));
+            // Execute game queue events
+            plugin.getEventsManager().execute();
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getListenerManager().unloadCageOpens(), 20 * 5);
             this.cancel();
