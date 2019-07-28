@@ -59,7 +59,7 @@ public class CageOpeningTask extends BukkitRunnable {
              */
 
             for (Player player : Bukkit.getOnlinePlayers()) {
-                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
+                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player.getUniqueId());
                 plugin.getKitLoader().giveKit(skyPlayer);
                 Bukkit.getScheduler().runTask(plugin, () -> player.setGameMode(GameMode.SURVIVAL));
             }

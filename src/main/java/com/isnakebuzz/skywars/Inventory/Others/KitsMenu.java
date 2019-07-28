@@ -32,7 +32,7 @@ public class KitsMenu extends Menu {
             return;
         }
 
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(this.getPlayer());
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(this.getPlayer().getUniqueId());
 
 
         for (Kit kit : plugin.getKitLoader().getKits()) {
@@ -41,7 +41,7 @@ public class KitsMenu extends Menu {
             if (itemName.equalsIgnoreCase(cItemName)) {
                 boolean purchKit = skyPlayer.getPurchKits().contains(kit.getName());
                 if (purchKit || kit.isDefault()) {
-                    plugin.getPlayerManager().getPlayer(p).setSelectedKit(kit.getName());
+                    plugin.getPlayerManager().getPlayer(p.getUniqueId()).setSelectedKit(kit.getName());
                     p.sendMessage(c(lang.getString("Selected.msg")
                             .replaceAll("%kit%", kit.getName())
                     ));
@@ -66,7 +66,7 @@ public class KitsMenu extends Menu {
 
     private void loadKits() {
         this.inventory().clear();
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(this.getPlayer());
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(this.getPlayer().getUniqueId());
 
         plugin.getUtils().sortKits(skyPlayer, kits -> {
             for (Kit kit : kits) {

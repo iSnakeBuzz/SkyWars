@@ -1,7 +1,6 @@
 package com.isnakebuzz.skywars.Utils;
 
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.List;
@@ -12,12 +11,11 @@ public class Statics {
     public static GameType skyMode;
     public static String baseMode = "MYSQL";
     public static Boolean isFawe = false;
-    public static boolean isCCSings = false;
+    public static boolean SnakeGameQueue = false;
     public static String BungeeID = "none";
     public static String mapName = "none";
     public static int toRestart = 0;
     public static List<String> lobbies;
-
 
     //For setup
     public static String BOT_NAME = "Billy";

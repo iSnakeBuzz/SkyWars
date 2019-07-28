@@ -1,7 +1,5 @@
 package com.isnakebuzz.skywars.Tasks;
 
-import com.isnakebuzz.ccsigns.Enums.PacketType;
-import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Teams.Team;
@@ -9,6 +7,7 @@ import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.Statics;
+import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -54,8 +53,8 @@ public class StartingTask extends BukkitRunnable {
 
             // Teleporting players
             for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
-                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame);
-                //Removed for other things... plugin.debug("Team of Skyplayer: " + skyPlayer.getTeam().getID());
+                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame.getUniqueId());
+                plugin.debug("Team of Skyplayer: " + skyPlayer.getTeam().getID());
                 Location location = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID());
 
                 Bukkit.getScheduler().runTask(plugin, () -> {
@@ -78,8 +77,8 @@ public class StartingTask extends BukkitRunnable {
             plugin.getChestController().load();
             plugin.closeInventory();
             new CageOpeningTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
-            if (Statics.isCCSings) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID), 20 * 3);
+            if (Statics.SnakeGameQueue) {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> GameQueueAPI.removeGame(Statics.BungeeID), 20 * 3);
             }
             this.cancel();
         }

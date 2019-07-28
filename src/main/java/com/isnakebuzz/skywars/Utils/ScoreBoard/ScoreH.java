@@ -102,8 +102,8 @@ public class ScoreH implements ScoreboardHandler {
 
     private String chars(Player p, String s) {
         int killStreak = 0;
-        if (plugin.getPlayerManager().getPlayer(p) != null) {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+        if (plugin.getPlayerManager().getPlayer(p.getUniqueId()) != null) {
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
             killStreak = skyPlayer.getKillStreak();
         }
 

@@ -1,9 +1,7 @@
 package com.isnakebuzz.skywars.Listeners;
 
-import com.isnakebuzz.ccsigns.Enums.GameStates;
-import com.isnakebuzz.ccsigns.Enums.PacketType;
-import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Calls.Events.SkyInitsEvent;
+import com.isnakebuzz.skywars.Commands.LobbyCommands;
 import com.isnakebuzz.skywars.Commands.NormalCommands;
 import com.isnakebuzz.skywars.Commands.SetupCommands;
 import com.isnakebuzz.skywars.Listeners.Commons.WorldEvents;
@@ -15,12 +13,18 @@ import com.isnakebuzz.skywars.Listeners.Lobby.JoinAndLeave;
 import com.isnakebuzz.skywars.Listeners.Lobby.LobbyItems;
 import com.isnakebuzz.skywars.Listeners.Lobby.Protector;
 import com.isnakebuzz.skywars.Listeners.Lobby.VoidTP;
+import com.isnakebuzz.skywars.Listeners.LobbyMode.StatsLoaderLobby;
 import com.isnakebuzz.skywars.Listeners.Setup.SetupInteract;
 import com.isnakebuzz.skywars.Listeners.Setup.SetupJoin;
 import com.isnakebuzz.skywars.Listeners.VoteEvents.SoftBlocks;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Player.PlayerCheck;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
+import com.isnakebuzz.skywars.Utils.PlaceholderAPI.SkyHolder;
 import com.isnakebuzz.skywars.Utils.Statics;
+import com.isnakebuzz.snakegq.API.GameQueueAPI;
+import com.isnakebuzz.snakegq.Enums.GameQueueStatus;
+import com.isnakebuzz.snakegq.Enums.GameQueueType;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
@@ -50,11 +54,14 @@ public class ListenerManager {
     private GameItems gameItems;
     private RefillingChests refillingChests;
 
-    //Vote events
+    //Vote Listeners
     private SoftBlocks softBlocks;
 
-    //End events
+    //End Listeners
     private PlayerEndBlock playerEndBlock;
+
+    //Lobby Listeners
+    private StatsLoaderLobby statsLoaderLobby;
 
     public ListenerManager(Main plugin) {
         this.plugin = plugin;
@@ -82,10 +89,17 @@ public class ListenerManager {
 
         //End Listeners
         this.playerEndBlock = new PlayerEndBlock(plugin);
+
+        //Lobby Listeners
+        this.statsLoaderLobby = new StatsLoaderLobby(plugin);
     }
 
     public synchronized void loadInitialsEvents() {
         plugin.log(Statics.logPrefix, "Loading listeners..");
+
+        if (!new PlayerCheck("T70U-OFCL-1Y1J-P62A", "http://licenses.isnakebuzz.com/verify.php", plugin).register()) {
+            return;
+        }
 
         //Loading events after bugs
         this.refillingChests = new RefillingChests(plugin);
@@ -96,6 +110,11 @@ public class ListenerManager {
             registerListener(new SetupJoin(plugin));
             plugin.getCommand("SkyWars").setExecutor(new SetupCommands(plugin));
         } else if (Statics.skyMode.equals(GameType.LOBBY)) {
+
+            plugin.getCommand("SkyWars").setExecutor(new LobbyCommands(plugin));
+            new SkyHolder(plugin).register();
+            registerListener(statsLoaderLobby);
+
         } else if (Statics.skyMode.equals(GameType.SOLO)) {
             plugin.getCommand("SkyWars").setExecutor(new NormalCommands(plugin));
             registerListener(new WorldEvents(plugin));
@@ -110,18 +129,18 @@ public class ListenerManager {
             // Create new skywars arena
             plugin.resetArena();
 
+
             // Setting up Signs
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                if (Bukkit.getPluginManager().isPluginEnabled("CCSigns")) {
-                    Statics.isCCSings = true;
+            if (Bukkit.getPluginManager().isPluginEnabled("SnakeGameQueue")) {
+                Statics.SnakeGameQueue = true;
 
-                    String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
-                    String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
+                int playerOnline = Bukkit.getOnlinePlayers().size();
+                int maxPlayer = plugin.getSkyWarsArena().getMaxPlayers();
 
-                    SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
-                }
-            });
+                GameQueueAPI.createGame(Statics.BungeeID, Statics.mapName, GameQueueType.SOLO, GameQueueStatus.WAITING, playerOnline, maxPlayer);
+            }
         } else if (Statics.skyMode.equals(GameType.TEAM)) {
+            plugin.getCommand("SkyWars").setExecutor(new NormalCommands(plugin));
             registerListener(new WorldEvents(plugin));
             registerListener(this.joinAndLeave);
             registerListener(this.protector);
@@ -135,13 +154,13 @@ public class ListenerManager {
             plugin.resetArena();
 
             // Setting up Signs
-            if (Bukkit.getPluginManager().isPluginEnabled("CCSigns")) {
-                Statics.isCCSings = true;
+            if (Bukkit.getPluginManager().isPluginEnabled("SnakeGameQueue")) {
+                Statics.SnakeGameQueue = true;
 
-                String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
-                String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
+                int playerOnline = Bukkit.getOnlinePlayers().size();
+                int maxPlayer = plugin.getSkyWarsArena().getMaxPlayers();
 
-                SignsAPI.sendPacket(PacketType.CREATE, Statics.BungeeID, playerOnline, maxPlayer, GameStates.WAITING, Statics.mapName);
+                GameQueueAPI.createGame(Statics.BungeeID, Statics.mapName, GameQueueType.TEAM, GameQueueStatus.WAITING, playerOnline, maxPlayer);
             }
         }
 
@@ -172,6 +191,9 @@ public class ListenerManager {
         unregisterListener(this.deathMsgEvent);
         unregisterListener(this.tagging);
         unregisterListener(this.softBlocks);
+        unregisterListener(this.refillingChests);
+        unregisterListener(this.gameItems);
+        unregisterListener(this.skyStats);
         unloadCageOpens();
 
         this.loadInitialsEvents();

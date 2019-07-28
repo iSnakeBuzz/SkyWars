@@ -37,7 +37,7 @@ public class GameItems implements Listener {
 
     @EventHandler
     public void InventoryInteract(InventoryClickEvent e) {
-        if (!plugin.getPlayerManager().getPlayer(((Player) e.getWhoClicked())).isSpectator()) return;
+        if (!plugin.getPlayerManager().getPlayer(((Player) e.getWhoClicked()).getUniqueId()).isSpectator()) return;
 
         Configuration config = plugin.getConfigUtils().getConfig(plugin, "Extra/Inventory");
         Set<String> key;
@@ -67,7 +67,7 @@ public class GameItems implements Listener {
 
     @EventHandler
     public void InventoryInteract(PlayerInteractEvent e) {
-        if (!plugin.getPlayerManager().getPlayer(e.getPlayer()).isSpectator()) return;
+        if (!plugin.getPlayerManager().getPlayer(e.getPlayer().getUniqueId()).isSpectator()) return;
 
         Configuration config = plugin.getConfigUtils().getConfig(plugin, "Extra/Inventory");
         Set<String> key;
@@ -96,13 +96,13 @@ public class GameItems implements Listener {
 
     @EventHandler
     public void InventoryDrag(InventoryDragEvent e) {
-        if (!plugin.getPlayerManager().getPlayer(((Player) e.getWhoClicked())).isSpectator()) return;
+        if (!plugin.getPlayerManager().getPlayer(((Player) e.getWhoClicked()).getUniqueId()).isSpectator()) return;
         e.setCancelled(true);
     }
 
     @EventHandler
     public void InventoryDrag(InventoryMoveItemEvent e) {
-        if (e.getInitiator().getHolder() instanceof Player && !plugin.getPlayerManager().getPlayer(((Player) e.getInitiator().getHolder())).isSpectator())
+        if (e.getInitiator().getHolder() instanceof Player && !plugin.getPlayerManager().getPlayer(((Player) e.getInitiator().getHolder()).getUniqueId()).isSpectator())
             return;
         e.setCancelled(true);
     }
@@ -121,7 +121,7 @@ public class GameItems implements Listener {
             String lobby = Statics.lobbies.get(new Random().nextInt(Statics.lobbies.size()));
             PacketsAPI.connect(plugin, player, lobby);
         } else if (action.equalsIgnoreCase("playAgain")) {
-            player.sendMessage(c("&cThat function is under development, please wait for new updates :)"));
+            plugin.getSkyWarsArena().SEND_TO_NEW_GAME(player);
         } else {
             player.sendMessage(c("&cThat action does't exist, please contact with administrator :)"));
         }
@@ -132,7 +132,7 @@ public class GameItems implements Listener {
         Player player = e.getPlayer();
         if (player.getItemInHand().getType() == Material.COMPASS && !player.getGameMode().equals(GameMode.ADVENTURE)) {
             e.setCancelled(true);
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 
             //Setup lang.yml
             ConfigurationSection lang = plugin.getConfig("Lang").getConfigurationSection("Compass Tracker");
@@ -152,7 +152,7 @@ public class GameItems implements Listener {
 
                         // Getting player from an entity
                         Player entityPlayer = (Player) entity;
-                        SkyPlayer skyEntity = plugin.getPlayerManager().getPlayer(entityPlayer);
+                        SkyPlayer skyEntity = plugin.getPlayerManager().getPlayer(entityPlayer.getUniqueId());
 
                         // If is the same team, continue searching :)
                         if (skyPlayer.getTeam() == skyEntity.getTeam()) {

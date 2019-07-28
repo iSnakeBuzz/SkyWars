@@ -43,7 +43,7 @@ public class DeathSystem implements Listener {
     public void PlayerDeathEvent(PlayerDeathEvent e) {
         Configuration lang = plugin.getConfig("Lang");
         Player p = e.getEntity().getPlayer();
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
 
         if (p.getHealth() < 0.4) {
             skyPlayer.setSpectator(true);
@@ -72,7 +72,7 @@ public class DeathSystem implements Listener {
     public void VoidKill(final EntityDamageEvent e) {
         if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
             if (e.getCause() == EntityDamageEvent.DamageCause.VOID) {
                 if (skyPlayer.isSpectator()) {
                     p.teleport(plugin.getSkyWarsArena().getLobbyLocation());

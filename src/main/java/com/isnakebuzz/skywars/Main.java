@@ -10,6 +10,8 @@ import com.isnakebuzz.skywars.Inventory.Inventories;
 import com.isnakebuzz.skywars.Kits.KitLoader;
 import com.isnakebuzz.skywars.Listeners.ListenerManager;
 import com.isnakebuzz.skywars.QueueEvents.EventsManager;
+import com.isnakebuzz.skywars.Scheduler.BukkitScheduler;
+import com.isnakebuzz.skywars.Scheduler.IScheduler;
 import com.isnakebuzz.skywars.Teams.TeamManager;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Manager.*;
@@ -50,8 +52,10 @@ public final class Main extends JavaPlugin {
     private Utils utils;
     private TeamManager teamManager;
     private EventsManager eventsManager;
+    private IScheduler scheduler;
 
     public Main() {
+        this.scheduler = new BukkitScheduler(this);
         this.teamManager = new TeamManager(this);
         this.utils = new Utils(this);
         this.kitLoader = new KitLoader(this);
@@ -103,21 +107,17 @@ public final class Main extends JavaPlugin {
         //Loading database
         this.dataManager.loadDatabase();
 
+        //Detecting fawe for instant world restart without lag
+        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
+            Statics.isFawe = true;
+            this.worldRestarting = new FaweUtils(this);
+        }
+
         //Load Listeners
         this.getListenerManager().loadInitialsEvents();
 
         //Loading kits
         this.getKitLoader().loadKits();
-
-        //Detecting fawe for instant world restart without lag
-        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
-            Statics.isFawe = true;
-            this.worldRestarting = new FaweUtils(this);
-
-            if (Statics.toRestart == 0) {
-                getWorldRestarting().restartWorld();
-            }
-        }
     }
 
     @Override
@@ -229,8 +229,13 @@ public final class Main extends JavaPlugin {
         return kitLoader;
     }
 
+    public IScheduler getScheduler() {
+        return scheduler;
+    }
+
     public synchronized void resetArena() {
         this.getChestRefillManager().reset();
+        this.getPlayerManager().reset();
         this.skyWarsArena = new SkyWarsArena(this);
         this.voteManager = new VoteManager(this);
         this.chestRefillManager = new ChestRefillManager(this);
@@ -239,7 +244,13 @@ public final class Main extends JavaPlugin {
         this.eventsManager = new EventsManager(this);
         this.teamManager.loadTeams();
         this.getEventsManager().loadQueueEvents();
+
+        //Clean java memory
         Runtime.getRuntime().gc();
+
+        if (Statics.toRestart == 0) {
+            getWorldRestarting().restartWorld();
+        }
     }
 
     private String c(String c) {

@@ -1,19 +1,19 @@
 package com.isnakebuzz.skywars.Listeners.Lobby;
 
-import com.isnakebuzz.ccsigns.Enums.PacketType;
-import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Tasks.StartingTask;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
+import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -24,6 +24,15 @@ public class JoinAndLeave implements Listener {
 
     public JoinAndLeave(Main plugin) {
         this.plugin = plugin;
+    }
+
+    @EventHandler
+    public void PlayerLogin(AsyncPlayerPreLoginEvent e) {
+        plugin.debug("AsyncPlayerPreLoginEvent " + e.getName());
+
+        if (e.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getDataManager().getDatabase().createPlayer(e.getUniqueId()), 15);
+        }
     }
 
     @EventHandler
@@ -39,7 +48,6 @@ public class JoinAndLeave implements Listener {
         PacketsAPI.sendClean(p);
 
         plugin.getScoreBoardAPI2().setScoreBoard(p, ScoreboardType.PRELOBBY, false, false, false);
-        plugin.getDb().createPlayer(p);
 
         e.setJoinMessage(c(lang.getString("JoinMessage")
                 .replaceAll("%player%", p.getName())
@@ -56,11 +64,9 @@ public class JoinAndLeave implements Listener {
                 lang.getInt("Join Title.FadeOut")
         );
 
-        if (Statics.isCCSings) {
-            String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size());
-            String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
-
-            SignsAPI.sendPacket(PacketType.PLAYERS, Statics.BungeeID, playerOnline, maxPlayer);
+        if (Statics.SnakeGameQueue) {
+            int playerOnline = Bukkit.getOnlinePlayers().size();
+            GameQueueAPI.updatePlayers(Statics.BungeeID, playerOnline);
         }
 
         if (plugin.getSkyWarsArena().checkStart()) {
@@ -78,14 +84,14 @@ public class JoinAndLeave implements Listener {
         plugin.getSkyWarsArena().getGamePlayers().remove(p);
 
         plugin.getScoreBoardAPI2().removeScoreBoard(p);
-        plugin.getDb().savePlayer(p);
 
-        if (Statics.isCCSings) {
-            String playerOnline = String.valueOf(Bukkit.getOnlinePlayers().size() - 1);
-            String maxPlayer = String.valueOf(plugin.getSkyWarsArena().getMaxPlayers());
-
-            SignsAPI.sendPacket(PacketType.PLAYERS, Statics.BungeeID, playerOnline, maxPlayer);
+        if (Statics.SnakeGameQueue) {
+            int playerOnline = Bukkit.getOnlinePlayers().size() - 1;
+            GameQueueAPI.updatePlayers(Statics.BungeeID, playerOnline);
         }
+
+        // Removing player async
+        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(p.getUniqueId()), false);
 
         e.setQuitMessage(c(lang.getString("LeaveMessage")
                 .replaceAll("%player%", p.getName())

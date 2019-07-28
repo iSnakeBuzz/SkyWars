@@ -45,11 +45,11 @@ public class JoinAndQuit implements Listener {
         p.teleport(plugin.getSkyWarsArena().getLobbyLocation());
 
         //setting staff mode to player
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
         skyPlayer.setStaff(true);
 
         // Adding player to stats
-        plugin.getPlayerManager().addPlayer(p, skyPlayer);
+        plugin.getPlayerManager().addPlayer(p.getUniqueId(), skyPlayer);
 
         //Giving scoreboard to player
         plugin.getScoreBoardAPI2().setScoreBoard(p, ScoreboardType.INGAME, true, true, true);
@@ -63,8 +63,8 @@ public class JoinAndQuit implements Listener {
         Player p = e.getPlayer();
 
         // Calling leave death
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
-        if (!skyPlayer.isStaff() || !skyPlayer.isSpectator()){
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+        if (!skyPlayer.isStaff() || !skyPlayer.isSpectator()) {
             PlayerDeathEvent playerDeathEvent = new PlayerDeathEvent(p, new ArrayList<>(), 0, "player left the game");
             Bukkit.getPluginManager().callEvent(playerDeathEvent);
         }
@@ -72,9 +72,9 @@ public class JoinAndQuit implements Listener {
         //Removing player scoreboard
         plugin.getScoreBoardAPI2().removeScoreBoard(p);
 
+        // Removing player async
+        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(p.getUniqueId()), false);
 
-
-        //plugin.getDb().savePlayer(p);
         e.setQuitMessage(null);
     }
 

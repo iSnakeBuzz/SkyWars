@@ -26,6 +26,15 @@ Holograms:
     Name: '&a%timer%'
     Empty: '&cEmpty!'
 
+Shop:
+  Kits:
+    selected: '&eHas been selected &a%kitName%'
+    buyed: '&eHas been purchased &a%kitName%'
+  Cages:
+    selected: '&eHas been selected &a%cageName%'
+    buyed: '&eHas been purchased &a%cageName%'
+  No have coins: "&cYou don't have coins for buy this"
+
 Chest Refilled:
   Title: ''
   SubTitle: '&eAll chests have been refilled!'

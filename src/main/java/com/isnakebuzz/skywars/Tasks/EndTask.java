@@ -1,12 +1,12 @@
 package com.isnakebuzz.skywars.Tasks;
 
-import com.isnakebuzz.ccsigns.Enums.PacketType;
-import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.Statics;
+import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -23,14 +23,12 @@ public class EndTask extends BukkitRunnable {
 
         if (plugin.getSkyWarsArena().getEndTimer() == 2) {
             for (Player online : Bukkit.getOnlinePlayers()) {
-                plugin.getDb().savePlayer(online);
+                plugin.getDb().savePlayer(online.getUniqueId());
             }
         }
 
         if (plugin.getSkyWarsArena().getEndTimer() == 1) {
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                //Move to lobby or other game :)
-            }
+            plugin.getSkyWarsArena().SEND_ALL_TO_NEW_GAME();
         }
 
         if (plugin.getSkyWarsArena().getEndTimer() == 0) {
@@ -47,12 +45,13 @@ public class EndTask extends BukkitRunnable {
                 plugin.getListenerManager().reset();
                 plugin.resetArena();
             } else {
-                if (Statics.isCCSings) {
-                    SignsAPI.sendPacket(PacketType.REMOVE, Statics.BungeeID);
+                if (Statics.SnakeGameQueue) {
+                    GameQueueAPI.removeGame(Statics.BungeeID);
                 }
                 Bukkit.shutdown();
                 return;
             }
+
 
             for (Player online : Bukkit.getOnlinePlayers()) {
                 PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(online, "Rejoined");
@@ -64,6 +63,8 @@ public class EndTask extends BukkitRunnable {
                     }
                     Bukkit.getPluginManager().callEvent(playerJoinEvent);
                 });
+                AsyncPlayerPreLoginEvent asyncPlayerPreLoginEvent = new AsyncPlayerPreLoginEvent(online.getName(), online.getAddress().getAddress(), online.getUniqueId());
+                Bukkit.getPluginManager().callEvent(asyncPlayerPreLoginEvent);
             }
             return;
         }

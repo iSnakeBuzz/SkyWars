@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Chest;
 import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.Enums.ProjectileType;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
@@ -215,15 +216,18 @@ public final class ChestController {
     public void reFillIslands(Chest chest) {
         Inventory inventory = chest.getBlockInventory();
         inventory.clear();
+        Collections.shuffle(this.randomLoc);
         int added = 0;
         int max = 15;
         int min = 5;
-        Collections.shuffle(this.randomLoc);
+
+        int maxItems = new Random().nextInt((max - min) + 1) + min;
+
         for (final ChestItem chestItem : this.getIsland()) {
             if (this.random.nextInt(10) + 1 <= chestItem.getChance()) {
-                inventory.setItem((int) this.randomLoc.get(added), chestItem.getItem());
+                inventory.setItem(this.randomLoc.get(added), chestItem.getItem());
                 // Random int entre 21 25 22.
-                if (added++ >= inventory.getSize() - (new Random().nextInt((max - min) + 1) + min)) {
+                if (added++ >= inventory.getSize() - maxItems) {
                     break;
                 }
             }
@@ -233,15 +237,18 @@ public final class ChestController {
     public void reFillCenter(Chest chest) {
         Inventory inventory = chest.getBlockInventory();
         inventory.clear();
-        int added = 0;
         Collections.shuffle(this.randomLoc);
+        int added = 0;
         int max = 15;
         int min = 5;
-        for (final ChestItem chestItem : this.getCenter()) {
+
+        int maxItems = new Random().nextInt((max - min) + 1) + min;
+
+        for (ChestItem chestItem : this.getCenter()) {
             if (this.random.nextInt(10) + 1 <= chestItem.getChance()) {
-                inventory.setItem((int) this.randomLoc.get(added), chestItem.getItem());
+                inventory.setItem(this.randomLoc.get(added), chestItem.getItem());
                 // Random int entre 21 22 24 18.s
-                if (added++ >= inventory.getSize() - (new Random().nextInt((max - min) + 1) + min)) {
+                if (added++ >= inventory.getSize() - maxItems) {
                     break;
                 }
             }
@@ -318,7 +325,7 @@ public final class ChestController {
                 for (int x = 2; x < item.size(); x++) {
                     if (item.get(x).split(":")[0].equalsIgnoreCase("name")) {
                         ItemMeta itemMeta = itemStack.getItemMeta();
-                        itemMeta.setDisplayName(item.get(x).split(":")[1]);
+                        itemMeta.setDisplayName(c(item.get(x).split(":")[1].replaceAll("_", " ")));
                         itemStack.setItemMeta(itemMeta);
                     } else {
                         itemStack.addUnsafeEnchantment(getEnchant(item.get(x).split(":")[0]),
@@ -390,5 +397,9 @@ public final class ChestController {
             default:
                 return null;
         }
+    }
+
+    private static String c(String s) {
+        return ChatColor.translateAlternateColorCodes('&', s);
     }
 }

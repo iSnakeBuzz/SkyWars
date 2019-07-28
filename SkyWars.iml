@@ -50,9 +50,18 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Maven: CCSigns:ccsigns-api:1.0">
+      <library name="Maven: SnakeGameQueue:snakegq-api:1.0.0-RELEASE">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/Lib/CCSigns-1.0-SNAPSHOT.jar!/" />
+          <root url="jar://$MODULE_DIR$/Lib/SnakeGameQueue-1.0.0-RELEASE.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: SnakeEconomy:snakeeco-api:1.0.0-RELEASE">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/Lib/SnakeEconomy-1.0-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -64,5 +73,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.protocol:ProtocolLib-API:4.4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: cglib:cglib-nodep:3.2.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.executors:BukkitExecutors:1.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: me.clip:placeholderapi:2.10.3" level="project" />
   </component>
 </module>

@@ -7,7 +7,6 @@ import com.isnakebuzz.skywars.Utils.Strings.Alphabet;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +45,7 @@ public class TeamManager {
             for (int i = 1; i <= plugin.getSkyWarsArena().getMaxPlayers(); i++) {
                 String teamName = String.valueOf(i);
                 Team team = new Team(teamName, i);
+                plugin.debug("Creating team: " + team.getName() + ":" + i);
                 this.teamMap.put(teamName, team);
             }
         }
@@ -62,13 +62,13 @@ public class TeamManager {
 
             int i = 1;
             for (Player player : plugin.getSkyWarsArena().getGamePlayers()) {
-                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
+                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player.getUniqueId());
                 Team team = getTeam(i);
 
                 //plugin.debug("Team Size: " + team.getName() + " | " + team.getTeamPlayers().size());
                 //plugin.debug("Math Value: " + team.getTeamPlayers().size() + " < " + this.teamSize + " = " + (team.getTeamPlayers().size() < this.teamSize));
 
-                if (skyPlayer.getTeam() != null){
+                if (skyPlayer.getTeam() != null) {
                     continue;
                 }
 
@@ -84,13 +84,13 @@ public class TeamManager {
 
             }
 
-        } else {
-            int i = 0;
+        } else if (plugin.getSkyWarsArena().getGameType().equals(GameType.SOLO)) {
+            int i = 1;
+            plugin.debug("Initial Team: " + i);
             for (Player player : plugin.getSkyWarsArena().getGamePlayers()) {
-                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
+                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player.getUniqueId());
                 skyPlayer.setTeam(getTeam(i));
-
-                if (this.getTeamMap().size() < plugin.getSkyWarsArena().getGamePlayers().size()) i++;
+                i++;
             }
         }
     }

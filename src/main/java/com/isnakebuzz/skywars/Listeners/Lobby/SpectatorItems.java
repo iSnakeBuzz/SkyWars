@@ -97,7 +97,7 @@ public class SpectatorItems implements Listener {
     @EventHandler
     public void InventoryDrag(InventoryDragEvent e) {
         if (e.getWhoClicked() instanceof Player) {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer((Player) e.getWhoClicked());
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getWhoClicked().getUniqueId());
             if (skyPlayer.isSpectator()) {
                 e.setCancelled(true);
             }

@@ -21,7 +21,7 @@ public class SkyStats implements Listener {
     @EventHandler
     public void killerStats(PlayerDeathEvent e) {
         if (e.getEntity().getKiller() != null) {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getEntity().getKiller());
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getEntity().getKiller().getUniqueId());
             SkyStatsEvent statsEvent = new SkyStatsEvent(skyPlayer, StatType.KILL);
             Bukkit.getPluginManager().callEvent(statsEvent);
 
@@ -30,7 +30,7 @@ public class SkyStats implements Listener {
                 skyPlayer.addKills(1);
             }
         } else if (e.getEntity().getPlayer() != null) {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getEntity().getPlayer());
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getEntity().getPlayer().getUniqueId());
             SkyStatsEvent statsEvent = new SkyStatsEvent(skyPlayer, StatType.DEATH);
             Bukkit.getPluginManager().callEvent(statsEvent);
 

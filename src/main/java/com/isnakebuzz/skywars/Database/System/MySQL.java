@@ -1,10 +1,9 @@
 package com.isnakebuzz.skywars.Database.System;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Calls.Callback;
+import com.isnakebuzz.skywars.Main;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.File;
@@ -36,8 +35,6 @@ public class MySQL {
         HikariConfig config = new HikariConfig();
         config.setPoolName("HypeSpectPool");
 
-        checkFile(database);
-
         if (bool) {
             config.setJdbcUrl("jdbc:mysql://" + ip + ":" + port + "/" + database + "?useSSL=false");
             config.setUsername(username);
@@ -47,6 +44,8 @@ public class MySQL {
             config.addDataSourceProperty("prepStmtCacheSize", "250");
             config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         } else {
+            checkFile(database);
+
             config.setDriverClassName("org.sqlite.JDBC");
             config.setJdbcUrl("jdbc:sqlite:" + plugin.getDataFolder().getPath() + "/" + database + ".db");
             config.setConnectionTestQuery("SELECT 1");
@@ -63,54 +62,48 @@ public class MySQL {
     }
 
     public void preparedUpdate(String sql) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            Connection connection = null;
-            PreparedStatement preparedStatement;
+        Connection connection = null;
+        PreparedStatement preparedStatement;
 
-            try {
-                connection = dataSource.getConnection();
-                preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.executeUpdate();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
-
-        });
+        }
     }
 
     public void preparedQuery(String sql, Callback<ResultSet> callback) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            Connection connection = null;
-            PreparedStatement preparedStatement;
-            ResultSet resultSet = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet = null;
 
-            try {
-                connection = dataSource.getConnection();
-                preparedStatement = connection.prepareStatement(sql);
-                resultSet = preparedStatement.executeQuery();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            } finally {
-                callback.done(resultSet);
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            callback.done(resultSet);
 
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
-
-        });
+        }
     }
 
     private void checkFile(String dbName) {

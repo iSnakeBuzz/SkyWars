@@ -1,12 +1,12 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
+import com.isnakebuzz.skywars.Calls.Events.SkyCheckVotesEvent;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Enums.ChestType;
 import com.isnakebuzz.skywars.Utils.Enums.ProjectileType;
 import com.isnakebuzz.skywars.Utils.Enums.TimeType;
 import com.isnakebuzz.skywars.Utils.Enums.VoteType;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -15,7 +15,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class VoteManager {
 
@@ -46,6 +48,10 @@ public class VoteManager {
     }
 
     public void checkVotes() {
+        SkyCheckVotesEvent skyCheckVotesEvent = new SkyCheckVotesEvent();
+        Bukkit.getPluginManager().callEvent(skyCheckVotesEvent);
+        if (skyCheckVotesEvent.isCancelled()) return;
+
         // bools
         boolean votedTime = false, votedChest = false, votedProjectiles = false;
 
@@ -195,7 +201,7 @@ public class VoteManager {
     }
 
     public boolean setProjectileVote(Player player, ProjectileType projectileType) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player.getUniqueId());
         if (skyPlayer.isProjectile()) return false;
         UUID uuid = player.getUniqueId();
 
@@ -222,7 +228,7 @@ public class VoteManager {
     }
 
     public boolean setTimeVote(Player player, TimeType timeType) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player.getUniqueId());
         if (skyPlayer.isTime()) return false;
         UUID uuid = player.getUniqueId();
 
@@ -249,7 +255,7 @@ public class VoteManager {
     }
 
     public boolean setChestVote(Player player, ChestType chestType) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player.getUniqueId());
         if (skyPlayer.isChest()) return false;
         UUID uuid = player.getUniqueId();
 

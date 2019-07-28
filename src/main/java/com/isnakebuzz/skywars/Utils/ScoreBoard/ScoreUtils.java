@@ -150,7 +150,7 @@ public class ScoreUtils {
     }
 
     public void updatespect(Player p) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
         if (skyPlayer.isStaff()) {
             if (!staffTeam.hasPlayer(p)) {
                 this.staffTeam.addPlayer(p);
@@ -171,7 +171,7 @@ public class ScoreUtils {
     }
 
     public void updateGameTAG(Player p) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
 
         if (!this.spect) {
             if (this.friendlyTeam.containsKey(skyPlayer.getTeam().getName())) {
@@ -185,7 +185,7 @@ public class ScoreUtils {
         }
         for (Player p2 : plugin.getSkyWarsArena().getGamePlayers()) {
             if (!p.equals(p2)) {
-                SkyPlayer skyPlayer2 = plugin.getPlayerManager().getPlayer(p2);
+                SkyPlayer skyPlayer2 = plugin.getPlayerManager().getPlayer(p2.getUniqueId());
                 if (!skyPlayer2.isDead()) {
                     if (this.enemyTeam.containsKey(skyPlayer2.getTeam().getName())) {
 
@@ -217,7 +217,7 @@ public class ScoreUtils {
         }
         for (Player p2 : plugin.getSkyWarsArena().getGamePlayers()) {
             if (p2 != p) {
-                SkyPlayer skyPlayer2 = plugin.getPlayerManager().getPlayer(p2);
+                SkyPlayer skyPlayer2 = plugin.getPlayerManager().getPlayer(p2.getUniqueId());
                 if (!skyPlayer2.isDead()) {
                     if (!this.enemySpot.hasPlayer(p2)) {
                         this.enemySpot.addPlayer(p2);

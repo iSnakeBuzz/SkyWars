@@ -5,16 +5,14 @@ import com.isnakebuzz.skywars.Calls.Callback;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Kits.Kit;
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Player.LobbyPlayer;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
@@ -116,6 +114,34 @@ public class Utils {
         callback.done(finalList);
 
     }
+
+    public void sortKits(LobbyPlayer skyPlayer, Callback<List<Kit>> callback) {
+
+        List<Kit> defaultKits = Lists.newArrayList();
+
+        List<Kit> purchKits = Lists.newArrayList();
+        List<Kit> normalKits = Lists.newArrayList();
+
+        for (Kit kit : plugin.getKitLoader().getKits()) {
+            if (skyPlayer.getPurchKits().contains(kit.getName())) {
+                purchKits.add(kit);
+            } else if (kit.isDefault()) {
+                defaultKits.add(kit);
+            } else {
+                normalKits.add(kit);
+            }
+        }
+
+        List<Kit> finalList = Lists.newArrayList();
+
+        finalList.addAll(defaultKits);
+        finalList.addAll(purchKits);
+        finalList.addAll(normalKits);
+
+        callback.done(finalList);
+
+    }
+
 
     public String c(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);

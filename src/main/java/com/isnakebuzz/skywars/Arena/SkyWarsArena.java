@@ -1,9 +1,6 @@
 package com.isnakebuzz.skywars.Arena;
 
 import com.google.common.collect.Lists;
-import com.isnakebuzz.ccsigns.Enums.GameStates;
-import com.isnakebuzz.ccsigns.Enums.PacketType;
-import com.isnakebuzz.ccsigns.utils.SignsAPI;
 import com.isnakebuzz.skywars.Calls.Events.SkyStartEvent;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Teams.Team;
@@ -11,6 +8,9 @@ import com.isnakebuzz.skywars.Utils.Cuboids.Cuboid;
 import com.isnakebuzz.skywars.Utils.Enums.*;
 import com.isnakebuzz.skywars.Utils.LocUtils;
 import com.isnakebuzz.skywars.Utils.Statics;
+import com.isnakebuzz.snakegq.API.GameQueueAPI;
+import com.isnakebuzz.snakegq.Enums.GameQueueStatus;
+import com.isnakebuzz.snakegq.Enums.GameQueueType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -177,23 +177,19 @@ public class SkyWarsArena {
 
     public void setGameStatus(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
-        if (Statics.isCCSings) {
-            if (Bukkit.getOnlinePlayers().size() >= this.getMaxPlayers()) {
-                SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.FULL);
-                return;
-            }
+        if (Statics.SnakeGameQueue) {
             switch (gameStatus) {
                 case WAITING:
-                    SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.WAITING);
+                    GameQueueAPI.updateStatus(Statics.BungeeID, GameQueueStatus.WAITING);
                     break;
                 case STARTING:
-                    SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.STARTING);
+                    GameQueueAPI.updateStatus(Statics.BungeeID, GameQueueStatus.STARTING);
                     break;
                 case CAGEOPENING:
-                    SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.INGAME);
+                    GameQueueAPI.updateStatus(Statics.BungeeID, GameQueueStatus.CAGEOPENING);
                     break;
                 case FINISH:
-                    SignsAPI.sendPacket(PacketType.STATE, Statics.BungeeID, GameStates.RESTARTING);
+                    GameQueueAPI.updateStatus(Statics.BungeeID, GameQueueStatus.FINISH);
                     break;
             }
         }
@@ -299,6 +295,25 @@ public class SkyWarsArena {
 
     public GameType getGameType() {
         return gameType;
+    }
+
+    public void SEND_ALL_TO_NEW_GAME() {
+        if (this.getGameType().equals(GameType.TEAM)) {
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                GameQueueAPI.nextGame(online, GameQueueType.TEAM);
+            }
+        } else {
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                GameQueueAPI.nextGame(online, GameQueueType.SOLO);
+            }
+        }
+    }
+
+    public void SEND_TO_NEW_GAME(Player player) {
+        if (this.getGameType().equals(GameType.TEAM))
+            GameQueueAPI.nextGame(player, GameQueueType.TEAM);
+        else
+            GameQueueAPI.nextGame(player, GameQueueType.SOLO);
     }
 
     public void removeLobby() {

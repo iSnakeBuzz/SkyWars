@@ -1,7 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.DeathMessages;
 
 import com.isnakebuzz.skywars.Main;
-import org.bukkit.entity.Chicken;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -11,7 +10,6 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Tagging implements Listener {
 
@@ -52,12 +50,13 @@ public class Tagging implements Listener {
             final LivingEntity damaged = (LivingEntity) e.getEntity();
             plugin.getSkyWarsArena().getLastDamager().put(damaged, attacker);
             plugin.getSkyWarsArena().getLastDmgTime().put(damaged, 0);
-        } else if (e.getEntity() != null && e.getDamager() != null && e.getDamager() instanceof Projectile && e.getDamager().getCustomName() != null) {
-            for (final LivingEntity en : e.getDamager().getWorld().getLivingEntities()) {
+        } else if (e.getEntity() != null && e.getDamager() != null && e.getDamager() instanceof Projectile && e.getDamager().getCustomName() != null && e.getEntity() instanceof LivingEntity) {
+            for (LivingEntity en : e.getDamager().getWorld().getLivingEntities()) {
                 if (en.getEntityId() == Integer.parseInt(e.getDamager().getCustomName())) {
-                    final LivingEntity damaged2 = (LivingEntity) e.getEntity();
+                    LivingEntity damaged2 = (LivingEntity) e.getEntity();
                     plugin.getSkyWarsArena().getLastDamager().put(damaged2, en);
                     plugin.getSkyWarsArena().getLastDmgTime().put(damaged2, 0);
+                    break;
                 }
             }
         }

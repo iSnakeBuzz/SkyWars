@@ -52,6 +52,15 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+                <configuration>
+                    <locales>es,en</locales>
+                </configuration>
+            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -60,6 +69,18 @@
             </resource>
         </resources>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <repositories>
 
@@ -75,6 +96,11 @@
             <id>dmulloy2-repo</id>
             <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
         </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
@@ -117,14 +143,23 @@
             <systemPath>${project.basedir}/Lib/FastAsyncWorldEdit-bukkit.jar</systemPath>
         </dependency>
 
+
         <dependency>
-            <groupId>CCSigns</groupId>
-            <artifactId>ccsigns-api</artifactId>
+            <groupId>SnakeGameQueue</groupId>
+            <artifactId>snakegq-api</artifactId>
             <scope>system</scope>
-            <version>1.0</version>
-            <systemPath>${project.basedir}/Lib/CCSigns-1.0-SNAPSHOT.jar</systemPath>
+            <version>1.0.0-RELEASE</version>
+            <systemPath>${project.basedir}/Lib/SnakeGameQueue-1.0.0-RELEASE.jar</systemPath>
         </dependency>
 
+
+        <dependency>
+            <groupId>SnakeEconomy</groupId>
+            <artifactId>snakeeco-api</artifactId>
+            <scope>system</scope>
+            <version>1.0.0-RELEASE</version>
+            <systemPath>${project.basedir}/Lib/SnakeEconomy-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>jnbt</groupId>
@@ -146,6 +181,13 @@
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.4.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
 

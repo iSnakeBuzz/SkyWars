@@ -27,7 +27,7 @@ public class SpectatorEvents implements Listener {
     @EventHandler
     public void putIn(PlayerInteractAtEntityEvent e) throws NoSuchFieldException, IllegalAccessException {
         Player p = e.getPlayer();
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer());
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer().getUniqueId());
         if (skyPlayer.isSpectator()) {
             Configuration lang = plugin.getConfig("Lang");
 
@@ -53,7 +53,7 @@ public class SpectatorEvents implements Listener {
     public void outSpectator(PlayerToggleSneakEvent e) throws NoSuchFieldException, IllegalAccessException {
         if (!e.isSneaking()) return;
 
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer());
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer().getUniqueId());
         if (skyPlayer.isSpectator()) {
             if (skyPlayer.isSpectating()) {
                 Configuration lang = plugin.getConfig("Lang");
@@ -77,7 +77,7 @@ public class SpectatorEvents implements Listener {
 
     @EventHandler
     public void spectatorInteract(PlayerInteractEvent e) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer());
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer().getUniqueId());
         if (skyPlayer.isSpectator()) {
             e.setCancelled(true);
         }
@@ -86,7 +86,7 @@ public class SpectatorEvents implements Listener {
     @EventHandler
     public void EntityDamageEvent(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player) {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer((Player) e.getEntity());
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(((Player) e.getEntity()).getUniqueId());
             if (skyPlayer.isSpectator()) {
                 e.setCancelled(true);
             }
@@ -95,7 +95,7 @@ public class SpectatorEvents implements Listener {
 
     @EventHandler
     public void PlayerPickUp(PlayerPickupItemEvent e) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer());
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer().getUniqueId());
         if (skyPlayer.isSpectator()) {
             e.setCancelled(true);
         }
@@ -104,7 +104,7 @@ public class SpectatorEvents implements Listener {
     @EventHandler
     public void EntityDamageByEntity(EntityDamageByEntityEvent e) {
         if (e.getDamager() instanceof Player) {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer((Player) e.getDamager());
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getDamager().getUniqueId());
             if (skyPlayer.isSpectator()) {
                 e.setCancelled(true);
             }
@@ -113,7 +113,7 @@ public class SpectatorEvents implements Listener {
 
     @EventHandler
     public void PlayerDrops(PlayerDropItemEvent e) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer());
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer().getUniqueId());
         if (skyPlayer.isSpectator()) {
             e.setCancelled(true);
         }
@@ -121,7 +121,7 @@ public class SpectatorEvents implements Listener {
 
     @EventHandler
     public void PlayerBreak(BlockBreakEvent e) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer());
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer().getUniqueId());
         if (skyPlayer.isSpectator()) {
             e.setCancelled(true);
         }
@@ -129,7 +129,7 @@ public class SpectatorEvents implements Listener {
 
     @EventHandler
     public void PlayerPlace(BlockPlaceEvent e) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer());
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getPlayer().getUniqueId());
         if (skyPlayer.isSpectator()) {
             e.setCancelled(true);
         }
@@ -138,7 +138,7 @@ public class SpectatorEvents implements Listener {
     @EventHandler
     public void FoodLevelChange(FoodLevelChangeEvent e) {
         if (e.getEntity() instanceof Player) {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer((Player) e.getEntity());
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getEntity().getUniqueId());
             if (skyPlayer.isSpectator()) {
                 e.setCancelled(true);
             }

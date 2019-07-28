@@ -56,7 +56,7 @@ public class Teleporter extends Menu {
         ConfigurationSection settings = plugin.getConfig("Settings").getConfigurationSection("Spectator Item");
 
         for (Player player : plugin.getSkyWarsArena().getGamePlayers()) {
-            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player);
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player.getUniqueId());
 
             if (skyPlayer.isSpectator()) {
                 continue;
