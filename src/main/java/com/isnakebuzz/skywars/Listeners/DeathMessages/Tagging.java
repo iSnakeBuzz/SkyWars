@@ -29,16 +29,18 @@ public class Tagging implements Listener {
     }
 
     public static void increaseTimers() {
-        final ArrayList<LivingEntity> entities = new ArrayList<LivingEntity>(plugin.getSkyWarsArena().getLastDmgTime().keySet());
-        for (final LivingEntity e : entities) {
-            if (e.isDead() || !e.isValid()) {
-                plugin.getSkyWarsArena().getLastDmgTime().remove(e);
-                plugin.getSkyWarsArena().getLastDamager().remove(e);
-            } else if (plugin.getSkyWarsArena().getLastDmgTime().get(e) <= 10) {
-                plugin.getSkyWarsArena().getLastDmgTime().put(e, plugin.getSkyWarsArena().getLastDmgTime().get(e) - 1);
-            } else {
-                plugin.getSkyWarsArena().getLastDmgTime().remove(e);
-                plugin.getSkyWarsArena().getLastDamager().remove(e);
+        if (plugin.getSkyWarsArena().getLastDmgTime().size() >= 1) {
+            final ArrayList<LivingEntity> entities = new ArrayList<>(plugin.getSkyWarsArena().getLastDmgTime().keySet());
+            for (final LivingEntity e : entities) {
+                if (e.isDead() || !e.isValid()) {
+                    plugin.getSkyWarsArena().getLastDmgTime().remove(e);
+                    plugin.getSkyWarsArena().getLastDamager().remove(e);
+                } else if (plugin.getSkyWarsArena().getLastDmgTime().get(e) <= 10) {
+                    plugin.getSkyWarsArena().getLastDmgTime().put(e, plugin.getSkyWarsArena().getLastDmgTime().get(e) - 1);
+                } else {
+                    plugin.getSkyWarsArena().getLastDmgTime().remove(e);
+                    plugin.getSkyWarsArena().getLastDamager().remove(e);
+                }
             }
         }
     }

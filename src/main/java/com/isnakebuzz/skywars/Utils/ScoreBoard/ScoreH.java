@@ -8,6 +8,7 @@ import com.isnakebuzz.skywars.Scoreboard.type.Entry;
 import com.isnakebuzz.skywars.Scoreboard.type.ScoreboardHandler;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
+import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
@@ -102,7 +103,7 @@ public class ScoreH implements ScoreboardHandler {
 
     private String chars(Player p, String s) {
         int killStreak = 0;
-        if (plugin.getPlayerManager().getPlayer(p.getUniqueId()) != null) {
+        if (plugin.getPlayerManager().containsPlayer(p.getUniqueId())) {
             SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
             killStreak = skyPlayer.getKillStreak();
         }
@@ -121,12 +122,14 @@ public class ScoreH implements ScoreboardHandler {
 
                 //Player and other things
                 .replaceAll("%date%", getDate())
+                .replaceAll("%server%", Statics.BungeeID)
                 .replaceAll("%online%", String.valueOf(plugin.getSkyWarsArena().getGamePlayers().size()))
                 .replaceAll("%maxPlayers%", String.valueOf(plugin.getSkyWarsArena().getMaxPlayers()))
                 .replaceAll("%map%", plugin.getSkyWarsArena().getMapName())
                 .replaceAll("%startTime%", String.valueOf(plugin.getSkyWarsArena().getStartingTime()))
                 .replaceAll("%cageOpening%", String.valueOf(plugin.getSkyWarsArena().getCageOpens()))
                 .replaceAll("%queue_holder%", eventHolder)
+                .replaceAll("%chestType%", plugin.getSkyWarsArena().getChestType().getName())
 
                 //Player placeholders
                 .replaceAll("%kills%", String.valueOf(killStreak))

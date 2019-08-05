@@ -50,7 +50,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Maven: SnakeGameQueue:snakegq-api:1.0.0-RELEASE">
+      <library name="Maven: SnakeGameQueue:snakegq-api:1.0.1-RELEASE">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/Lib/SnakeGameQueue-1.0.0-RELEASE.jar!/" />
         </CLASSES>
@@ -74,5 +74,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: cglib:cglib-nodep:3.2.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.executors:BukkitExecutors:1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: me.clip:placeholderapi:2.10.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.commons:commons-collections4:4.4" level="project" />
   </component>
 </module>

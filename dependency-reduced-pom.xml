@@ -4,7 +4,7 @@
   <groupId>SkyWars</groupId>
   <artifactId>SkyWars</artifactId>
   <name>SkyWars</name>
-  <version>1.0.0.0</version>
+  <version>1.0.0.2</version>
   <description>SkyWars Similar to HyPixel</description>
   <url>https://www.isnakebuzz.com/</url>
   <build>
@@ -118,6 +118,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+      <version>4.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
       <version>1.8.8-R0.1-SNAPSHOT</version>
@@ -141,7 +147,7 @@
     <dependency>
       <groupId>SnakeGameQueue</groupId>
       <artifactId>snakegq-api</artifactId>
-      <version>1.0.0-RELEASE</version>
+      <version>1.0.1-RELEASE</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/Lib/SnakeGameQueue-1.0.0-RELEASE.jar</systemPath>
     </dependency>

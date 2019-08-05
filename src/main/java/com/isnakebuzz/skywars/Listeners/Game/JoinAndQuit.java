@@ -64,7 +64,10 @@ public class JoinAndQuit implements Listener {
 
         // Calling leave death
         SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
-        if (!skyPlayer.isStaff() || !skyPlayer.isSpectator()) {
+        if (!skyPlayer.isSpectator()) {
+            PlayerDeathEvent playerDeathEvent = new PlayerDeathEvent(p, new ArrayList<>(), 0, "player left the game");
+            Bukkit.getPluginManager().callEvent(playerDeathEvent);
+        } else if (!skyPlayer.isStaff()) {
             PlayerDeathEvent playerDeathEvent = new PlayerDeathEvent(p, new ArrayList<>(), 0, "player left the game");
             Bukkit.getPluginManager().callEvent(playerDeathEvent);
         }

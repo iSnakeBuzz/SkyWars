@@ -51,6 +51,7 @@ public class Team {
 
     public String getCage() {
         if (this.getTeamPlayers().isEmpty()) return "default";
+        if (this.getTeamPlayers().size() == 1) return this.getTeamPlayers().get(0).getCageName();
         SkyPlayer random = this.getTeamPlayers().get(new Random().nextInt(this.getTeamPlayers().size()));
         return random.getCageName();
     }

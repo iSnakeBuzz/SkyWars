@@ -44,6 +44,11 @@ public class CageOpeningTask extends BukkitRunnable {
             plugin.getListenerManager().unloadPrelobby();
             plugin.getSkyWarsArena().fillChests();
 
+            //Loading player names
+            for (Player gamePlayer : plugin.getSkyWarsArena().getGamePlayers()) {
+                plugin.getPlayerManager().getPlayer(gamePlayer.getUniqueId()).setName(gamePlayer.getName());
+            }
+
             for (String msgs : config.getStringList("Banner")) {
                 String message = c(msgs);
                 if (message.contains("%center%")) {

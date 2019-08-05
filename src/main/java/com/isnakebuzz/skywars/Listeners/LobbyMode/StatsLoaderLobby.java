@@ -1,12 +1,15 @@
 package com.isnakebuzz.skywars.Listeners.LobbyMode;
 
 import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.Player.LobbyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -38,9 +41,25 @@ public class StatsLoaderLobby implements Listener {
     }
 
     @EventHandler
+    public void checkFreeKits(PlayerJoinEvent e) {
+        plugin.getScheduler().runAsync(() -> {
+            LobbyPlayer lobbyPlayer = plugin.getPlayerManager().getLbPlayer(e.getPlayer().getUniqueId());
+
+            plugin.getKitLoader().getDefaultKits().stream()
+                    .filter(kit -> !lobbyPlayer.getPurchKits().contains(kit.getName()))
+                    .forEach(kit -> lobbyPlayer.getPurchKits().add(kit.getName()));
+
+            if (!lobbyPlayer.getPurchCages().contains("default")) {
+                lobbyPlayer.getPurchCages().add("default");
+            }
+        }, false);
+    }
+
+    @EventHandler
     public void PlayerQuitEvent(PlayerQuitEvent e) {
         // Removing player async
-        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(e.getPlayer().getUniqueId()), false);
+        Player player = e.getPlayer();
+        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(player.getUniqueId()), false);
     }
 
     private String c(String s) {

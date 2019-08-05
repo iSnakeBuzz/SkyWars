@@ -11,6 +11,7 @@ import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -39,9 +40,9 @@ public class GameEvents implements Listener {
 
         new EndTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
 
-
         if (e.getTeam() != null) {
             e.getTeam().addWin();
+            e.getTeam().getTeamPlayers().stream().filter(SkyPlayer::isOnline).forEach(skyPlayer -> skyPlayer.addCoins(plugin.getConfig("Settings").getInt("Coins.wins")));
 
             //Win effect event
             SkyWinEffectEvent effectEvent = new SkyWinEffectEvent();
@@ -54,6 +55,11 @@ public class GameEvents implements Listener {
 
             broadCastWin(lang, e);
         }
+
+        // Saving player after add win  :)
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            plugin.getDb().savePlayer(online.getUniqueId());
+        }
     }
 
     public void broadCastWin(Configuration lang, SkyWinEvent e) {
@@ -62,9 +68,9 @@ public class GameEvents implements Listener {
 
         for (int i = 0; i < e.getTeam().getTeamPlayers().size(); i++) {
             if (i == 0) {
-                stringBuilder.append(e.getTeam().getTeamPlayers().get(i).getPlayer().getDisplayName());
+                stringBuilder.append(e.getTeam().getTeamPlayers().get(i).getName());
             } else {
-                String toAdd = ", " + e.getTeam().getTeamPlayers().get(i).getPlayer().getDisplayName();
+                String toAdd = ", " + e.getTeam().getTeamPlayers().get(i).getName();
                 stringBuilder.append(toAdd);
             }
         }
@@ -96,7 +102,7 @@ public class GameEvents implements Listener {
 
     public String getName(SkyPlayer skyPlayer) {
         if (skyPlayer != null) {
-            return skyPlayer.getPlayer().getName();
+            return skyPlayer.getName();
         } else {
             return "none";
         }

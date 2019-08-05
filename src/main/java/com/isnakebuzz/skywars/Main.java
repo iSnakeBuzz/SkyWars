@@ -19,6 +19,7 @@ import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.skywars.Utils.Utils;
 import com.isnakebuzz.skywars.Utils.World.FaweUtils;
+import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -123,6 +124,9 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         this.dataManager.getDatabase().closeConnection();
+        if (Statics.SnakeGameQueue) {
+            GameQueueAPI.removeGame(Statics.BungeeID);
+        }
     }
 
     public void log(String logger, String log) {

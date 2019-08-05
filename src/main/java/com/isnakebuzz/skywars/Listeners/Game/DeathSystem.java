@@ -6,7 +6,6 @@ import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
-import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -66,11 +65,14 @@ public class DeathSystem implements Listener {
                 lang.getInt("You Died.Stay"),
                 lang.getInt("You Died.FadeOut")
         );
+
+
     }
 
     @EventHandler
     public void VoidKill(final EntityDamageEvent e) {
         if (e.getEntity() instanceof Player) {
+            if (e.getEntity() == null) return;
             Player p = (Player) e.getEntity();
             SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
             if (e.getCause() == EntityDamageEvent.DamageCause.VOID) {

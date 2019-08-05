@@ -1,13 +1,12 @@
 package com.isnakebuzz.skywars.Kits;
 
+import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Inventory.KitInventory;
-import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import org.apache.commons.collections4.CollectionUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -77,6 +76,12 @@ public class KitLoader {
 
     public Collection<Kit> getKits() {
         return this.kitMap.values();
+    }
+
+    public Collection<Kit> getDefaultKits() {
+        Collection<Kit> kits = Lists.newArrayList(this.kitMap.values());
+        CollectionUtils.filter(kits, Kit::isDefault);
+        return kits;
     }
 
     private File[] getKitsFiles() {

@@ -4,6 +4,7 @@ import com.isnakebuzz.skywars.Calls.Events.SkyInitsEvent;
 import com.isnakebuzz.skywars.Commands.LobbyCommands;
 import com.isnakebuzz.skywars.Commands.NormalCommands;
 import com.isnakebuzz.skywars.Commands.SetupCommands;
+import com.isnakebuzz.skywars.Listeners.Commons.SnakeGameQueue;
 import com.isnakebuzz.skywars.Listeners.Commons.WorldEvents;
 import com.isnakebuzz.skywars.Listeners.DeathMessages.DeathMsgEvent;
 import com.isnakebuzz.skywars.Listeners.DeathMessages.Tagging;
@@ -53,6 +54,7 @@ public class ListenerManager {
     private SkyStats skyStats;
     private GameItems gameItems;
     private RefillingChests refillingChests;
+    private SnakeGameQueue snakeGameQueue;
 
     //Vote Listeners
     private SoftBlocks softBlocks;
@@ -83,6 +85,7 @@ public class ListenerManager {
         this.chestUtils = new ChestUtils(plugin);
         this.skyStats = new SkyStats(plugin);
         this.gameItems = new GameItems(plugin);
+        this.snakeGameQueue = new SnakeGameQueue(plugin);
 
         //Vote listeners
         this.softBlocks = new SoftBlocks(plugin);
@@ -138,6 +141,8 @@ public class ListenerManager {
                 int maxPlayer = plugin.getSkyWarsArena().getMaxPlayers();
 
                 GameQueueAPI.createGame(Statics.BungeeID, Statics.mapName, GameQueueType.SOLO, GameQueueStatus.WAITING, playerOnline, maxPlayer);
+
+                registerListener(this.snakeGameQueue);
             }
         } else if (Statics.skyMode.equals(GameType.TEAM)) {
             plugin.getCommand("SkyWars").setExecutor(new NormalCommands(plugin));
@@ -161,6 +166,7 @@ public class ListenerManager {
                 int maxPlayer = plugin.getSkyWarsArena().getMaxPlayers();
 
                 GameQueueAPI.createGame(Statics.BungeeID, Statics.mapName, GameQueueType.TEAM, GameQueueStatus.WAITING, playerOnline, maxPlayer);
+                registerListener(this.snakeGameQueue);
             }
         }
 
@@ -194,6 +200,7 @@ public class ListenerManager {
         unregisterListener(this.refillingChests);
         unregisterListener(this.gameItems);
         unregisterListener(this.skyStats);
+        unregisterListener(this.snakeGameQueue);
         unloadCageOpens();
 
         this.loadInitialsEvents();
@@ -229,7 +236,6 @@ public class ListenerManager {
         unregisterListener(this.gameEvents);
         unregisterListener(this.chestUtils);
         unregisterListener(this.skyStats);
-        unregisterListener(this.gameItems);
         unregisterListener(this.refillingChests);
     }
 

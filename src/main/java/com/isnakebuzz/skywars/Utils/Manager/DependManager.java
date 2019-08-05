@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Calls.Callback;
+import com.isnakebuzz.skywars.Main;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -24,6 +24,7 @@ public class DependManager {
         try {
             this.downloadDependency(new URL("http://central.maven.org/maven2/com/zaxxer/HikariCP/3.3.1/HikariCP-3.3.1.jar"), "HikariCP");
             this.downloadDependency(new URL("http://central.maven.org/maven2/org/slf4j/slf4j-api/1.8.0-beta4/slf4j-api-1.8.0-beta4.jar"), "slf4j");
+            this.downloadDependency(new URL("https://repo1.maven.org/maven2/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar"), "Commons-collections");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

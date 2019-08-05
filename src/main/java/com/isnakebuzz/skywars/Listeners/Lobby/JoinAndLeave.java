@@ -15,7 +15,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.UUID;
 
 
 public class JoinAndLeave implements Listener {
@@ -30,13 +33,29 @@ public class JoinAndLeave implements Listener {
     public void PlayerLogin(AsyncPlayerPreLoginEvent e) {
         plugin.debug("AsyncPlayerPreLoginEvent " + e.getName());
 
+        if (plugin.getSkyWarsArena().getGamePlayers().size() >= plugin.getSkyWarsArena().getMaxPlayers()) {
+            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "El servidor se encuentra lleno");
+            return;
+        }
+
         if (e.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getDataManager().getDatabase().createPlayer(e.getUniqueId()), 15);
         }
     }
 
     @EventHandler
+    public void preventBugs(PlayerLoginEvent e) {
+        if (plugin.getSkyWarsArena().getGamePlayers().size() >= plugin.getSkyWarsArena().getMaxPlayers()) {
+            e.disallow(PlayerLoginEvent.Result.KICK_FULL, "El servidor actualmente se encuentra lleno :(");
+        }
+    }
+
+    @EventHandler
     public void PlayerJoinEvent(PlayerJoinEvent e) {
+        if (plugin.getSkyWarsArena().getGamePlayers().size() > plugin.getSkyWarsArena().getMaxPlayers()) {
+            plugin.getSkyWarsArena().SEND_TO_NEW_GAME(e.getPlayer());
+        }
+
         plugin.debug("Player joining timings.");
         Long currentTimeMillis = System.currentTimeMillis();
         Configuration lang = plugin.getConfig("Lang");
@@ -84,14 +103,19 @@ public class JoinAndLeave implements Listener {
         plugin.getSkyWarsArena().getGamePlayers().remove(p);
 
         plugin.getScoreBoardAPI2().removeScoreBoard(p);
+        plugin.getVoteManager().removeVoteFrom(e.getPlayer());
 
         if (Statics.SnakeGameQueue) {
             int playerOnline = Bukkit.getOnlinePlayers().size() - 1;
             GameQueueAPI.updatePlayers(Statics.BungeeID, playerOnline);
         }
 
+
+        // Saving uuid in momentaneus ram..
+        UUID uuid = p.getUniqueId();
+
         // Removing player async
-        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(p.getUniqueId()), false);
+        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(uuid), false);
 
         e.setQuitMessage(c(lang.getString("LeaveMessage")
                 .replaceAll("%player%", p.getName())

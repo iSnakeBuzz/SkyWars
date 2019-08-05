@@ -1,9 +1,9 @@
 name: 'SkyWars'
-version: 1.0.0.0
+version: 1.0.0.2
 main: com.isnakebuzz.skywars.Main
 authors: ['iSnakeBuzz_']
 softdepend: ['FastAsyncWorldEdit', 'SnakeGameQueue', 'SnakeEconomy', 'ProtocolLib', 'PlaceholderAPI']
-description: 'SkyWars Similar to HyPixel'
+description: 'SkyWars Similar to Hypixel'
 website: https://www.isnakebuzz.com/
 commands:
   SkyWars:

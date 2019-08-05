@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Teams;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
+import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.skywars.Utils.Strings.Alphabet;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -100,8 +101,15 @@ public class TeamManager {
         boolean alphabeticNames = arena.getBoolean("alphabetic names", true);
 
         String name;
-        if (alphabeticNames) name = Alphabet.getById(id).getName();
-        else name = String.valueOf(id);
+
+        if (Statics.skyMode.equals(GameType.SOLO)) {
+            name = String.valueOf(id);
+        } else {
+            if (alphabeticNames) name = Alphabet.getById(id).getName();
+            else name = String.valueOf(id);
+        }
+
+        plugin.debug("Getting team: " + name + " : " + this.teamMap.getOrDefault(name, null).toString());
 
         return this.teamMap.getOrDefault(name, null);
     }

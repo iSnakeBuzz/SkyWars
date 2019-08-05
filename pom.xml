@@ -6,7 +6,7 @@
 
     <groupId>SkyWars</groupId>
     <artifactId>SkyWars</artifactId>
-    <version>1.0.0.0</version>
+    <version>1.0.0.2</version>
     <packaging>jar</packaging>
 
     <name>SkyWars</name>
@@ -148,7 +148,7 @@
             <groupId>SnakeGameQueue</groupId>
             <artifactId>snakegq-api</artifactId>
             <scope>system</scope>
-            <version>1.0.0-RELEASE</version>
+            <version>1.0.1-RELEASE</version>
             <systemPath>${project.basedir}/Lib/SnakeGameQueue-1.0.0-RELEASE.jar</systemPath>
         </dependency>
 
@@ -188,6 +188,14 @@
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>LATEST</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
             <scope>provided</scope>
         </dependency>
 

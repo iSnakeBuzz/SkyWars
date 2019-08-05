@@ -39,11 +39,15 @@ public class QueueAbstract extends BukkitRunnable {
     }
 
     public boolean isFinal() {
-        return queueInt >= queueMax;
+        plugin.debug("Queue Next: " + (queueInt >= (queueMax - 1)) + " | " + queueInt + " : " + (queueMax - 1));
+
+        return queueInt >= (queueMax - 1);
     }
 
     public void next() {
-        if (queueInt < queueMax) {
+        plugin.debug("Queue Next: " + (queueInt < (queueMax - 1)) + " | " + queueInt + " : " + (queueMax - 1));
+
+        if (queueInt < (queueMax - 1)) {
             queueInt++;
 
             //Setting up inQueue

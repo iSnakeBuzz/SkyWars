@@ -1,6 +1,7 @@
 package com.isnakebuzz.skywars.Player;
 
 import com.isnakebuzz.skywars.Teams.Team;
+import com.isnakebuzz.snakeco.Utils.EcoAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class SkyPlayer implements Comparable<SkyPlayer> {
 
     private UUID uuid;
+    private String name;
 
     //Cosmetics
     private String cageName;
@@ -41,6 +43,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
 
     public SkyPlayer(UUID uuid) {
         this.uuid = uuid;
+        this.name = "none";
 
         //Cosmetics
         this.cageName = "default";
@@ -64,6 +67,14 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
         this.isChest = false;
         this.isTime = false;
         this.isProjectile = false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setWins(int wins) {
@@ -252,6 +263,12 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
         return isTime;
     }
 
+    public void addCoins(int coins) {
+        if (this.getPlayer() != null){
+            EcoAPI.addCoins(this.getPlayer(), coins);
+        }
+    }
+
     public void setTeam(Team team) {
         team.addPlayer(this);
         this.team = team;
@@ -260,5 +277,9 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
     @Override
     public int compareTo(SkyPlayer o) {
         return o.getKillStreak() - this.killStreak;
+    }
+
+    public boolean isOnline() {
+        return Bukkit.getPlayer(uuid) != null;
     }
 }

@@ -33,7 +33,7 @@ public class Kit {
         return logo;
     }
 
-    public Boolean isDefault() {
+    public boolean isDefault() {
         return isDefault;
     }
 

@@ -4,7 +4,6 @@ import com.isnakebuzz.skywars.Calls.Callback;
 import com.isnakebuzz.skywars.Database.Database;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.LobbyPlayer;
-import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Base64Utils;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -94,7 +93,7 @@ public class vLobby implements Database {
 
     @Override
     public void savePlayer(UUID playerUUID) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
+        LobbyPlayer skyPlayer = plugin.getPlayerManager().getLbPlayer(playerUUID);
         String uuid = playerUUID.toString();
 
         existPlayer(playerUUID, playerExist -> {
@@ -112,16 +111,16 @@ public class vLobby implements Database {
             );
 
             plugin.getDataManager().getMySQL().preparedUpdate("UPDATE " + solo_stats_table + " SET " +
-                    "Wins='" + skyPlayer.getWins() + "', " +
-                    "Kills='" + skyPlayer.getKills() + "', " +
-                    "Deaths='" + skyPlayer.getDeaths() + "' " +
+                    "Wins='" + skyPlayer.getSolo_wins() + "', " +
+                    "Kills='" + skyPlayer.getSolo_kills() + "', " +
+                    "Deaths='" + skyPlayer.getSolo_deaths() + "' " +
                     "WHERE UUID='" + uuid + "'"
             );
 
             plugin.getDataManager().getMySQL().preparedUpdate("UPDATE " + team_stats_table + " SET " +
-                    "Wins='" + skyPlayer.getWins() + "', " +
-                    "Kills='" + skyPlayer.getKills() + "', " +
-                    "Deaths='" + skyPlayer.getDeaths() + "' " +
+                    "Wins='" + skyPlayer.getTeam_wins() + "', " +
+                    "Kills='" + skyPlayer.getTeam_kills() + "', " +
+                    "Deaths='" + skyPlayer.getTeam_deaths() + "' " +
                     "WHERE UUID='" + uuid + "'"
             );
 
@@ -136,8 +135,8 @@ public class vLobby implements Database {
     }
 
     private void cdbPlayer(UUID playerUUID) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
-        plugin.getPlayerManager().addPlayer(playerUUID, skyPlayer);
+        LobbyPlayer skyPlayer = plugin.getPlayerManager().getLbPlayer(playerUUID);
+        plugin.getPlayerManager().addLbPlayer(playerUUID, skyPlayer);
 
         List<String> kits = new ArrayList<>();
         kits.add("default");

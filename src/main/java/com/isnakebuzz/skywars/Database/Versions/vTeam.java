@@ -31,17 +31,19 @@ public class vTeam implements Database {
     }
 
     @Override
-    public void createPlayer(UUID UUID) {
+    public void createPlayer(UUID uuid) {
 
-        existPlayer(UUID, playerExist -> {
+        existPlayer(uuid, playerExist -> {
             if (!playerExist) {
-                cdbPlayer(UUID);
+                cdbPlayer(uuid);
             } else {
 
-                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(UUID);
-                plugin.getPlayerManager().addPlayer(UUID, skyPlayer);
+                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(uuid);
+                plugin.getPlayerManager().addPlayer(uuid, skyPlayer);
 
-                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + stats_table + " WHERE UUID='" + UUID.toString() + "'", rs -> {
+                plugin.debug("Fetching data: " + uuid.toString());
+
+                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + stats_table + " WHERE UUID='" + uuid.toString() + "'", rs -> {
                     try {
                         if (rs.next()) {
                             skyPlayer.setWins(rs.getInt("Wins"));
@@ -53,7 +55,7 @@ public class vTeam implements Database {
                     }
                 });
 
-                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + player_table + " WHERE UUID='" + UUID.toString() + "'", rs -> {
+                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + player_table + " WHERE UUID='" + uuid.toString() + "'", rs -> {
                     try {
                         if (rs.next()) {
                             skyPlayer.setSelectedKit(rs.getString("SelKit"));
@@ -79,7 +81,13 @@ public class vTeam implements Database {
 
     @Override
     public void savePlayer(UUID playerUUID) {
+        if (!plugin.getPlayerManager().containsPlayer(playerUUID)) return;
+
         SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
+
+        // If staff don't save stats
+        if (skyPlayer.isStaff()) return;
+
         String uuid = playerUUID.toString();
 
         existPlayer(playerUUID, playerExist -> {

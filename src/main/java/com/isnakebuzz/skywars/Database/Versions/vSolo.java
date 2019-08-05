@@ -5,6 +5,7 @@ import com.isnakebuzz.skywars.Database.Database;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Base64Utils;
+import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
@@ -31,17 +32,20 @@ public class vSolo implements Database {
     }
 
     @Override
-    public void createPlayer(UUID UUID) {
+    public void createPlayer(UUID playerUUID) {
+        plugin.debug("Creating player by UUID " + playerUUID.toString());
 
-        existPlayer(UUID, playerExist -> {
+        existPlayer(playerUUID, playerExist -> {
             if (!playerExist) {
-                cdbPlayer(UUID);
+                cdbPlayer(playerUUID);
             } else {
 
-                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(UUID);
-                plugin.getPlayerManager().addPlayer(UUID, skyPlayer);
+                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
+                plugin.getPlayerManager().addPlayer(playerUUID, skyPlayer);
 
-                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + stats_table + " WHERE UUID='" + UUID.toString() + "'", rs -> {
+                plugin.debug("Fetching data: " + playerUUID.toString());
+
+                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + stats_table + " WHERE UUID='" + playerUUID.toString() + "'", rs -> {
                     try {
                         if (rs.next()) {
                             skyPlayer.setWins(rs.getInt("Wins"));
@@ -53,7 +57,7 @@ public class vSolo implements Database {
                     }
                 });
 
-                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + player_table + " WHERE UUID='" + UUID.toString() + "'", rs -> {
+                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + player_table + " WHERE UUID='" + playerUUID.toString() + "'", rs -> {
                     try {
                         if (rs.next()) {
                             skyPlayer.setSelectedKit(rs.getString("SelKit"));
@@ -79,7 +83,14 @@ public class vSolo implements Database {
 
     @Override
     public void savePlayer(UUID playerUUID) {
+        if (playerUUID == null) return;
+        if (!plugin.getPlayerManager().containsPlayer(playerUUID)) return;
+
         SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
+
+        // If staff don't save stats
+        if (skyPlayer.isStaff()) return;
+
         String uuid = playerUUID.toString();
 
         existPlayer(playerUUID, playerExist -> {
@@ -103,7 +114,14 @@ public class vSolo implements Database {
                     "WHERE UUID='" + uuid + "'"
             );
 
-            //plugin.getPlayerManager().removePlayer(p);
+            if (plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.WAITING)) {
+                plugin.getPlayerManager().removePlayer(playerUUID);
+                plugin.debug("Removing player(" + playerUUID.toString() + ") (WAITING status)");
+            } else if (plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.FINISH)) {
+                plugin.debug("Removing player(" + playerUUID.toString() + ") (FINISH status)");
+            } else {
+                plugin.debug("Saving player(" + playerUUID.toString() + ") (" + plugin.getSkyWarsArena().getGameStatus().toString() + " status)");
+            }
         });
 
     }
@@ -148,15 +166,12 @@ public class vSolo implements Database {
 
     private void existPlayer(UUID uuid, Callback<Boolean> callback) {
         plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + player_table + " WHERE UUID='" + uuid.toString() + "'", rs -> {
-            Boolean exist = false;
             try {
-                exist = (rs != null && rs.next()) && rs.getString("UUID") != null;
+                callback.done((rs != null && rs.next()) && rs.getString("UUID") != null);
             } catch (SQLException e) {
                 e.printStackTrace();
-                callback.done(exist);
+                callback.done(false);
                 return;
-            } finally {
-                callback.done(exist);
             }
         });
 

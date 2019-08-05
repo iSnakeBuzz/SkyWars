@@ -7,6 +7,7 @@ import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cuboid;
 import com.isnakebuzz.skywars.Utils.Enums.*;
 import com.isnakebuzz.skywars.Utils.LocUtils;
+import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import com.isnakebuzz.snakegq.Enums.GameQueueStatus;
@@ -20,10 +21,7 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class SkyWarsArena {
 
@@ -306,6 +304,13 @@ public class SkyWarsArena {
             for (Player online : Bukkit.getOnlinePlayers()) {
                 GameQueueAPI.nextGame(online, GameQueueType.SOLO);
             }
+        }
+    }
+
+    public void SEND_ALL_TO_LOBBY() {
+        for (Player online : Bukkit.getOnlinePlayers()){
+            String lobby = Statics.lobbies.get(new Random().nextInt(Statics.lobbies.size()));
+            PacketsAPI.connect(plugin, online, lobby);
         }
     }
 

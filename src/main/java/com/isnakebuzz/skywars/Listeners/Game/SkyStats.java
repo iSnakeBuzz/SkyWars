@@ -29,6 +29,9 @@ public class SkyStats implements Listener {
                 skyPlayer.addKillStreak();
                 skyPlayer.addKills(1);
             }
+
+            skyPlayer.addCoins(plugin.getConfig("Settings").getInt("Coins.kill"));
+
         } else if (e.getEntity().getPlayer() != null) {
             SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(e.getEntity().getPlayer().getUniqueId());
             SkyStatsEvent statsEvent = new SkyStatsEvent(skyPlayer, StatType.DEATH);

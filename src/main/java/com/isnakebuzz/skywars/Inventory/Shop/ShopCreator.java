@@ -1,5 +1,6 @@
 package com.isnakebuzz.skywars.Inventory.Shop;
 
+import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Inventory.MenuManager.Menu;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Main;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -49,13 +51,27 @@ public class ShopCreator extends Menu {
             String item = config.getString(path + "item");
             int amount = config.getInt(path + "amount");
             String name = config.getString(path + "name");
-            List<String> lore = chars(p, config.getStringList(path + "lore"));
             String permission = config.getString(path + "perms");
-            String action = config.getString(path + "action");
+            String[] action = config.getString(path + "action").split(":");
+            List<String> lore = Lists.newArrayList();
+
+            plugin.debug("onClick - " + Arrays.toString(action) + ", " + action.length);
+            plugin.debug("onClick2 - Use kits?: " + (action.length > 1 && action[1].equalsIgnoreCase("kit")));
+
+            if (action.length > 1 && (action[1].contains("kit") || action[1].contains("cage"))) {
+                String[] args = (action[1]).split("\\|");
+                lore.addAll(chars_kits(p, args[1], config.getStringList(path + "lore")));
+
+                plugin.debug("onClick3 - " + Arrays.toString(args) + ", " + args.length);
+            } else {
+                lore.addAll(chars(p, config.getStringList(path + "lore")));
+            }
+
+
             ItemStack itemStack1 = null;
 
             if (String.valueOf(item.split(":")[0]).equalsIgnoreCase("head")) {
-                itemStack1 = getHead(p, c(p, name), chars(p, lore));
+                itemStack1 = getHead(p, c(p, name), lore);
             } else {
                 itemStack1 = ItemBuilder.crearItem1(Integer.valueOf(item.split(":")[0]), amount, Integer.valueOf(item.split(":")[1]), name, lore);
             }
@@ -66,19 +82,19 @@ public class ShopCreator extends Menu {
                     return;
                 }
 
-                if (action.split(":")[0].equalsIgnoreCase("open")) {
-                    new ShopCreator(p, plugin, action.split(":")[1]).open();
-                } else if (action.split(":")[0].equalsIgnoreCase("cmd")) {
-                    String cmd = "/" + action.split(":")[1];
+                if (action[0].equalsIgnoreCase("open")) {
+                    new ShopCreator(p, plugin, action[1]).open();
+                } else if (action[0].equalsIgnoreCase("cmd")) {
+                    String cmd = "/" + action[1];
                     p.chat(cmd);
-                } else if (action.split(":")[0].equalsIgnoreCase("close")) {
+                } else if (action[0].equalsIgnoreCase("close")) {
                     p.closeInventory();
-                } else if (action.split(":")[0].equalsIgnoreCase("msg")) {
-                    String message = action.split(":")[1];
+                } else if (action[0].equalsIgnoreCase("msg")) {
+                    String message = action[1];
                     p.sendMessage(c(p, message));
                     p.closeInventory();
-                } else if (action.split(":")[0].equalsIgnoreCase("buy")) {
-                    String[] args = (action.split(":")[1]).split("\\|");
+                } else if (action[0].equalsIgnoreCase("buy")) {
+                    String[] args = (action[1]).split("\\|");
                     getAction(p, args, lang);
                     break;
                 }
@@ -102,13 +118,25 @@ public class ShopCreator extends Menu {
             int slot = config.getInt(path + "slot");
             int amount = config.getInt(path + "amount");
             String name = config.getString(path + "name");
-            List<String> lore = chars(p, config.getStringList(path + "lore"));
-            String action = config.getString(path + "action");
+            String[] action = config.getString(path + "action").split(":");
+            List<String> lore = Lists.newArrayList();
+
+            if (action.length > 1 && (action[1].contains("kit"))) {
+                String[] args = (action[1]).split("\\|");
+
+                lore.addAll(chars_kits(p, args[1], config.getStringList(path + "lore")));
+            } else if (action.length > 1 && (action[1].contains("cage"))) {
+                String[] args = (action[1]).split("\\|");
+
+                lore.addAll(chars_cages(p, args[1], config.getStringList(path + "lore")));
+            } else {
+                lore.addAll(chars(p, config.getStringList(path + "lore")));
+            }
 
             ItemStack itemStack1 = null;
 
             if (String.valueOf(item.split(":")[0]).equalsIgnoreCase("head")) {
-                itemStack1 = getHead(p, c(p, name), chars(p, lore));
+                itemStack1 = getHead(p, c(p, name), lore);
             } else {
                 itemStack1 = ItemBuilder.crearItem1(Integer.valueOf(item.split(":")[0]), amount, Integer.valueOf(item.split(":")[1]), name, lore);
             }
@@ -134,6 +162,58 @@ public class ShopCreator extends Menu {
         }
     }
 
+    private List<String> chars_kits(Player player, String kitName, List<String> messages) {
+        List<String> newList = Lists.newArrayList();
+        LobbyPlayer skyPlayer = plugin.getPlayerManager().getLbPlayer(player.getUniqueId());
+
+        for (String msg : messages) {
+            if (msg.contains("<purchased>")) {
+                if (skyPlayer.getPurchKits().contains(kitName)) {
+                    newList.add(c(player, msg.replaceAll("<purchased>", "")));
+                }
+            } else if (msg.contains("<!purchased>")) {
+                if (!skyPlayer.getPurchKits().contains(kitName)) {
+                    newList.add(c(player, msg.replaceAll("<!purchased>", "")));
+                }
+            } else {
+                newList.add(c(player, msg));
+            }
+        }
+
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            return PlaceholderAPI.setPlaceholders(player, newList);
+        } else {
+            return newList;
+        }
+    }
+
+    private List<String> chars_cages(Player player, String kitName, List<String> messages) {
+        List<String> newList = Lists.newArrayList();
+        LobbyPlayer skyPlayer = plugin.getPlayerManager().getLbPlayer(player.getUniqueId());
+
+        for (String msg : messages) {
+            if (msg.contains("<purchased>")) {
+                if (skyPlayer.getPurchCages().contains(kitName)) {
+                    newList.add(c(player, msg.replaceAll("<purchased>", "")));
+                }
+            } else if (msg.contains("<!purchased>")) {
+                if (!skyPlayer.getPurchCages().contains(kitName)) {
+                    newList.add(c(player, msg.replaceAll("<!purchased>", "")));
+                }
+            } else {
+                newList.add(c(player, msg));
+            }
+        }
+
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            return PlaceholderAPI.setPlaceholders(player, newList);
+        } else {
+            return newList;
+        }
+    }
+
     public void getAction(Player p, String[] args, Configuration lang) {
         LobbyPlayer skyPlayer = plugin.getPlayerManager().getLbPlayer(p.getUniqueId());
 
@@ -149,11 +229,13 @@ public class ShopCreator extends Menu {
             } else {
                 int haveCoins = EcoAPI.getCoins(p);
 
-                if (takeCoins >= haveCoins) {
-                    EcoAPI.removeCoins(p, haveCoins);
+                if (takeCoins <= haveCoins) {
+                    EcoAPI.removeCoins(p, takeCoins);
                     p.sendMessage(c(p, lang.getString("Shop.Kits.buyed")
                             .replaceAll("%kit%", kitName)
                     ));
+                    skyPlayer.getPurchKits().add(kitName);
+                    skyPlayer.setSelectedKit(kitName);
                 } else {
                     p.sendMessage(c(p, lang.getString("Shop.No have coins")));
                 }
@@ -161,22 +243,23 @@ public class ShopCreator extends Menu {
 
             p.closeInventory();
         } else if (args[0].equalsIgnoreCase("cage")) {
-            String kitName = args[1];
+            String cageName = args[1];
             int takeCoins = Integer.valueOf(args[2]);
 
-            if (skyPlayer.getPurchKits().contains(kitName)) {
-                skyPlayer.setSelectedKit(kitName);
+            if (skyPlayer.getPurchCages().contains(cageName)) {
+                skyPlayer.setCageName(cageName);
                 p.sendMessage(c(p, lang.getString("Shop.Cages.selected")
-                        .replaceAll("%cageName%", kitName)
+                        .replaceAll("%cageName%", cageName)
                 ));
             } else {
                 int haveCoins = EcoAPI.getCoins(p);
 
-                if (takeCoins >= haveCoins) {
-                    EcoAPI.removeCoins(p, haveCoins);
+                if (takeCoins <= haveCoins) {
+                    EcoAPI.removeCoins(p, takeCoins);
                     p.sendMessage(c(p, lang.getString("Shop.Cages.buyed")
-                            .replaceAll("%cageName%", kitName)
+                            .replaceAll("%cageName%", cageName)
                     ));
+                    skyPlayer.getPurchCages().add(cageName);
                 } else {
                     p.sendMessage(c(p, lang.getString("Shop.No have coins")));
                 }

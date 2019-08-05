@@ -3,7 +3,7 @@ version: ${project.version}
 main: com.isnakebuzz.skywars.Main
 authors: ['iSnakeBuzz_']
 softdepend: ['FastAsyncWorldEdit', 'SnakeGameQueue', 'SnakeEconomy', 'ProtocolLib', 'PlaceholderAPI']
-description: 'SkyWars Similar to HyPixel'
+description: 'SkyWars Similar to Hypixel'
 website: https://www.isnakebuzz.com/
 commands:
   SkyWars:

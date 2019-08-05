@@ -37,7 +37,7 @@ public class GameItems implements Listener {
 
     @EventHandler
     public void InventoryInteract(InventoryClickEvent e) {
-        if (!plugin.getPlayerManager().getPlayer(((Player) e.getWhoClicked()).getUniqueId()).isSpectator()) return;
+        if (!plugin.getPlayerManager().getPlayer((e.getWhoClicked()).getUniqueId()).isSpectator()) return;
 
         Configuration config = plugin.getConfigUtils().getConfig(plugin, "Extra/Inventory");
         Set<String> key;

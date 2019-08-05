@@ -25,6 +25,9 @@ public class PlayerManager {
     public void addPlayer(UUID uuid, SkyPlayer skyPlayer) {
         if (!this.skyPlayerMap.containsKey(uuid)) {
             this.skyPlayerMap.put(uuid, skyPlayer);
+            plugin.debug("Adding SkyPlayer(" + uuid.toString() + ") to the RAM section");
+        } else {
+            plugin.debug("Tried to add SkyPlayer(" + uuid.toString() + ") to the RAM Section but its already exist");
         }
     }
 
@@ -33,13 +36,23 @@ public class PlayerManager {
     }
 
     public SkyPlayer getPlayer(UUID uuid) {
-        return this.skyPlayerMap.getOrDefault(uuid, new SkyPlayer(uuid));
+        if (this.containsPlayer(uuid)) {
+            //plugin.debug("Getting player(" + uuid.toString() + ") from the RAM section");
+            return this.skyPlayerMap.get(uuid);
+        } else {
+            //plugin.debug("Getting new player(" + uuid.toString() + ")");
+            return new SkyPlayer(uuid);
+        }
     }
 
     public Collection<SkyPlayer> getPlayers() {
         return this.skyPlayerMap.values();
     }
 
+
+    public void removePlayer(UUID uuid) {
+        this.skyPlayerMap.remove(uuid);
+    }
 
     //Lobby
     public void addLbPlayer(UUID uuid, LobbyPlayer skyPlayer) {
