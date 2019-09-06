@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,27 +15,34 @@ import java.util.stream.Collectors;
 public class LocUtils {
 
     public static String locToString(Location l) {
-        return String
-                .valueOf(new StringBuilder(String.valueOf(l.getWorld().getName())).append(":").append(l.getBlockX())
-                        .toString())
-                + ":" + String.valueOf(l.getBlockY()) + ":" + String.valueOf(l.getBlockZ()) + ":"
-                + String.valueOf(l.getYaw()) + ":" + String.valueOf(l.getPitch());
+        return l.getWorld().getName() + ":" + l.getBlockX()
+                + ":" + l.getBlockY() + ":" + l.getBlockZ() + ":"
+                + l.getYaw() + ":" + l.getPitch();
     }
 
     public static Location stringToLoc(String s) {
-        Location l = null;
         try {
             World world = Bukkit.getWorld(s.split(":")[0]);
-            Double x = Double.parseDouble(s.split(":")[1]);
-            Double y = Double.parseDouble(s.split(":")[2]);
-            Double z = Double.parseDouble(s.split(":")[3]);
-            Float p = Float.parseFloat(s.split(":")[4]);
-            Float y2 = Float.parseFloat(s.split(":")[5]);
+            double x = Double.parseDouble(s.split(":")[1]);
+            double y = Double.parseDouble(s.split(":")[2]);
+            double z = Double.parseDouble(s.split(":")[3]);
+            float p = Float.parseFloat(s.split(":")[4]);
+            float y2 = Float.parseFloat(s.split(":")[5]);
 
-            return l = new Location(world, x + 0.5, y, z + 0.5, p, y2);
+            return new Location(world, x + 0.5, y, z + 0.5, p, y2);
         } catch (Exception ex) {
         }
-        return l;
+        return null;
+    }
+
+    public static void teleport(Player player, Location spawnLocation, Location lobbyLocation) {
+        Vector dirBetweenLocations = lobbyLocation.toVector().subtract(spawnLocation.toVector());
+
+        Location newLocation = spawnLocation.clone();
+        newLocation.setDirection(dirBetweenLocations);
+        newLocation.setPitch(0);
+
+        player.teleport(newLocation);
     }
 
     public static Location fixLocation(Location loc) {

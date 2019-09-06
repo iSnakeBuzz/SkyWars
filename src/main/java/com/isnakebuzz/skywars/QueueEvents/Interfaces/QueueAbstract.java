@@ -39,13 +39,13 @@ public class QueueAbstract extends BukkitRunnable {
     }
 
     public boolean isFinal() {
-        plugin.debug("Queue Next: " + (queueInt >= (queueMax - 1)) + " | " + queueInt + " : " + (queueMax - 1));
+        //plugin.debug("Queue Next: " + (queueInt >= (queueMax - 1)) + " | " + queueInt + " : " + (queueMax - 1));
 
         return queueInt >= (queueMax - 1);
     }
 
     public void next() {
-        plugin.debug("Queue Next: " + (queueInt < (queueMax - 1)) + " | " + queueInt + " : " + (queueMax - 1));
+        //plugin.debug("Queue Next: " + (queueInt < (queueMax - 1)) + " | " + queueInt + " : " + (queueMax - 1));
 
         if (queueInt < (queueMax - 1)) {
             queueInt++;

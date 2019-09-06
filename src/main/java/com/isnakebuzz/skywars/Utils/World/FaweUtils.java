@@ -12,6 +12,7 @@ import org.bukkit.World;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class FaweUtils {
 
@@ -25,10 +26,11 @@ public class FaweUtils {
         File schematic = new File(plugin.getDataFolder(), "Arena.schematic");
         World world = plugin.getSkyWarsArena().getLobbyLocation().getWorld();
         Location location = LocUtils.stringToLoc(plugin.getConfig("Extra/Arena").getString("Schematic Center"));
+        assert location != null;
         Vector position = BukkitUtil.toVector(location);
 
         try {
-            EditSession editSession = ClipboardFormat.findByFile(schematic).load(schematic).paste(new BukkitWorld(world), position, false, true, null);
+            EditSession editSession = Objects.requireNonNull(ClipboardFormat.findByFile(schematic)).load(schematic).paste(new BukkitWorld(world), position, false, true, null);
         } catch (IOException e) {
             e.printStackTrace();
         }

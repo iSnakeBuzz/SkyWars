@@ -175,6 +175,7 @@ public class SkyWarsArena {
 
     public void setGameStatus(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
+        plugin.debug("Changing Status: " + gameStatus.toString());
         if (Statics.SnakeGameQueue) {
             switch (gameStatus) {
                 case WAITING:
@@ -308,7 +309,7 @@ public class SkyWarsArena {
     }
 
     public void SEND_ALL_TO_LOBBY() {
-        for (Player online : Bukkit.getOnlinePlayers()){
+        for (Player online : Bukkit.getOnlinePlayers()) {
             String lobby = Statics.lobbies.get(new Random().nextInt(Statics.lobbies.size()));
             PacketsAPI.connect(plugin, online, lobby);
         }

@@ -7,6 +7,9 @@
 # Modes: LOBBY, SOLO, TEAM, SETUP
 Mode: SETUP
 
+# If you remove BungeeID, plugins gets from Bukkit.getServerName();
+# And you set this using in your spigot args -n SW111
+# Example: java -jar Spigot.jar -n ServerID
 BungeeID: ''
 
 Coins:

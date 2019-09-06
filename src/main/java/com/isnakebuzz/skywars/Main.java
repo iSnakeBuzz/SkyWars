@@ -99,7 +99,7 @@ public final class Main extends JavaPlugin {
         Configuration arena = this.getConfig("Extra/Arena");
         Statics.skyMode = GameType.valueOf(settings.getString("Mode").toUpperCase());
         Statics.baseMode = database.getString("Type").toUpperCase();
-        Statics.BungeeID = settings.getString("BungeeID", "none");
+        Statics.BungeeID = settings.getString("BungeeID", Bukkit.getServerName());
         Statics.lobbies = settings.getStringList("Lobbies");
         Statics.mapName = arena.getString("MapName", "none");
 
@@ -249,11 +249,10 @@ public final class Main extends JavaPlugin {
         this.teamManager.loadTeams();
         this.getEventsManager().loadQueueEvents();
 
-        //Clean java memory
-        Runtime.getRuntime().gc();
-
-        if (Statics.toRestart == 0) {
-            getWorldRestarting().restartWorld();
+        if (Bukkit.getOnlinePlayers().size() >= 1) {
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                getSkyWarsArena().SEND_TO_NEW_GAME(onlinePlayer);
+            }
         }
     }
 

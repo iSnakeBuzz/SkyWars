@@ -38,7 +38,7 @@ public class Utils {
         return ItemBuilder.crearItem1(itemID, amount, itemD, itemName, lore);
     }
 
-    public ItemStack createItem(Kit kit, boolean purchKit, boolean isSelected, boolean isDefault) {
+    public ItemStack createItem(Kit kit, boolean hasPermission, boolean purchKit, boolean isSelected, boolean isDefault) {
 
         ConfigurationSection noPurchased = plugin.getConfig("Settings").getConfigurationSection("No Purchased Logo");
         ConfigurationSection purchased = plugin.getConfig("Settings").getConfigurationSection("Purchased Logo");
@@ -49,7 +49,7 @@ public class Utils {
         int amount = 1;
         List<String> lore = kit.getLogo().getItemMeta().getLore();
 
-        if (purchKit || isDefault) {
+        if (purchKit || isDefault || hasPermission) {
             itemFormatted = new String[]{String.valueOf(kit.getLogo().getType().getId()), String.valueOf(kit.getLogo().getDurability())};
 
             if (isSelected) {
@@ -96,13 +96,18 @@ public class Utils {
         List<Kit> normalKits = Lists.newArrayList();
 
         for (Kit kit : plugin.getKitLoader().getKits()) {
+            boolean hasPermission = !kit.getPermission().equals("none") && skyPlayer.getPlayer().hasPermission(kit.getPermission());
+
             if (skyPlayer.getPurchKits().contains(kit.getName())) {
+                purchKits.add(kit);
+            } else if (hasPermission) {
                 purchKits.add(kit);
             } else if (kit.isDefault()) {
                 defaultKits.add(kit);
             } else {
                 normalKits.add(kit);
             }
+
         }
 
         List<Kit> finalList = Lists.newArrayList();

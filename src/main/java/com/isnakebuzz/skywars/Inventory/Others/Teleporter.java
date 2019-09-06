@@ -29,7 +29,7 @@ public class Teleporter extends Menu {
         this.plugin = plugin;
         this.itemPlayer = new HashMap<>();
 
-        this.loadKits();
+        this.loadHeads();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Teleporter extends Menu {
 
     }
 
-    private void loadKits() {
+    private void loadHeads() {
         this.inventory().clear();
         ConfigurationSection settings = plugin.getConfig("Settings").getConfigurationSection("Spectator Item");
 
@@ -81,6 +81,10 @@ public class Teleporter extends Menu {
         return head;
     }
 
+    public String fixedDouble(double d) {
+        return String.format("%.1f", d).replaceAll(",", ".");
+    }
+
     private String c(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
@@ -89,9 +93,9 @@ public class Teleporter extends Menu {
         List<String> lore = Lists.newArrayList();
         for (String text : s) {
             lore.add(c(text
-                    .replaceAll("%player_health%", String.valueOf(getPorcentage(player.getMaxHealth(), player.getHealth())))
-                    .replaceAll("%player_food%", String.valueOf(getPorcentage(20, player.getFoodLevel())))
-            ));
+                    .replaceAll("%player_health%", fixedDouble(getPorcentage(player.getMaxHealth(), player.getHealth()))))
+                    .replaceAll("%player_food%", fixedDouble(getPorcentage(20, player.getFoodLevel()))
+                    ));
         }
 
         return lore;

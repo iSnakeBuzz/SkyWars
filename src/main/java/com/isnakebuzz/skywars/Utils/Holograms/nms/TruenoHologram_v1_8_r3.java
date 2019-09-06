@@ -1,14 +1,18 @@
 package com.isnakebuzz.skywars.Utils.Holograms.nms;
 
 import com.isnakebuzz.skywars.Utils.Holograms.TruenoHologram;
-import org.bukkit.craftbukkit.v1_8_R3.entity.*;
-import org.bukkit.*;
+import net.minecraft.server.v1_8_R3.EntityArmorStand;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_8_R3.WorldServer;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 
-import java.util.*;
-
-import org.bukkit.craftbukkit.v1_8_R3.*;
-import org.bukkit.entity.*;
-import net.minecraft.server.v1_8_R3.*;
+import java.util.ArrayList;
 
 public class TruenoHologram_v1_8_r3 implements TruenoHologram {
 

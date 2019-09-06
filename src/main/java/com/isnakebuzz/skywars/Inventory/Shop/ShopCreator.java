@@ -82,6 +82,8 @@ public class ShopCreator extends Menu {
                     return;
                 }
 
+                boolean hasPerms = p.hasPermission(permission) && !permission.equalsIgnoreCase("none");
+
                 if (action[0].equalsIgnoreCase("open")) {
                     new ShopCreator(p, plugin, action[1]).open();
                 } else if (action[0].equalsIgnoreCase("cmd")) {
@@ -95,7 +97,7 @@ public class ShopCreator extends Menu {
                     p.closeInventory();
                 } else if (action[0].equalsIgnoreCase("buy")) {
                     String[] args = (action[1]).split("\\|");
-                    getAction(p, args, lang);
+                    getAction(p, args, lang, hasPerms);
                     break;
                 }
             }
@@ -214,12 +216,21 @@ public class ShopCreator extends Menu {
         }
     }
 
-    public void getAction(Player p, String[] args, Configuration lang) {
+    public void getAction(Player p, String[] args, Configuration lang, boolean hasPermissions) {
         LobbyPlayer skyPlayer = plugin.getPlayerManager().getLbPlayer(p.getUniqueId());
 
         if (args[0].equalsIgnoreCase("kit")) {
             String kitName = args[1];
             int takeCoins = Integer.valueOf(args[2]);
+
+            if (hasPermissions) {
+                skyPlayer.setSelectedKit(kitName);
+                p.sendMessage(c(p, lang.getString("Shop.Kits.selected")
+                        .replaceAll("%kit%", kitName)
+                ));
+                p.closeInventory();
+                return;
+            }
 
             if (skyPlayer.getPurchKits().contains(kitName)) {
                 skyPlayer.setSelectedKit(kitName);
@@ -245,6 +256,15 @@ public class ShopCreator extends Menu {
         } else if (args[0].equalsIgnoreCase("cage")) {
             String cageName = args[1];
             int takeCoins = Integer.valueOf(args[2]);
+
+            if (hasPermissions) {
+                skyPlayer.setCageName(cageName);
+                p.sendMessage(c(p, lang.getString("Shop.Cages.selected")
+                        .replaceAll("%cageName%", cageName)
+                ));
+                p.closeInventory();
+                return;
+            }
 
             if (skyPlayer.getPurchCages().contains(cageName)) {
                 skyPlayer.setCageName(cageName);

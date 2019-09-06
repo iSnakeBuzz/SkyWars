@@ -139,6 +139,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
 
     public void setStaff(boolean staff) {
         isStaff = staff;
+        isSpectator = staff;
 
         Player p = Bukkit.getPlayer(this.uuid);
         if (staff) {
@@ -264,7 +265,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
     }
 
     public void addCoins(int coins) {
-        if (this.getPlayer() != null){
+        if (this.getPlayer() != null) {
             EcoAPI.addCoins(this.getPlayer(), coins);
         }
     }

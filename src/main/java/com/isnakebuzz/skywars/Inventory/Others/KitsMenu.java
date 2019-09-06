@@ -40,7 +40,9 @@ public class KitsMenu extends Menu {
             String cItemName = strip(item.getItemMeta().getDisplayName());
             if (itemName.equalsIgnoreCase(cItemName)) {
                 boolean purchKit = skyPlayer.getPurchKits().contains(kit.getName());
-                if (purchKit || kit.isDefault()) {
+                boolean hasPermission = !kit.getPermission().equals("none") && skyPlayer.getPlayer().hasPermission(kit.getPermission());
+
+                if (purchKit || kit.isDefault() || hasPermission) {
                     plugin.getPlayerManager().getPlayer(p.getUniqueId()).setSelectedKit(kit.getName());
                     p.sendMessage(c(lang.getString("Selected.msg")
                             .replaceAll("%kit%", kit.getName())
@@ -72,7 +74,8 @@ public class KitsMenu extends Menu {
             for (Kit kit : kits) {
                 boolean purchKit = skyPlayer.getPurchKits().contains(kit.getName());
                 boolean isSelected = skyPlayer.getSelectedKit().equalsIgnoreCase(kit.getName());
-                this.a(plugin.getUtils().createItem(kit, purchKit, isSelected, kit.isDefault()));
+                boolean hasPermission = !kit.getPermission().equals("none") && skyPlayer.getPlayer().hasPermission(kit.getPermission());
+                this.a(plugin.getUtils().createItem(kit, hasPermission, purchKit, isSelected, kit.isDefault()));
             }
         });
     }

@@ -6,7 +6,7 @@
 
     <groupId>SkyWars</groupId>
     <artifactId>SkyWars</artifactId>
-    <version>1.0.0.2</version>
+    <version>1.0.0.4</version>
     <packaging>jar</packaging>
 
     <name>SkyWars</name>

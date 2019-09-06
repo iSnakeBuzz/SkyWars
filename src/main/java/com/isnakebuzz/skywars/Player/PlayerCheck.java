@@ -52,7 +52,7 @@ public class PlayerCheck {
             //log(1, "License valid!");
             return true;
         } else {
-            log(1, "Please update your ServerNPC.jar!");
+            log(1, "Please check your" + plugin.getName() + " version!");
 
             Bukkit.getScheduler().cancelTasks(plugin);
             Bukkit.getPluginManager().disablePlugin(plugin);

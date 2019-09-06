@@ -36,8 +36,7 @@ public class CageOpeningTask extends BukkitRunnable {
         }
 
         if (plugin.getSkyWarsArena().getCageOpens() == 1) {
-            //Calling SkyCagesOPenEvent
-            Bukkit.getPluginManager().callEvent(new SkyCagesOpenEvent());
+
 
             plugin.getCagesManager().deleteAllCages();
             plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
@@ -65,8 +64,10 @@ public class CageOpeningTask extends BukkitRunnable {
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(player.getUniqueId());
-                plugin.getKitLoader().giveKit(skyPlayer);
-                Bukkit.getScheduler().runTask(plugin, () -> player.setGameMode(GameMode.SURVIVAL));
+                if (!skyPlayer.isSpectator()) {
+                    plugin.getKitLoader().giveKit(skyPlayer);
+                    Bukkit.getScheduler().runTask(plugin, () -> player.setGameMode(GameMode.SURVIVAL));
+                }
             }
 
 
@@ -75,6 +76,8 @@ public class CageOpeningTask extends BukkitRunnable {
             //Bukkit.getScheduler().runTask(plugin, () -> new RefillTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20));
             // Execute game queue events
             plugin.getEventsManager().execute();
+            //Calling SkyCagesOPenEvent
+            Bukkit.getPluginManager().callEvent(new SkyCagesOpenEvent());
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getListenerManager().unloadCageOpens(), 20 * 5);
             this.cancel();

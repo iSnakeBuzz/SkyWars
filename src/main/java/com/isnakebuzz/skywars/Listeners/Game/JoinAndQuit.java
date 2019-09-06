@@ -2,6 +2,7 @@ package com.isnakebuzz.skywars.Listeners.Game;
 
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,7 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class JoinAndQuit implements Listener {
 
@@ -29,7 +30,7 @@ public class JoinAndQuit implements Listener {
         if (p.hasPermission("sw.join.bypass")) {
             e.allow();
         } else {
-            e.disallow(PlayerLoginEvent.Result.KICK_FULL, "In Game");
+            e.disallow(PlayerLoginEvent.Result.KICK_FULL, "En juego, acceso exclusivo para staffs (perm: sw.join.bypass)");
         }
     }
 
@@ -61,15 +62,14 @@ public class JoinAndQuit implements Listener {
     @EventHandler
     public void PlayerQuitEvent(PlayerQuitEvent e) {
         Player p = e.getPlayer();
+        plugin.debug("");
 
         // Calling leave death
         SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
-        if (!skyPlayer.isSpectator()) {
-            PlayerDeathEvent playerDeathEvent = new PlayerDeathEvent(p, new ArrayList<>(), 0, "player left the game");
+        if (!skyPlayer.isSpectator() && plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.INGAME)) {
+            PlayerDeathEvent playerDeathEvent = new PlayerDeathEvent(p, Arrays.asList(p.getInventory().getContents()), 0, "player left the game");
             Bukkit.getPluginManager().callEvent(playerDeathEvent);
-        } else if (!skyPlayer.isStaff()) {
-            PlayerDeathEvent playerDeathEvent = new PlayerDeathEvent(p, new ArrayList<>(), 0, "player left the game");
-            Bukkit.getPluginManager().callEvent(playerDeathEvent);
+            plugin.debug("Calling sky death by quit (Spectator)");
         }
 
         //Removing player scoreboard

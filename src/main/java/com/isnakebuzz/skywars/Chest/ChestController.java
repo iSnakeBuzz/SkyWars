@@ -27,6 +27,17 @@ public final class ChestController {
     private SettingsManager op_Conf_center, nor_Conf_center, ba_Conf_center;
     private SettingsManager op_Conf_island, nor_Conf_island, ba_Conf_island;
 
+    private Material[] limitedItems = {
+            Material.DIAMOND_HELMET, Material.DIAMOND_CHESTPLATE, Material.DIAMOND_LEGGINGS, Material.DIAMOND_BOOTS,
+            Material.IRON_HELMET, Material.IRON_CHESTPLATE, Material.IRON_LEGGINGS, Material.IRON_BOOTS,
+            Material.GOLD_HELMET, Material.GOLD_CHESTPLATE, Material.GOLD_LEGGINGS, Material.GOLD_BOOTS,
+            Material.LEATHER_HELMET, Material.LEATHER_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_BOOTS
+    };
+
+    private Material[] limitedSwords = {
+            Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.WOOD_SWORD, Material.GOLD_SWORD
+    };
+
     public ChestController(Main plugin) {
         this.plugin = plugin;
 
@@ -218,12 +229,29 @@ public final class ChestController {
         inventory.clear();
         Collections.shuffle(this.randomLoc);
         int added = 0;
-        int max = 15;
+        int max = 10;
         int min = 5;
+
+        int maxArmors = 1;
+        boolean maxSwords = false;
 
         int maxItems = new Random().nextInt((max - min) + 1) + min;
 
         for (final ChestItem chestItem : this.getIsland()) {
+
+            if (Arrays.stream(limitedItems).anyMatch(material -> chestItem.getItem().getType().equals(material))) {
+                if (checkContains(inventory.getContents(), limitedItems) && (maxArmors--) <= 0) {
+                    continue;
+                }
+            }
+
+            if (Arrays.stream(limitedSwords).anyMatch(material -> chestItem.getItem().getType().equals(material))) {
+                if (checkContains(inventory.getContents(), limitedSwords) && maxSwords) {
+                    continue;
+                }
+                maxSwords = true;
+            }
+
             if (this.random.nextInt(10) + 1 <= chestItem.getChance()) {
                 inventory.setItem(this.randomLoc.get(added), chestItem.getItem());
                 // Random int entre 21 25 22.
@@ -239,12 +267,29 @@ public final class ChestController {
         inventory.clear();
         Collections.shuffle(this.randomLoc);
         int added = 0;
-        int max = 15;
+        int max = 10;
         int min = 5;
+
+        int maxAddedByCategory = 1;
+        boolean maxSwords = false;
 
         int maxItems = new Random().nextInt((max - min) + 1) + min;
 
         for (ChestItem chestItem : this.getCenter()) {
+
+            if (Arrays.stream(limitedItems).anyMatch(material -> chestItem.getItem().getType().equals(material))) {
+                if (checkContains(inventory.getContents(), limitedItems) && (maxAddedByCategory--) <= 0) {
+                    continue;
+                }
+            }
+
+            if (Arrays.stream(limitedSwords).anyMatch(material -> chestItem.getItem().getType().equals(material))) {
+                if (checkContains(inventory.getContents(), limitedSwords) && maxSwords) {
+                    continue;
+                }
+                maxSwords = true;
+            }
+
             if (this.random.nextInt(10) + 1 <= chestItem.getChance()) {
                 inventory.setItem(this.randomLoc.get(added), chestItem.getItem());
                 // Random int entre 21 22 24 18.s
@@ -253,6 +298,20 @@ public final class ChestController {
                 }
             }
         }
+    }
+
+    private boolean checkContains(ItemStack[] itemStacks, Material[] materials) {
+        if (itemStacks.length <= 0) return false;
+
+        for (ItemStack itemStack : itemStacks) {
+            for (Material material : materials) {
+                if (itemStack != null && itemStack.getType() != null && itemStack.getType().equals(material)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public List<ChestItem> getCenter() {

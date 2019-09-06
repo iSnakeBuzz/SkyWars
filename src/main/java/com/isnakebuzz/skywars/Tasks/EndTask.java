@@ -5,6 +5,8 @@ import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -25,8 +27,8 @@ public class EndTask extends BukkitRunnable {
             plugin.getSkyWarsArena().SEND_ALL_TO_NEW_GAME();
         }
 
-        if (plugin.getSkyWarsArena().getEndTimer() == 2) {
-            //plugin.getSkyWarsArena().SEND_ALL_TO_LOBBY();
+        if (plugin.getSkyWarsArena().getEndTimer() == 1) {
+            plugin.getSkyWarsArena().SEND_ALL_TO_LOBBY();
         }
 
         if (plugin.getSkyWarsArena().getEndTimer() == 0) {
@@ -34,6 +36,8 @@ public class EndTask extends BukkitRunnable {
             plugin.debug("Restarting arena..");
             this.cancel();
             if (Statics.isFawe) {
+                if (Statics.SnakeGameQueue) GameQueueAPI.removeGame(Statics.BungeeID);
+
                 if (Statics.toRestart++ >= 20) {
                     Bukkit.shutdown();
                     return;
@@ -43,10 +47,22 @@ public class EndTask extends BukkitRunnable {
                 plugin.getListenerManager().reset();
                 plugin.resetArena();
             } else {
-                if (Statics.SnakeGameQueue) {
-                    GameQueueAPI.removeGame(Statics.BungeeID);
+                if (Statics.SnakeGameQueue) GameQueueAPI.removeGame(Statics.BungeeID);
+
+                if (Statics.toRestart++ >= 20) {
+                    Bukkit.shutdown();
+                    return;
                 }
-                Bukkit.shutdown();
+
+                World world = Bukkit.getWorld("world");
+                world.setAutoSave(false);
+                WorldCreator worldReseter = new WorldCreator(world.getName());
+
+                Bukkit.unloadWorld(world, false);
+                Bukkit.getServer().createWorld(worldReseter);
+
+                plugin.getListenerManager().reset();
+                plugin.resetArena();
                 return;
             }
 

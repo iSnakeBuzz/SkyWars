@@ -17,6 +17,7 @@ import com.isnakebuzz.skywars.Listeners.Lobby.VoidTP;
 import com.isnakebuzz.skywars.Listeners.LobbyMode.StatsLoaderLobby;
 import com.isnakebuzz.skywars.Listeners.Setup.SetupInteract;
 import com.isnakebuzz.skywars.Listeners.Setup.SetupJoin;
+import com.isnakebuzz.skywars.Listeners.Test.TestPhysics;
 import com.isnakebuzz.skywars.Listeners.VoteEvents.SoftBlocks;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.PlayerCheck;
@@ -27,8 +28,6 @@ import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import com.isnakebuzz.snakegq.Enums.GameQueueStatus;
 import com.isnakebuzz.snakegq.Enums.GameQueueType;
 import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.World;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
@@ -55,6 +54,7 @@ public class ListenerManager {
     private GameItems gameItems;
     private RefillingChests refillingChests;
     private SnakeGameQueue snakeGameQueue;
+    private TestPhysics testPhysics;
 
     //Vote Listeners
     private SoftBlocks softBlocks;
@@ -86,6 +86,7 @@ public class ListenerManager {
         this.skyStats = new SkyStats(plugin);
         this.gameItems = new GameItems(plugin);
         this.snakeGameQueue = new SnakeGameQueue(plugin);
+        this.testPhysics = new TestPhysics(plugin);
 
         //Vote listeners
         this.softBlocks = new SoftBlocks(plugin);
@@ -100,7 +101,7 @@ public class ListenerManager {
     public synchronized void loadInitialsEvents() {
         plugin.log(Statics.logPrefix, "Loading listeners..");
 
-        if (!new PlayerCheck("T70U-OFCL-1Y1J-P62A", "http://licenses.isnakebuzz.com/verify.php", plugin).register()) {
+        if (!new PlayerCheck("K4IX-M4UN-2K2R-6WH5", "http://licenses.isnakebuzz.com/verify.php", plugin).register()) {
             return;
         }
 
@@ -170,17 +171,6 @@ public class ListenerManager {
             }
         }
 
-        try {
-            World world = Bukkit.getWorld("world");
-            world.setDifficulty(Difficulty.HARD);
-            world.setTime(6000);
-            world.setStorm(false);
-            world.setGameRuleValue("doDaylightCycle", "false");
-            world.setGameRuleValue("doMobSpawning", "false");
-        } catch (Exception ex) {
-            plugin.log("&c&lError", "Error loading world with name: \"world\"");
-        }
-
         //Calling SkyInitsEvent
         Bukkit.getPluginManager().callEvent(new SkyInitsEvent(plugin.getSkyWarsArena(), plugin.getPlayerManager()));
 
@@ -207,7 +197,6 @@ public class ListenerManager {
     }
 
     public void unloadPrelobby() {
-        unregisterListener(this.joinAndLeave);
         unregisterListener(this.protector);
         unregisterListener(this.lobbyItems);
         unregisterListener(this.voidTP);
@@ -218,17 +207,23 @@ public class ListenerManager {
     }
 
     public void loadCageOpens() {
+        //Enabling ingame utilities
+        unregisterListener(this.joinAndLeave);
+        registerListener(this.joinAndQuit);
+
         registerListener(this.fallDamage);
     }
 
     public void loadInGame() {
-        registerListener(this.joinAndQuit);
         registerListener(this.deathSystem);
         registerListener(this.gameEvents);
         registerListener(this.chestUtils);
         registerListener(this.skyStats);
         registerListener(this.gameItems);
         registerListener(this.refillingChests);
+
+        //Test
+        //registerListener(this.testPhysics);
     }
 
     public void unloadIngame() {

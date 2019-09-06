@@ -4,7 +4,7 @@
   <groupId>SkyWars</groupId>
   <artifactId>SkyWars</artifactId>
   <name>SkyWars</name>
-  <version>1.0.0.2</version>
+  <version>1.0.0.4</version>
   <description>SkyWars Similar to HyPixel</description>
   <url>https://www.isnakebuzz.com/</url>
   <build>

@@ -1,5 +1,6 @@
 package com.isnakebuzz.skywars.Teams;
 
+import com.avaje.ebean.validation.NotNull;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;

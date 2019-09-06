@@ -6,6 +6,7 @@ import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
+import com.isnakebuzz.skywars.Utils.LocUtils;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
@@ -40,6 +41,9 @@ public class StartingTask extends BukkitRunnable {
 
         if (plugin.getSkyWarsArena().getStartingTime() == 1) {
 
+            //Setting up the CageOpening
+            plugin.getSkyWarsArena().setGameStatus(GameStatus.CAGEOPENING);
+
             // Giving teams to players :)
             plugin.getTeamManager().giveTeams();
 
@@ -51,6 +55,8 @@ public class StartingTask extends BukkitRunnable {
                 plugin.getCagesManager().addCage(cage);
             }
 
+            Location lobbyLocation = plugin.getSkyWarsArena().getLobbyLocation();
+
             // Teleporting players
             for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame.getUniqueId());
@@ -58,7 +64,7 @@ public class StartingTask extends BukkitRunnable {
                 Location location = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID());
 
                 Bukkit.getScheduler().runTask(plugin, () -> {
-                    inGame.teleport(location);
+                    LocUtils.teleport(inGame, location, lobbyLocation);
                     inGame.getInventory().clear();
                     plugin.getScoreBoardAPI2().setScoreBoard(inGame, ScoreboardType.INGAME, true, false, true);
                 });
@@ -70,7 +76,6 @@ public class StartingTask extends BukkitRunnable {
             plugin.debug("BUG CHECK. IF THIS MESSAGE APPEAR MORE ONE TIME, GAME BUGGED; PLEASE CHECK CODE :(");
 
             /* OTHER THINGS */
-            plugin.getSkyWarsArena().setGameStatus(GameStatus.CAGEOPENING);
             plugin.getListenerManager().loadCageOpens();
             plugin.getListenerManager().loadInGame();
             plugin.getVoteManager().checkVotes();
@@ -85,7 +90,9 @@ public class StartingTask extends BukkitRunnable {
 
         plugin.getSkyWarsArena().setStatrtingTime(plugin.getSkyWarsArena().getStartingTime() - 1);
 
-        if (plugin.getSkyWarsArena().getGamePlayers().size() < plugin.getSkyWarsArena().getMinPlayers() && plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.STARTING)) {
+        if (plugin.getSkyWarsArena().getGamePlayers().size() < plugin.getSkyWarsArena().getMinPlayers()
+                && plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.STARTING)
+                && plugin.getSkyWarsArena().getStartingTime() >= 5) {
             this.cancel();
             plugin.getSkyWarsArena().cancelStart();
             plugin.debug("Cancelling starting task..");
