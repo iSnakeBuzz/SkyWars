@@ -1,14 +1,21 @@
 package com.isnakebuzz.skywars.Listeners.Lobby;
 
 import com.isnakebuzz.skywars.Main;
-import com.isnakebuzz.skywars.Tasks.StartingTask;
+import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Tasks.CageOpeningTask;
+import com.isnakebuzz.skywars.Tasks.LobbyTask;
+import com.isnakebuzz.skywars.Teams.Team;
+import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
+import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
+import com.isnakebuzz.skywars.Utils.LocUtils;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,7 +54,13 @@ public class JoinAndLeave implements Listener {
     public void preventBugs(PlayerLoginEvent e) {
         if (plugin.getSkyWarsArena().getGamePlayers().size() >= plugin.getSkyWarsArena().getMaxPlayers()) {
             e.disallow(PlayerLoginEvent.Result.KICK_FULL, "El servidor actualmente se encuentra lleno :(");
+
+            // Handling player denied bug
+            if (plugin.getPlayerManager().containsPlayer(e.getPlayer().getUniqueId())) {
+                plugin.getPlayerManager().removePlayer(e.getPlayer().getUniqueId());
+            }
         }
+
     }
 
     @EventHandler
@@ -61,8 +74,9 @@ public class JoinAndLeave implements Listener {
         Configuration lang = plugin.getConfig("Lang");
 
         Player p = e.getPlayer();
-        p.teleport(plugin.getSkyWarsArena().getLobbyLocation());
         plugin.getSkyWarsArena().getGamePlayers().add(p);
+        plugin.debug("Players: " + plugin.getSkyWarsArena().getGamePlayers().size());
+
         plugin.getInventories().setLobbyInventory(p);
         PacketsAPI.sendClean(p);
 
@@ -83,23 +97,74 @@ public class JoinAndLeave implements Listener {
                 lang.getInt("Join Title.FadeOut")
         );
 
+
+        /* Check start arena */
+        if (plugin.getSkyWarsArena().checkStart()) {
+            plugin.debug("Starting arena");
+            plugin.getSkyWarsArena().setGameStatus(GameStatus.STARTING);
+
+            if (Statics.skyMode.equals(GameType.SOLO)) {
+
+                /* OTHER THINGS */
+                plugin.getListenerManager().loadCageOpens();
+                plugin.getListenerManager().loadInGame();
+                plugin.getChestController().load();
+                plugin.closeInventory();
+
+                new CageOpeningTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
+
+            } else if (Statics.skyMode.equals(GameType.TEAM)) {
+                new LobbyTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
+            }
+        }
+
+        plugin.debug("Finish loading in " + counter(currentTimeMillis));
+    }
+
+    @EventHandler
+    public void joinUtils(PlayerJoinEvent e) {
         if (Statics.SnakeGameQueue) {
             int playerOnline = Bukkit.getOnlinePlayers().size();
             GameQueueAPI.updatePlayers(Statics.BungeeID, playerOnline);
         }
+    }
 
-        if (plugin.getSkyWarsArena().checkStart()) {
-            plugin.debug("Starting arena");
-            plugin.getSkyWarsArena().setGameStatus(GameStatus.STARTING);
-            new StartingTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
+    @EventHandler
+    public void PlayerJoinTeleport(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+
+        if (Statics.skyMode.equals(GameType.SOLO)) {
+            SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+            plugin.getPlayerManager().addPlayer(p.getUniqueId(), skyPlayer);
+
+            Team team = plugin.getTeamManager().addTeam(skyPlayer);
+            int spawnID = team.getSpawnID();
+
+            Location spawnLocation = plugin.getSkyWarsArena().getSpawnLocations().get(spawnID);
+            Location lobbyLocation = plugin.getSkyWarsArena().getLobbyLocation();
+
+            LocUtils.teleport(p, spawnLocation, lobbyLocation);
+
+            Cage cage = new Cage(plugin, spawnLocation, team.getCage());
+            cage.paste();
+            plugin.getCagesManager().addCage(spawnID, cage);
+        } else if (Statics.skyMode.equals(GameType.TEAM)) {
+            p.teleport(plugin.getSkyWarsArena().getLobbyLocation());
         }
-        plugin.debug("Finish loading in " + counter(currentTimeMillis));
+
     }
 
     @EventHandler
     public void PlayerQuitEvent(PlayerQuitEvent e) {
         Configuration lang = plugin.getConfig("Lang");
         Player p = e.getPlayer();
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+        plugin.getTeamManager().removeTeam(skyPlayer);
+
+        /* Check if team not equals null and removing cage :) */
+        if (skyPlayer.getTeam() != null)
+            plugin.getCagesManager().deleteCage(skyPlayer.getTeam().getSpawnID());
+
         plugin.getSkyWarsArena().getGamePlayers().remove(p);
 
         plugin.getScoreBoardAPI2().removeScoreBoard(p);
@@ -109,7 +174,6 @@ public class JoinAndLeave implements Listener {
             int playerOnline = Bukkit.getOnlinePlayers().size() - 1;
             GameQueueAPI.updatePlayers(Statics.BungeeID, playerOnline);
         }
-
 
         // Saving uuid in momentaneus ram..
         UUID uuid = p.getUniqueId();

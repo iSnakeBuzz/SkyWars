@@ -235,13 +235,19 @@ public class SkyWarsArena {
     }
 
     public synchronized boolean checkStart() {
+        plugin.debug("Started: " + this.started);
+
         if (!this.started) {
+
+            plugin.debug("Players: " + this.getMinPlayers() + ", " + this.getGamePlayers().size());
+
             if (this.getGamePlayers().size() >= this.getMinPlayers()) {
                 this.started = true;
 
                 //Calling start event
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> Bukkit.getPluginManager().callEvent(new SkyStartEvent(this)));
 
+                plugin.debug("Started = true");
                 return true;
             }
         } else {

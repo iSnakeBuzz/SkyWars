@@ -62,6 +62,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
         this.isSpectator = false;
         this.isStaff = false;
         this.isSpectator = false;
+        this.team = null;
 
         //Votes
         this.isChest = false;
@@ -271,6 +272,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
     }
 
     public void setTeam(Team team) {
+        System.out.println("Team Name: " + team.getName());
         team.addPlayer(this);
         this.team = team;
     }

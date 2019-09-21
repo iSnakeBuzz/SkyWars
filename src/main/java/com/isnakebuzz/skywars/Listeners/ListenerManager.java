@@ -28,6 +28,8 @@ import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import com.isnakebuzz.snakegq.Enums.GameQueueStatus;
 import com.isnakebuzz.snakegq.Enums.GameQueueType;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
@@ -133,7 +135,6 @@ public class ListenerManager {
             // Create new skywars arena
             plugin.resetArena();
 
-
             // Setting up Signs
             if (Bukkit.getPluginManager().isPluginEnabled("SnakeGameQueue")) {
                 Statics.SnakeGameQueue = true;
@@ -145,6 +146,7 @@ public class ListenerManager {
 
                 registerListener(this.snakeGameQueue);
             }
+
         } else if (Statics.skyMode.equals(GameType.TEAM)) {
             plugin.getCommand("SkyWars").setExecutor(new NormalCommands(plugin));
             registerListener(new WorldEvents(plugin));
@@ -170,6 +172,13 @@ public class ListenerManager {
                 registerListener(this.snakeGameQueue);
             }
         }
+
+
+        //Reseting world
+        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
+            plugin.getWorldRestarting().restartWorld();
+        }
+
 
         //Calling SkyInitsEvent
         Bukkit.getPluginManager().callEvent(new SkyInitsEvent(plugin.getSkyWarsArena(), plugin.getPlayerManager()));

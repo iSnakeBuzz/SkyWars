@@ -44,9 +44,7 @@ public class Team {
     }
 
     public void removePlayer(SkyPlayer p) {
-        if (this.teamPlayers.contains(p)) {
-            this.teamPlayers.remove(p);
-        }
+        this.teamPlayers.remove(p);
     }
 
     public String getCage() {
@@ -73,7 +71,7 @@ public class Team {
     }
 
     public int getSpawnID() {
-        return (this.getID() - 1) < 0 ? 0 : (this.getID() - 1);
+        return Math.max((this.getID() - 1), 0);
     }
 
     public void setDead(boolean dead) {

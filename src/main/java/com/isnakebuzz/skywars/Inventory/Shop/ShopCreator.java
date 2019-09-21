@@ -221,7 +221,7 @@ public class ShopCreator extends Menu {
 
         if (args[0].equalsIgnoreCase("kit")) {
             String kitName = args[1];
-            int takeCoins = Integer.valueOf(args[2]);
+            int takeCoins = Integer.parseInt(args[2]);
 
             if (hasPermissions) {
                 skyPlayer.setSelectedKit(kitName);

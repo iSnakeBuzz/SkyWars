@@ -18,11 +18,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Set;
 
-public class StartingTask extends BukkitRunnable {
+public class LobbyTask extends BukkitRunnable {
 
     private Main plugin;
 
-    public StartingTask(Main plugin) {
+    public LobbyTask(Main plugin) {
         this.plugin = plugin;
     }
 
@@ -32,10 +32,11 @@ public class StartingTask extends BukkitRunnable {
         Configuration config = plugin.getConfigUtils().getConfig(plugin, "Lang");
         Set<String> keys = config.getConfigurationSection("Count Messages.Starting").getKeys(false);
         for (String time_config : keys) {
-            if (plugin.getSkyWarsArena().getStartingTime() == Integer.valueOf(time_config)) {
+            if (plugin.getSkyWarsArena().getStartingTime() == Integer.parseInt(time_config)) {
                 plugin.broadcast(config.getString("Count Messages.Starting." + time_config)
                         .replaceAll("%seconds%", String.valueOf(plugin.getSkyWarsArena().getStartingTime()))
                 );
+                break;
             }
         }
 
@@ -52,7 +53,7 @@ public class StartingTask extends BukkitRunnable {
                 Location location = plugin.getSkyWarsArena().getSpawnLocations().get(team.getSpawnID());
                 Cage cage = new Cage(plugin, location, team.getCage());
                 cage.paste();
-                plugin.getCagesManager().addCage(cage);
+                plugin.getCagesManager().addCage(team.getSpawnID(), cage);
             }
 
             Location lobbyLocation = plugin.getSkyWarsArena().getLobbyLocation();
@@ -73,7 +74,7 @@ public class StartingTask extends BukkitRunnable {
             /* REMOVING LOBBY */
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getSkyWarsArena().removeLobby());
 
-            plugin.debug("BUG CHECK. IF THIS MESSAGE APPEAR MORE ONE TIME, GAME BUGGED; PLEASE CHECK CODE :(");
+            plugin.debug("BUG CHECK. IF THIS MESSAGE APPEAR ONE MORE TIME, GAME BUGGED; PLEASE CHECK CODE :(");
 
             /* OTHER THINGS */
             plugin.getListenerManager().loadCageOpens();
@@ -81,10 +82,12 @@ public class StartingTask extends BukkitRunnable {
             plugin.getVoteManager().checkVotes();
             plugin.getChestController().load();
             plugin.closeInventory();
+
             new CageOpeningTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
             if (Statics.SnakeGameQueue) {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> GameQueueAPI.removeGame(Statics.BungeeID), 20 * 3);
             }
+
             this.cancel();
         }
 

@@ -48,9 +48,7 @@ public class KitLoader {
 
             // Parsing data to kit format
             KitInventory kitInventory = new KitInventory(armorCont, invCont);
-            plugin.debug(config.getConfigurationSection("Logo").toString());
             ItemStack iLogo = plugin.getUtils().createItem(config.getConfigurationSection("Logo"));
-
 
             // Creating kit
             Kit pKit = new Kit(name, iLogo, perm, kitInventory, isDefault);

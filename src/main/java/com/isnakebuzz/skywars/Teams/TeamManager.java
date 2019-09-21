@@ -1,15 +1,17 @@
 package com.isnakebuzz.skywars.Teams;
 
-import com.avaje.ebean.validation.NotNull;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Utils.Comparators.TeamComparator;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.skywars.Utils.Strings.Alphabet;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TeamManager {
@@ -18,10 +20,30 @@ public class TeamManager {
     private Map<String, Team> teamMap;
     private int teamSize;
 
-
     public TeamManager(Main plugin) {
         this.plugin = plugin;
         this.teamMap = new HashMap<>();
+    }
+
+    public Team addTeam(SkyPlayer skyPlayer) {
+        Team team = getTeam();
+
+        if (team == null)
+            return null;
+
+        skyPlayer.setTeam(team);
+        plugin.debug("Adding - Team, " + team.getID());
+        return team;
+    }
+
+    public void removeTeam(SkyPlayer skyPlayer) {
+        if (skyPlayer.getTeam() != null) {
+            Team team = skyPlayer.getTeam();
+
+            team.removePlayer(skyPlayer);
+            plugin.debug("Removing - Team, " + team.getID());
+
+        }
     }
 
     public void loadTeams() {
@@ -86,7 +108,9 @@ public class TeamManager {
 
             }
 
-        } else if (plugin.getSkyWarsArena().getGameType().equals(GameType.SOLO)) {
+        }
+
+        /*Removed for new Join Cage system // else if (plugin.getSkyWarsArena().getGameType().equals(GameType.SOLO)) {
             int i = 1;
             plugin.debug("Initial Team: " + i);
             for (Player player : plugin.getSkyWarsArena().getGamePlayers()) {
@@ -94,7 +118,24 @@ public class TeamManager {
                 skyPlayer.setTeam(getTeam(i));
                 i++;
             }
+        }*/
+    }
+
+    public Team getTeam() {
+        List<Team> teams = new ArrayList<>(teamMap.values());
+        teams.sort(new TeamComparator());
+
+        for (Team team : teams) {
+            if (Statics.skyMode.equals(GameType.SOLO)) {
+                if (team.size() < 1)
+                    return team;
+            } else {
+                if (team.size() < teamSize)
+                    return team;
+            }
         }
+
+        return null;
     }
 
     public Team getTeam(int id) {

@@ -5,7 +5,9 @@ import com.isnakebuzz.skywars.Database.Database;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Base64Utils;
+import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
@@ -41,7 +43,7 @@ public class vSolo implements Database {
             } else {
 
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
-                plugin.getPlayerManager().addPlayer(playerUUID, skyPlayer);
+                //plugin.getPlayerManager().addPlayer(playerUUID, skyPlayer);
 
                 plugin.debug("Fetching data: " + playerUUID.toString());
 
@@ -60,10 +62,17 @@ public class vSolo implements Database {
                 plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + player_table + " WHERE UUID='" + playerUUID.toString() + "'", rs -> {
                     try {
                         if (rs.next()) {
-                            skyPlayer.setSelectedKit(rs.getString("SelKit"));
-                            skyPlayer.setCageName(rs.getString("SelCage"));
+                            String kitName = rs.getString("SelKit");
+                            String cageName = rs.getString("SelCage");
+
+                            skyPlayer.setSelectedKit(kitName);
+                            skyPlayer.setCageName(cageName);
                             List<String> cages = (List<String>) Base64Utils.fromBase64(rs.getString("Cages"));
                             List<String> kits = (List<String>) Base64Utils.fromBase64(rs.getString("Kits"));
+
+                            Location spawnLocation = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID());
+                            Cage cage = new Cage(plugin, spawnLocation, cageName);
+                            cage.paste();
 
                             skyPlayer.setPurchCages(cages);
                             skyPlayer.setPurchKits(kits);
@@ -133,7 +142,7 @@ public class vSolo implements Database {
 
     private void cdbPlayer(UUID uuid) {
         SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(uuid);
-        plugin.getPlayerManager().addPlayer(uuid, skyPlayer);
+        //plugin.getPlayerManager().addPlayer(uuid, skyPlayer);
 
         List<String> kits = new ArrayList<>();
         kits.add("default");

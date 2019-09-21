@@ -1,33 +1,35 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
+import com.google.common.collect.Maps;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
-import org.bukkit.Location;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.regex.Pattern;
 
 public class CagesManager {
 
     private Main plugin;
-    private List<Cage> cages;
+    private HashMap<Integer, Cage> cages;
 
     public CagesManager(Main plugin) {
         this.plugin = plugin;
-        this.cages = new ArrayList<>();
+        this.cages = Maps.newHashMap();
     }
 
-    public void addCage(Cage cage) {
-        if (!this.cages.contains(cage)) {
-            this.cages.add(cage);
+    public void addCage(int spawnID, Cage cage) {
+        if (!this.cages.containsKey(spawnID)) {
+            this.cages.put(spawnID, cage);
         }
     }
 
+    public void deleteCage(int spawnID) {
+        if (this.cages.containsKey(spawnID))
+            this.cages.get(spawnID).undo();
+    }
+
     public void deleteAllCages() {
-        for (Cage cage : this.cages) {
+        for (Cage cage : this.cages.values()) {
             cage.undo();
         }
     }

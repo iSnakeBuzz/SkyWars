@@ -148,9 +148,7 @@ public final class Main extends JavaPlugin {
     }
 
     public void closeInventory() {
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            online.closeInventory();
-        }
+        for (Player online : Bukkit.getOnlinePlayers()) online.closeInventory();
     }
 
     public ConfigUtils getConfigUtils() {
