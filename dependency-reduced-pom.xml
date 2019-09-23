@@ -74,15 +74,15 @@
   </repositories>
   <dependencies>
     <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <version>LATEST</version>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.10</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>jnbt</groupId>
-      <artifactId>jnbt-api</artifactId>
-      <version>1.1</version>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>LATEST</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -159,15 +159,6 @@
       <systemPath>${project.basedir}/Lib/SnakeEconomy-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
   </dependencies>
-  <reporting>
-    <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.0</version>
-        <configuration />
-      </plugin>
-    </plugins>
-  </reporting>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

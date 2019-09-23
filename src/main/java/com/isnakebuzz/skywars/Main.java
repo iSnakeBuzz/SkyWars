@@ -127,6 +127,8 @@ public final class Main extends JavaPlugin {
         if (Statics.SnakeGameQueue) {
             GameQueueAPI.removeGame(Statics.BungeeID);
         }
+
+        if (Bukkit.getOnlinePlayers().size()>0) Bukkit.getOnlinePlayers().forEach(o -> o.kickPlayer("Reloading SkyWars Plugin. " + ChatColor.DARK_RED + "(DON'T USE RELOAD)"));
     }
 
     public void log(String logger, String log) {

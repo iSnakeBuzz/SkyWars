@@ -5,6 +5,7 @@ import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
+import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -84,6 +85,13 @@ public class CageOpeningTask extends BukkitRunnable {
 
             if (Statics.skyMode.equals(GameType.SOLO)) {
                 plugin.getVoteManager().checkVotes();
+
+                plugin.getScheduler().runSync(() -> {
+                    plugin.getSkyWarsArena().getGamePlayers().forEach(player -> {
+                        plugin.getScoreBoardAPI2().setScoreBoard(player, ScoreboardType.INGAME, true, false, true);
+                    });
+                });
+
             }
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getListenerManager().unloadCageOpens(), 20 * 5);

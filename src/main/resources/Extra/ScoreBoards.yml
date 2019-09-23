@@ -1,7 +1,7 @@
 PRELOBBY:
   title: '&e&lSKYWARS'
   lines:
-    - '&7%date% &8'
+    - '&7%date% &8%server%'
     - ''
     - 'Players: &a%online%/%maxPlayers%'
     - ''
@@ -15,7 +15,7 @@ PRELOBBY:
 INGAME:
   title: '&e&lSKYWARS'
   lines:
-    - '&7%date%'
+    - '&7%date% &8%server%'
     - '<cages>'
     - '<cages>Next Event:'
     - '<cages>&aStart %cageOpening%'

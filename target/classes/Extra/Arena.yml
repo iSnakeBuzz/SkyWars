@@ -1,6 +1,0 @@
-# You need change to team mode in Settings.yml for enable this
-Teams:
-  # enabling this will place names to the teams according to the alphabet
-  alphabetic names: true
-  # max team size
-  size: 2

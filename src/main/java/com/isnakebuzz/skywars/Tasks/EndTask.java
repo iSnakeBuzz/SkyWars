@@ -54,12 +54,14 @@ public class EndTask extends BukkitRunnable {
                     return;
                 }
 
-                World world = Bukkit.getWorld("world");
-                world.setAutoSave(false);
-                WorldCreator worldReseter = new WorldCreator(world.getName());
-
-                Bukkit.unloadWorld(world, false);
-                Bukkit.getServer().createWorld(worldReseter);
+                /* World restarting sync. */
+                plugin.getScheduler().runSync(() -> {
+                    World world = Bukkit.getWorld("world");
+                    world.setAutoSave(false);
+                    WorldCreator worldReseter = new WorldCreator(world.getName());
+                    Bukkit.unloadWorld(world, false);
+                    Bukkit.getServer().createWorld(worldReseter);
+                });
 
                 plugin.getListenerManager().reset();
                 plugin.resetArena();

@@ -78,15 +78,15 @@ public class VoteManager {
                 time_night = this.time_night.size();
 
         if (time_day > time_sunset && time_day > time_night) {
-            Bukkit.getWorld("world").setTime(1000);
+            Bukkit.getWorld("world").setFullTime(1000);
             plugin.getSkyWarsArena().setTimeType(TimeType.DAY);
             votedTime = true;
         } else if (time_night > time_day && time_night > time_sunset) {
-            Bukkit.getWorld("world").setTime(13000);
+            Bukkit.getWorld("world").setFullTime(14000);
             plugin.getSkyWarsArena().setTimeType(TimeType.NIGHT);
             votedTime = true;
         } else if (time_sunset > time_day && time_sunset > time_night) {
-            Bukkit.getWorld("world").setTime(12000);
+            Bukkit.getWorld("world").setFullTime(12500);
             plugin.getSkyWarsArena().setTimeType(TimeType.SUNSET);
             votedTime = true;
         }

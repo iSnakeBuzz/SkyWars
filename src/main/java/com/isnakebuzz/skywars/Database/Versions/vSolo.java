@@ -71,8 +71,11 @@ public class vSolo implements Database {
                             List<String> kits = (List<String>) Base64Utils.fromBase64(rs.getString("Kits"));
 
                             Location spawnLocation = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID());
-                            Cage cage = new Cage(plugin, spawnLocation, cageName);
-                            cage.paste();
+
+                            if (!cageName.equalsIgnoreCase("default")) {
+                                Cage cage = new Cage(plugin, spawnLocation, cageName);
+                                cage.paste();
+                            }
 
                             skyPlayer.setPurchCages(cages);
                             skyPlayer.setPurchKits(kits);
