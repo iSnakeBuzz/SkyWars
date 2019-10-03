@@ -43,6 +43,7 @@ public class ChestRefillManager {
     }
 
     public void updateChest(Chest chest, boolean broken, boolean open) {
+        if (chest == null) return;
         String locFixed = LocUtils.locToString(chest.getLocation());
 
 

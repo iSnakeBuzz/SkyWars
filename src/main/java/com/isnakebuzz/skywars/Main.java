@@ -137,7 +137,7 @@ public final class Main extends JavaPlugin {
 
     public void debug(String log) {
         if (this.getConfig("Settings").getBoolean("debug")) {
-            Bukkit.getConsoleSender().sendMessage(c("&a&lDebug &8|&e " + log));
+            Bukkit.getConsoleSender().sendMessage(c("&a&lSkyWars-Debug &8|&e " + log));
         }
     }
 

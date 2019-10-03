@@ -1,5 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.Lobby;
 
+import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Tasks.CageOpeningTask;
@@ -25,20 +26,35 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.List;
 import java.util.UUID;
 
 
 public class JoinAndLeave implements Listener {
 
     private Main plugin;
+    private List<String> doubleJoinBug;
 
     public JoinAndLeave(Main plugin) {
         this.plugin = plugin;
+        this.doubleJoinBug = Lists.newArrayList();
     }
 
     @EventHandler
     public void PlayerLogin(AsyncPlayerPreLoginEvent e) {
         plugin.debug("AsyncPlayerPreLoginEvent " + e.getName());
+
+
+        /*Double join fix*/
+        if (this.doubleJoinBug.contains(e.getName())) {
+            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, "Double join bug");
+            this.doubleJoinBug.remove(e.getName());
+            plugin.getPlayerManager().removePlayer(e.getUniqueId());
+            return;
+        } else {
+            this.doubleJoinBug.add(e.getName());
+        }
+        /*Double join fix END*/
 
         if (plugin.getSkyWarsArena().getGamePlayers().size() >= plugin.getSkyWarsArena().getMaxPlayers()) {
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "El servidor se encuentra lleno");
@@ -46,7 +62,7 @@ public class JoinAndLeave implements Listener {
         }
 
         if (e.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getDataManager().getDatabase().createPlayer(e.getUniqueId()), 15);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getDataManager().getDatabase().createPlayer(e.getUniqueId()), 20);
         }
     }
 
