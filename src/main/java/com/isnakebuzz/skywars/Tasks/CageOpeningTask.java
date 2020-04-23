@@ -42,7 +42,12 @@ public class CageOpeningTask extends BukkitRunnable {
         if (plugin.getSkyWarsArena().getCageOpens() == 1) {
 
             plugin.getCagesManager().deleteAllCages();
-            plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
+
+            /*Active on team*/
+            if (Statics.skyMode.equals(GameType.TEAM)) {
+                plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
+            }
+
             plugin.getListenerManager().unloadPrelobby();
             plugin.getSkyWarsArena().fillChests();
             plugin.closeInventory();
@@ -84,6 +89,8 @@ public class CageOpeningTask extends BukkitRunnable {
             Bukkit.getPluginManager().callEvent(new SkyCagesOpenEvent());
 
             if (Statics.skyMode.equals(GameType.SOLO)) {
+                plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
+                plugin.getListenerManager().loadInGame();
                 plugin.getVoteManager().checkVotes();
 
                 plugin.getScheduler().runSync(() -> {

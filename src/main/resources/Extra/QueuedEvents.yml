@@ -26,6 +26,14 @@ Events:
       type: 'REFILL'
       name: 'Refill'
     placeholder: '&aRefill %queue_time%'
+  Dragon:
+    # Active this at 180 seconds (3 minutes) left after start game
+    time: 30
+    # REFILL, CUSTOM (You need a custom plugin for use this function)
+    event settings:
+      type: 'CUSTOM'
+      name: 'Dragon'
+    placeholder: '&aDragon %queue_time%'
   Refill-3:
     # Active this at 180 seconds (3 minutes) left after start game
     time: 180

@@ -1,4 +1,4 @@
-# Types: MYSQL
+# Types: MYSQL, CUSTOM
 Type: MYSQL
 
 # Tables
@@ -14,3 +14,7 @@ MySQL:
   database: 'SkyWars'
   username: 'root'
   password: 'snake123'
+
+# CUSTOM DATABASE
+# URL for the API
+SnakeDb: 'http://localhost:9090/skywars/'

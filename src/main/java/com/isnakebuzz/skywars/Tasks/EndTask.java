@@ -8,8 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class EndTask extends BukkitRunnable {
@@ -32,7 +30,7 @@ public class EndTask extends BukkitRunnable {
         }
 
         if (plugin.getSkyWarsArena().getEndTimer() == 0) {
-            //replace for others methodes more efficients.
+            //replace for others methods more efficients.
             plugin.debug("Restarting arena..");
             this.cancel();
             if (Statics.isFawe) {
@@ -45,7 +43,6 @@ public class EndTask extends BukkitRunnable {
 
                 plugin.getWorldRestarting().restartWorld();
                 plugin.getListenerManager().reset();
-                plugin.resetArena();
             } else {
                 if (Statics.SnakeGameQueue) GameQueueAPI.removeGame(Statics.BungeeID);
 
@@ -64,24 +61,13 @@ public class EndTask extends BukkitRunnable {
                 });
 
                 plugin.getListenerManager().reset();
-                plugin.resetArena();
                 return;
             }
 
 
             if (Bukkit.getOnlinePlayers().size() > 0) {
                 for (Player online : Bukkit.getOnlinePlayers()) {
-                    PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(online, "Rejoined");
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                        for (Player online2 : Bukkit.getOnlinePlayers()) {
-                            if (!online.equals(online2)) {
-                                online.showPlayer(online2);
-                            }
-                        }
-                        Bukkit.getPluginManager().callEvent(playerJoinEvent);
-                    });
-                    AsyncPlayerPreLoginEvent asyncPlayerPreLoginEvent = new AsyncPlayerPreLoginEvent(online.getName(), online.getAddress().getAddress(), online.getUniqueId());
-                    Bukkit.getPluginManager().callEvent(asyncPlayerPreLoginEvent);
+                    plugin.getScheduler().runSync(() -> online.kickPlayer("Arena restarted"));
                 }
             }
 

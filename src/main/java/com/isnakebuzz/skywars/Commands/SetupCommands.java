@@ -65,11 +65,8 @@ public class SetupCommands implements CommandExecutor {
 
     void addSpawn(Player p, String cmd, String[] args) {
         if (!cmd.equalsIgnoreCase("addSpawn")) return;
-        try {
-            plugin.getArenaSetup().addSpawn(p);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        p.sendMessage(c("&aPlace a beacon in the location to spawn"));
+        /*plugin.getArenaSetup().addSpawn(p);*/
     }
 
     void removeSpawn(Player p, String cmd, String[] args) {

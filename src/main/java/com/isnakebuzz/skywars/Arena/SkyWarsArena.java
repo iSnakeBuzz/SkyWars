@@ -92,10 +92,12 @@ public class SkyWarsArena {
         }
 
         //Loading lobby region
-        Set<String> lobbyRegKeys = arena.getConfigurationSection("LobbyArea").getKeys(false);
-        for (String key : lobbyRegKeys) {
-            String path = "LobbyArea." + key;
-            this.lobbyRegion.add(LocUtils.stringToLoc(arena.getString(path)));
+        if (Statics.skyMode != GameType.SOLO) {
+            Set<String> lobbyRegKeys = arena.getConfigurationSection("LobbyArea").getKeys(false);
+            for (String key : lobbyRegKeys) {
+                String path = "LobbyArea." + key;
+                this.lobbyRegion.add(LocUtils.stringToLoc(arena.getString(path)));
+            }
         }
 
         //Loading chests
@@ -137,6 +139,10 @@ public class SkyWarsArena {
         return cageOpens;
     }
 
+    public void setCageOpens(int cageOpens) {
+        this.cageOpens = cageOpens;
+    }
+
     public int getMinPlayers() {
         return minPlayers;
     }
@@ -157,10 +163,6 @@ public class SkyWarsArena {
         return lobbyLocation;
     }
 
-    public void setCageOpens(int cageOpens) {
-        this.cageOpens = cageOpens;
-    }
-
     public List<Location> getCenterChestLocs() {
         return centerChestLocs;
     }
@@ -171,6 +173,10 @@ public class SkyWarsArena {
 
     public int getMaxPlayers() {
         return maxPlayers;
+    }
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
     }
 
     public void setGameStatus(GameStatus gameStatus) {
@@ -194,10 +200,6 @@ public class SkyWarsArena {
         }
     }
 
-    public GameStatus getGameStatus() {
-        return gameStatus;
-    }
-
     public List<Player> getGamePlayers() {
         return gamePlayers;
     }
@@ -210,28 +212,28 @@ public class SkyWarsArena {
         this.endTimer = endTimer;
     }
 
-    public void setChestType(ChestType chestType) {
-        this.chestType = chestType;
-    }
-
-    public void setTimeType(TimeType timeType) {
-        this.timeType = timeType;
+    public ProjectileType getProjectileType() {
+        return projectileType;
     }
 
     public void setProjectileType(ProjectileType projectileType) {
         this.projectileType = projectileType;
     }
 
-    public ProjectileType getProjectileType() {
-        return projectileType;
-    }
-
     public TimeType getTimeType() {
         return timeType;
     }
 
+    public void setTimeType(TimeType timeType) {
+        this.timeType = timeType;
+    }
+
     public ChestType getChestType() {
         return chestType;
+    }
+
+    public void setChestType(ChestType chestType) {
+        this.chestType = chestType;
     }
 
     public synchronized boolean checkStart() {

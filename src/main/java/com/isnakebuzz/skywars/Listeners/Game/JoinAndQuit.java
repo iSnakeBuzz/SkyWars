@@ -76,7 +76,7 @@ public class JoinAndQuit implements Listener {
         plugin.getScoreBoardAPI2().removeScoreBoard(p);
 
         // Removing player async
-        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(p.getUniqueId()), false);
+        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(p), false);
 
         e.setQuitMessage(null);
     }

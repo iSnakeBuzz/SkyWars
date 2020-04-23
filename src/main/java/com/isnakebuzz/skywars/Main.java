@@ -98,7 +98,7 @@ public final class Main extends JavaPlugin {
         Configuration database = this.getConfig("Extra/Database");
         Configuration arena = this.getConfig("Extra/Arena");
         Statics.skyMode = GameType.valueOf(settings.getString("Mode").toUpperCase());
-        Statics.baseMode = database.getString("Type").toUpperCase();
+        Statics.baseMode = database.getString("Type", "mysql").toUpperCase();
         Statics.BungeeID = settings.getString("BungeeID", Bukkit.getServerName());
         Statics.lobbies = settings.getStringList("Lobbies");
         Statics.mapName = arena.getString("MapName", "none");
@@ -109,7 +109,7 @@ public final class Main extends JavaPlugin {
         this.dataManager.loadDatabase();
 
         //Detecting fawe for instant world restart without lag
-        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") && Statics.skyMode != GameType.LOBBY) {
             Statics.isFawe = true;
             this.worldRestarting = new FaweUtils(this);
         }

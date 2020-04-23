@@ -31,7 +31,7 @@ public class ChestRefillManager {
         this.plugin = plugin;
 
         this.hologramHashMap = new HashMap<>();
-        this.actived = false;
+        this.actived = true;
     }
 
     public void setActived(Boolean actived) {

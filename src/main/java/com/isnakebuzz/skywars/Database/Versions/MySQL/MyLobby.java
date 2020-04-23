@@ -1,11 +1,12 @@
-package com.isnakebuzz.skywars.Database.Versions;
+package com.isnakebuzz.skywars.Database.Versions.MySQL;
 
 import com.isnakebuzz.skywars.Calls.Callback;
 import com.isnakebuzz.skywars.Database.Database;
 import com.isnakebuzz.skywars.Main;
-import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.Player.LobbyPlayer;
 import com.isnakebuzz.skywars.Utils.Base64Utils;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,21 +14,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class vTeam implements Database {
+public class MyLobby implements Database {
 
     private Main plugin;
 
     //Tables
     private String player_table;
-    private String stats_table;
+    private String solo_stats_table;
+    private String team_stats_table;
 
-    public vTeam(Main plugin) {
+    public MyLobby(Main plugin) {
         this.plugin = plugin;
 
         ConfigurationSection db = plugin.getConfig("Extra/Database").getConfigurationSection("Tables");
 
         this.player_table = db.getString("Player");
-        this.stats_table = db.getString("Team");
+        this.solo_stats_table = db.getString("Solo");
+        this.team_stats_table = db.getString("Team");
     }
 
     @Override
@@ -38,17 +41,27 @@ public class vTeam implements Database {
                 cdbPlayer(uuid);
             } else {
 
-                SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(uuid);
-                plugin.getPlayerManager().addPlayer(uuid, skyPlayer);
+                LobbyPlayer skyPlayer = plugin.getPlayerManager().getLbPlayer(uuid);
+                plugin.getPlayerManager().addLbPlayer(uuid, skyPlayer);
 
-                plugin.debug("Fetching data: " + uuid.toString());
-
-                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + stats_table + " WHERE UUID='" + uuid.toString() + "'", rs -> {
+                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + solo_stats_table + " WHERE UUID='" + uuid.toString() + "'", rs -> {
                     try {
                         if (rs.next()) {
-                            skyPlayer.setWins(rs.getInt("Wins"));
-                            skyPlayer.setKills(rs.getInt("Kills"));
-                            skyPlayer.setDeaths(rs.getInt("Deaths"));
+                            skyPlayer.setSolo_wins(rs.getInt("Wins"));
+                            skyPlayer.setSolo_kills(rs.getInt("Kills"));
+                            skyPlayer.setSolo_deaths(rs.getInt("Deaths"));
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                plugin.getDataManager().getMySQL().preparedQuery("SELECT * FROM " + team_stats_table + " WHERE UUID='" + uuid.toString() + "'", rs -> {
+                    try {
+                        if (rs.next()) {
+                            skyPlayer.setTeam_wins(rs.getInt("Wins"));
+                            skyPlayer.setTeam_kills(rs.getInt("Kills"));
+                            skyPlayer.setTeam_deaths(rs.getInt("Deaths"));
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -80,17 +93,11 @@ public class vTeam implements Database {
     }
 
     @Override
-    public void savePlayer(UUID playerUUID) {
-        if (!plugin.getPlayerManager().containsPlayer(playerUUID)) return;
+    public void savePlayer(Player playerUUID) {
+        LobbyPlayer skyPlayer = plugin.getPlayerManager().getLbPlayer(playerUUID.getUniqueId());
+        String uuid = playerUUID.getUniqueId().toString();
 
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
-
-        // If staff don't save stats
-        if (skyPlayer.isStaff()) return;
-
-        String uuid = playerUUID.toString();
-
-        existPlayer(playerUUID, playerExist -> {
+        existPlayer(playerUUID.getUniqueId(), playerExist -> {
             if (!playerExist) return;
 
             String kitsTodb = Base64Utils.toBase64(skyPlayer.getPurchKits());
@@ -104,14 +111,21 @@ public class vTeam implements Database {
                     "WHERE UUID='" + uuid + "'"
             );
 
-            plugin.getDataManager().getMySQL().preparedUpdate("UPDATE " + stats_table + " SET " +
-                    "Wins='" + skyPlayer.getWins() + "', " +
-                    "Kills='" + skyPlayer.getKills() + "', " +
-                    "Deaths='" + skyPlayer.getDeaths() + "' " +
+            plugin.getDataManager().getMySQL().preparedUpdate("UPDATE " + solo_stats_table + " SET " +
+                    "Wins='" + skyPlayer.getSolo_wins() + "', " +
+                    "Kills='" + skyPlayer.getSolo_kills() + "', " +
+                    "Deaths='" + skyPlayer.getSolo_deaths() + "' " +
                     "WHERE UUID='" + uuid + "'"
             );
 
-            //plugin.getPlayerManager().removePlayer(p);
+            plugin.getDataManager().getMySQL().preparedUpdate("UPDATE " + team_stats_table + " SET " +
+                    "Wins='" + skyPlayer.getTeam_wins() + "', " +
+                    "Kills='" + skyPlayer.getTeam_kills() + "', " +
+                    "Deaths='" + skyPlayer.getTeam_deaths() + "' " +
+                    "WHERE UUID='" + uuid + "'"
+            );
+
+            plugin.getPlayerManager().removeLbPlayer(playerUUID.getUniqueId());
         });
 
     }
@@ -121,9 +135,9 @@ public class vTeam implements Database {
         plugin.getDataManager().getMySQL().close();
     }
 
-    private void cdbPlayer(UUID uuid) {
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(uuid);
-        plugin.getPlayerManager().addPlayer(uuid, skyPlayer);
+    private void cdbPlayer(UUID playerUUID) {
+        LobbyPlayer skyPlayer = plugin.getPlayerManager().getLbPlayer(playerUUID);
+        plugin.getPlayerManager().addLbPlayer(playerUUID, skyPlayer);
 
         List<String> kits = new ArrayList<>();
         kits.add("default");
@@ -137,7 +151,7 @@ public class vTeam implements Database {
 
         plugin.getDataManager().getMySQL().preparedUpdate(
                 "INSERT INTO " + this.player_table + " (UUID, Kits, SelKit, Cages, SelCage) VALUES " +
-                        "('" + uuid.toString() + "', " +
+                        "('" + playerUUID.toString() + "', " +
                         "'" + kitsTodb + "', " +
                         "'" + skyPlayer.getSelectedKit() + "', " +
                         "'" + cagesTodb + "', " +
@@ -145,8 +159,16 @@ public class vTeam implements Database {
         );
 
         plugin.getDataManager().getMySQL().preparedUpdate(
-                "INSERT INTO " + this.stats_table + " (UUID, Wins, Kills, Deaths) VALUES " +
-                        "('" + uuid.toString() + "', " +
+                "INSERT INTO " + this.solo_stats_table + " (UUID, Wins, Kills, Deaths) VALUES " +
+                        "('" + playerUUID.toString() + "', " +
+                        "'0', " +
+                        "'0', " +
+                        "'0');"
+        );
+
+        plugin.getDataManager().getMySQL().preparedUpdate(
+                "INSERT INTO " + this.team_stats_table + " (UUID, Wins, Kills, Deaths) VALUES " +
+                        "('" + playerUUID.toString() + "', " +
                         "'0', " +
                         "'0', " +
                         "'0');"

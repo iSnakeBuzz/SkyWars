@@ -3,6 +3,7 @@ package com.isnakebuzz.skywars.Arena;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Utils.LocUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -33,7 +34,7 @@ public class ArenaSetup {
         p.playSound(p.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
     }
 
-    public void addSpawn(Player p) throws IOException {
+    public void addSpawn(Player p, Location spawnLocation) throws IOException {
         FileConfiguration arenaConfig = plugin.getConfigUtils().getConfig(plugin, "Extra/Arena");
 
         int spawn;
@@ -43,7 +44,7 @@ public class ArenaSetup {
             spawn = 1;
         }
 
-        arenaConfig.set("Spawns." + spawn, LocUtils.locToString(p.getLocation()));
+        arenaConfig.set("Spawns." + spawn, LocUtils.locToString(spawnLocation));
         arenaConfig.save(plugin.getConfigUtils().getFile(plugin, "Extra/Arena"));
         p.sendMessage(c("&aHas been added  Spawn #" + spawn));
         p.playSound(p.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);

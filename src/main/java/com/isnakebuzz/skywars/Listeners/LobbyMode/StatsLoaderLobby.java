@@ -4,7 +4,6 @@ import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.LobbyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -58,8 +57,7 @@ public class StatsLoaderLobby implements Listener {
     @EventHandler
     public void PlayerQuitEvent(PlayerQuitEvent e) {
         // Removing player async
-        Player player = e.getPlayer();
-        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(player.getUniqueId()), false);
+        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(e.getPlayer()), false);
     }
 
     private String c(String s) {

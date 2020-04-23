@@ -30,6 +30,7 @@ public class RefillingChests implements Listener {
     public void SkyQueueStart(SkyQueueStartEvent e) {
         if (e.getQueueEvent().getQueueType().equals(QueueType.REFILL)) {
             // Activating refill system
+            plugin.debug("Activating Chest Refill");
             plugin.getChestRefillManager().setActived(true);
         }
     }

@@ -1,6 +1,5 @@
 package com.isnakebuzz.skywars.Listeners.Lobby;
 
-import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.Tasks.CageOpeningTask;
@@ -26,18 +25,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.List;
 import java.util.UUID;
 
 
-public class JoinAndLeave implements Listener {
+public class JoinQuitLobbyGame implements Listener {
 
     private Main plugin;
-    private List<String> doubleJoinBug;
 
-    public JoinAndLeave(Main plugin) {
+    public JoinQuitLobbyGame(Main plugin) {
         this.plugin = plugin;
-        this.doubleJoinBug = Lists.newArrayList();
     }
 
     @EventHandler
@@ -46,13 +42,13 @@ public class JoinAndLeave implements Listener {
 
 
         /*Double join fix*/
-        if (this.doubleJoinBug.contains(e.getName())) {
+        if (plugin.getPlayerManager().getDoubleJoinBug().contains(e.getUniqueId())) {
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, "Double join bug");
-            this.doubleJoinBug.remove(e.getName());
+            plugin.getPlayerManager().getDoubleJoinBug().remove(e.getUniqueId());
             plugin.getPlayerManager().removePlayer(e.getUniqueId());
             return;
         } else {
-            this.doubleJoinBug.add(e.getName());
+            plugin.getPlayerManager().getDoubleJoinBug().add(e.getUniqueId());
         }
         /*Double join fix END*/
 
@@ -123,7 +119,7 @@ public class JoinAndLeave implements Listener {
 
                 /* OTHER THINGS */
                 plugin.getListenerManager().loadCageOpens();
-                plugin.getListenerManager().loadInGame();
+
                 plugin.getChestController().load();
                 plugin.closeInventory();
 
@@ -193,9 +189,10 @@ public class JoinAndLeave implements Listener {
 
         // Saving uuid in momentaneus ram..
         UUID uuid = p.getUniqueId();
+        plugin.getPlayerManager().getDoubleJoinBug().remove(uuid);
 
         // Removing player async
-        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(uuid), false);
+        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(p), false);
 
         e.setQuitMessage(c(lang.getString("LeaveMessage")
                 .replaceAll("%player%", p.getName())

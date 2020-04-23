@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,14 +18,13 @@ import java.io.IOException;
 
 public class SetupInteract implements Listener {
 
+    int islandschest = 1;
+    int centerchest = 1;
     private Main plugin;
 
     public SetupInteract(Main plugin) {
         this.plugin = plugin;
     }
-
-    int islandschest = 1;
-    int centerchest = 1;
 
     @EventHandler
     public void PlayerInteract(PlayerInteractEvent e) throws IOException {
@@ -70,6 +70,20 @@ public class SetupInteract implements Listener {
                 }
             }
 
+        }
+    }
+
+    /*Placing beacons for spawns - Commands sucks*/
+    @EventHandler
+    public void spawnPlaced(BlockPlaceEvent e) {
+        /*Accepts only beacons*/
+        if (e.getBlock().getType() != Material.BEACON) return;
+
+        try {
+            plugin.getArenaSetup().addSpawn(e.getPlayer(), e.getBlock().getLocation());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            e.getPlayer().sendMessage(c("&eNo wacho, rompiste todo la concha de tu madre &c(Error: " + ex.getMessage() + ")"));
         }
     }
 

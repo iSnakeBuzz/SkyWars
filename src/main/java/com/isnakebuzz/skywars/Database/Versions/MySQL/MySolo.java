@@ -1,4 +1,4 @@
-package com.isnakebuzz.skywars.Database.Versions;
+package com.isnakebuzz.skywars.Database.Versions.MySQL;
 
 import com.isnakebuzz.skywars.Calls.Callback;
 import com.isnakebuzz.skywars.Database.Database;
@@ -9,6 +9,7 @@ import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class vSolo implements Database {
+public class MySolo implements Database {
 
     private Main plugin;
 
@@ -24,7 +25,7 @@ public class vSolo implements Database {
     private String player_table;
     private String stats_table;
 
-    public vSolo(Main plugin) {
+    public MySolo(Main plugin) {
         this.plugin = plugin;
 
         ConfigurationSection db = plugin.getConfig("Extra/Database").getConfigurationSection("Tables");
@@ -43,7 +44,7 @@ public class vSolo implements Database {
             } else {
 
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
-                //plugin.getPlayerManager().addPlayer(playerUUID, skyPlayer);
+                plugin.getPlayerManager().addPlayer(playerUUID, skyPlayer);
 
                 plugin.debug("Fetching data: " + playerUUID.toString());
 
@@ -94,18 +95,18 @@ public class vSolo implements Database {
     }
 
     @Override
-    public void savePlayer(UUID playerUUID) {
+    public void savePlayer(Player playerUUID) {
         if (playerUUID == null) return;
-        if (!plugin.getPlayerManager().containsPlayer(playerUUID)) return;
+        if (!plugin.getPlayerManager().containsPlayer(playerUUID.getUniqueId())) return;
 
-        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID);
+        SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(playerUUID.getUniqueId());
 
         // If staff don't save stats
         if (skyPlayer.isStaff()) return;
 
-        String uuid = playerUUID.toString();
+        String uuid = playerUUID.getUniqueId().toString();
 
-        existPlayer(playerUUID, playerExist -> {
+        existPlayer(playerUUID.getUniqueId(), playerExist -> {
             if (!playerExist) return;
 
             String kitsTodb = Base64Utils.toBase64(skyPlayer.getPurchKits());
@@ -127,12 +128,12 @@ public class vSolo implements Database {
             );
 
             if (plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.WAITING)) {
-                plugin.getPlayerManager().removePlayer(playerUUID);
-                plugin.debug("Removing player(" + playerUUID.toString() + ") (WAITING status)");
+                plugin.getPlayerManager().removePlayer(playerUUID.getUniqueId());
+                plugin.debug("Removing player(" + playerUUID.getUniqueId().toString() + ") (WAITING status)");
             } else if (plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.FINISH)) {
-                plugin.debug("Removing player(" + playerUUID.toString() + ") (FINISH status)");
+                plugin.debug("Removing player(" + playerUUID.getUniqueId().toString() + ") (FINISH status)");
             } else {
-                plugin.debug("Saving player(" + playerUUID.toString() + ") (" + plugin.getSkyWarsArena().getGameStatus().toString() + " status)");
+                plugin.debug("Saving player(" + playerUUID.getUniqueId().toString() + ") (" + plugin.getSkyWarsArena().getGameStatus().toString() + " status)");
             }
         });
 

@@ -1,25 +1,26 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
+import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.LobbyPlayer;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import lombok.Getter;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
+@Getter
 public class PlayerManager {
 
     private Main plugin;
     private Map<UUID, SkyPlayer> skyPlayerMap;
     private Map<UUID, LobbyPlayer> lobbyPlayerMap;
-
+    private List<UUID> doubleJoinBug;
 
     public PlayerManager(Main plugin) {
         this.plugin = plugin;
         this.skyPlayerMap = new HashMap<>();
         this.lobbyPlayerMap = new HashMap<>();
+        this.doubleJoinBug = Lists.newArrayList();
     }
 
     public void addPlayer(UUID uuid, SkyPlayer skyPlayer) {

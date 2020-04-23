@@ -4,7 +4,7 @@
   <groupId>SkyWars</groupId>
   <artifactId>SkyWars</artifactId>
   <name>SkyWars</name>
-  <version>1.0.0.5</version>
+  <version>1.0.1.5</version>
   <description>SkyWars Similar to HyPixel</description>
   <url>https://www.isnakebuzz.com/</url>
   <build>
@@ -15,6 +15,7 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+    <finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

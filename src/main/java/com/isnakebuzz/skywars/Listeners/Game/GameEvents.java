@@ -58,7 +58,7 @@ public class GameEvents implements Listener {
 
         // Saving player after add win  :)
         for (Player online : Bukkit.getOnlinePlayers()) {
-            plugin.getDb().savePlayer(online.getUniqueId());
+            plugin.getDb().savePlayer(online);
         }
     }
 

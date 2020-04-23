@@ -10,7 +10,7 @@ import com.isnakebuzz.skywars.Listeners.DeathMessages.DeathMsgEvent;
 import com.isnakebuzz.skywars.Listeners.DeathMessages.Tagging;
 import com.isnakebuzz.skywars.Listeners.Ended.PlayerEndBlock;
 import com.isnakebuzz.skywars.Listeners.Game.*;
-import com.isnakebuzz.skywars.Listeners.Lobby.JoinAndLeave;
+import com.isnakebuzz.skywars.Listeners.Lobby.JoinQuitLobbyGame;
 import com.isnakebuzz.skywars.Listeners.Lobby.LobbyItems;
 import com.isnakebuzz.skywars.Listeners.Lobby.Protector;
 import com.isnakebuzz.skywars.Listeners.Lobby.VoidTP;
@@ -20,7 +20,6 @@ import com.isnakebuzz.skywars.Listeners.Setup.SetupJoin;
 import com.isnakebuzz.skywars.Listeners.Test.TestPhysics;
 import com.isnakebuzz.skywars.Listeners.VoteEvents.SoftBlocks;
 import com.isnakebuzz.skywars.Main;
-import com.isnakebuzz.skywars.Player.PlayerCheck;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.PlaceholderAPI.SkyHolder;
 import com.isnakebuzz.skywars.Utils.Statics;
@@ -38,7 +37,7 @@ public class ListenerManager {
     private Main plugin;
 
     //Pre Events
-    private JoinAndLeave joinAndLeave;
+    private JoinQuitLobbyGame joinQuitLobbyGame;
     private Protector protector;
     private LobbyItems lobbyItems;
     private VoidTP voidTP;
@@ -72,7 +71,7 @@ public class ListenerManager {
 
         //Pre Listeners
         this.protector = new Protector(plugin);
-        this.joinAndLeave = new JoinAndLeave(plugin);
+        this.joinQuitLobbyGame = new JoinQuitLobbyGame(plugin);
         this.lobbyItems = new LobbyItems(plugin);
         this.voidTP = new VoidTP(plugin);
 
@@ -103,9 +102,9 @@ public class ListenerManager {
     public synchronized void loadInitialsEvents() {
         plugin.log(Statics.logPrefix, "Loading listeners..");
 
-        if (!new PlayerCheck("K4IX-M4UN-2K2R-6WH5", "http://licenses.isnakebuzz.com/verify.php", plugin).register()) {
+        /*if (!new PlayerCheck("K4IX-M4UN-2K2R-6WH5", "http://licenses.isnakebuzz.com/verify.php", plugin).register()) {
             return;
-        }
+        }*/
 
         //Loading events after bugs
         this.refillingChests = new RefillingChests(plugin);
@@ -124,7 +123,7 @@ public class ListenerManager {
         } else if (Statics.skyMode.equals(GameType.SOLO)) {
             plugin.getCommand("SkyWars").setExecutor(new NormalCommands(plugin));
             registerListener(new WorldEvents(plugin));
-            registerListener(this.joinAndLeave);
+            registerListener(this.joinQuitLobbyGame);
             registerListener(this.protector);
             registerListener(this.lobbyItems);
             registerListener(this.spectatorEvents);
@@ -150,7 +149,7 @@ public class ListenerManager {
         } else if (Statics.skyMode.equals(GameType.TEAM)) {
             plugin.getCommand("SkyWars").setExecutor(new NormalCommands(plugin));
             registerListener(new WorldEvents(plugin));
-            registerListener(this.joinAndLeave);
+            registerListener(this.joinQuitLobbyGame);
             registerListener(this.protector);
             registerListener(this.lobbyItems);
             registerListener(this.spectatorEvents);
@@ -173,9 +172,18 @@ public class ListenerManager {
             }
         }
 
+        if (Statics.skyMode != GameType.LOBBY)
+            this.restartWorld();
 
+
+        /* Calling SkyInitsEvent */
+        Bukkit.getPluginManager().callEvent(new SkyInitsEvent(plugin.getSkyWarsArena(), plugin.getPlayerManager()));
+
+    }
+
+    public void restartWorld() {
         //Reseting world
-        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") && Statics.skyMode != GameType.LOBBY) {
             plugin.getWorldRestarting().restartWorld();
         }
 
@@ -191,15 +199,13 @@ public class ListenerManager {
         world.setGameRuleValue("doDaylightCycle", "false");
         world.setGameRuleValue("doMobSpawning", "false");
         Bukkit.setSpawnRadius(0);
-
-        /* Calling SkyInitsEvent */
-        Bukkit.getPluginManager().callEvent(new SkyInitsEvent(plugin.getSkyWarsArena(), plugin.getPlayerManager()));
-
     }
 
     public void reset() {
+        plugin.debug("Restarting listeners");
+
         unloadPrelobby();
-        unregisterListener(this.joinAndLeave);
+        unregisterListener(this.joinQuitLobbyGame);
         unregisterListener(this.joinAndQuit);
         unregisterListener(this.spectatorEvents);
         unregisterListener(this.deathSystem);
@@ -229,8 +235,12 @@ public class ListenerManager {
 
     public void loadCageOpens() {
         //Enabling ingame utilities
-        unregisterListener(this.joinAndLeave);
-        registerListener(this.joinAndQuit);
+
+        /*IF TEAM; REMOVE JOINQUIT*/
+        if (Statics.skyMode.equals(GameType.TEAM)) {
+            unregisterListener(this.joinQuitLobbyGame);
+            registerListener(this.joinAndQuit);
+        }
 
         registerListener(this.fallDamage);
     }
@@ -242,6 +252,12 @@ public class ListenerManager {
         registerListener(this.skyStats);
         registerListener(this.gameItems);
         registerListener(this.refillingChests);
+
+        /*IF SOLO; REMOVE JOINQUIT*/
+        if (Statics.skyMode.equals(GameType.SOLO)) {
+            unregisterListener(this.joinQuitLobbyGame);
+            registerListener(this.joinAndQuit);
+        }
 
         //Test
         //registerListener(this.testPhysics);
