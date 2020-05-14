@@ -7,6 +7,7 @@ import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.Statics;
+import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -44,9 +45,7 @@ public class CageOpeningTask extends BukkitRunnable {
             plugin.getCagesManager().deleteAllCages();
 
             /*Active on team*/
-            if (Statics.skyMode.equals(GameType.TEAM)) {
-                plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
-            }
+            plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
 
             plugin.getListenerManager().unloadPrelobby();
             plugin.getSkyWarsArena().fillChests();
@@ -89,7 +88,6 @@ public class CageOpeningTask extends BukkitRunnable {
             Bukkit.getPluginManager().callEvent(new SkyCagesOpenEvent());
 
             if (Statics.skyMode.equals(GameType.SOLO)) {
-                plugin.getSkyWarsArena().setGameStatus(GameStatus.INGAME);
                 plugin.getListenerManager().loadInGame();
                 plugin.getVoteManager().checkVotes();
 
@@ -98,8 +96,11 @@ public class CageOpeningTask extends BukkitRunnable {
                         plugin.getScoreBoardAPI2().setScoreBoard(player, ScoreboardType.INGAME, true, false, true);
                     });
                 });
-
             }
+
+            /*Removing game*/
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> GameQueueAPI.removeGame(Statics.BungeeID), 20 * 3);
+
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> plugin.getListenerManager().unloadCageOpens(), 20 * 5);
             this.cancel();

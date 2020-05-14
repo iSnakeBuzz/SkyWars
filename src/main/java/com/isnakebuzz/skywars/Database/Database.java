@@ -11,6 +11,4 @@ public interface Database {
     void savePlayer(Player p);
 
     void closeConnection();
-
-
 }

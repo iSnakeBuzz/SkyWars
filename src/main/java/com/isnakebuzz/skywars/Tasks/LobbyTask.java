@@ -7,8 +7,6 @@ import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.LocUtils;
-import com.isnakebuzz.skywars.Utils.Statics;
-import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -84,9 +82,6 @@ public class LobbyTask extends BukkitRunnable {
             plugin.closeInventory();
 
             new CageOpeningTask(plugin).runTaskTimerAsynchronously(plugin, 0, 20);
-            if (Statics.SnakeGameQueue) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> GameQueueAPI.removeGame(Statics.BungeeID), 20 * 3);
-            }
 
             this.cancel();
         }

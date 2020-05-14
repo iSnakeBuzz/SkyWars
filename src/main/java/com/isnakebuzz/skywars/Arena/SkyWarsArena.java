@@ -190,6 +190,9 @@ public class SkyWarsArena {
                 case STARTING:
                     GameQueueAPI.updateStatus(Statics.BungeeID, GameQueueStatus.STARTING);
                     break;
+                case INGAME:
+                    GameQueueAPI.updateStatus(Statics.BungeeID, GameQueueStatus.INGAME);
+                    break;
                 case CAGEOPENING:
                     GameQueueAPI.updateStatus(Statics.BungeeID, GameQueueStatus.CAGEOPENING);
                     break;
