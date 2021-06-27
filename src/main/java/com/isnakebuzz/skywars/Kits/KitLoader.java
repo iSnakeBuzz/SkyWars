@@ -2,8 +2,8 @@ package com.isnakebuzz.skywars.Kits;
 
 import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Inventory.KitInventory;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import org.apache.commons.collections4.CollectionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -15,12 +15,12 @@ import java.util.regex.Pattern;
 
 public class KitLoader {
 
-    private Main plugin;
+    private SkyWars plugin;
 
     private Map<String, Kit> kitMap;
     private List<Kit> defaultKits;
 
-    public KitLoader(Main plugin) {
+    public KitLoader(SkyWars plugin) {
         this.plugin = plugin;
         this.kitMap = new HashMap<>();
         this.defaultKits = new ArrayList<>();

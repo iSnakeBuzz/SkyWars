@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Commands;
 
 import com.isnakebuzz.skywars.Inventory.Shop.ShopCreator;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 
 public class LobbyCommands implements CommandExecutor {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public LobbyCommands(Main plugin) {
+    public LobbyCommands(SkyWars plugin) {
         this.plugin = plugin;
     }
 

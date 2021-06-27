@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.Lobby;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,9 +12,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public class Protector implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public Protector(Main plugin) {
+    public Protector(SkyWars plugin) {
         this.plugin = plugin;
     }
 

@@ -2,7 +2,7 @@ package com.isnakebuzz.skywars.Utils;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,7 +32,7 @@ public class PacketsAPI {
         }
     }
 
-    public static void sendTitle(Main plugin, Player p, String title, String subtitle, int fadein, int stay, int fadeout) {
+    public static void sendTitle(SkyWars plugin, Player p, String title, String subtitle, int fadein, int stay, int fadeout) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             CraftPlayer craftplayer = (CraftPlayer) p;
             PlayerConnection connection = craftplayer.getHandle().playerConnection;
@@ -53,7 +53,7 @@ public class PacketsAPI {
         });
     }
 
-    public static void broadcastTitle(Main plugin, String title, String subtitle, int fadein, int stay, int fadeout) {
+    public static void broadcastTitle(SkyWars plugin, String title, String subtitle, int fadein, int stay, int fadeout) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             IChatBaseComponent titleJSON = IChatBaseComponent.ChatSerializer
                     .a("{'text': '" + ChatColor.translateAlternateColorCodes('&', title) + "'}");
@@ -102,7 +102,7 @@ public class PacketsAPI {
         }
     }
 
-    public static void connect(Main plugin, Player p, String server) {
+    public static void connect(SkyWars plugin, Player p, String server) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(server);

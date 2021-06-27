@@ -1,16 +1,16 @@
 package com.isnakebuzz.skywars.Tasks;
 
 import com.isnakebuzz.skywars.Listeners.DeathMessages.Tagging;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class InGame extends BukkitRunnable {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public InGame(Main plugin) {
+    public InGame(SkyWars plugin) {
         this.plugin = plugin;
     }
 

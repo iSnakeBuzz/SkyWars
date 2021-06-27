@@ -2,8 +2,8 @@ package com.isnakebuzz.skywars.Listeners.Lobby;
 
 import com.isnakebuzz.skywars.Inventory.MenuManager.MenuCreator;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
@@ -19,9 +19,9 @@ import java.util.Set;
 
 public class SpectatorItems implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SpectatorItems(Main plugin) {
+    public SpectatorItems(SkyWars plugin) {
         this.plugin = plugin;
     }
 

@@ -1,23 +1,22 @@
 package com.isnakebuzz.skywars.Utils.ScoreBoard;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Scoreboard.ScoreboardLib;
 import com.isnakebuzz.skywars.Scoreboard.type.Scoreboard;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
 public class ScoreBoardAPI {
 
-    private Main plugin;
+    private SkyWars plugin;
     private HashMap<Player, Scoreboard> scoretask;
     private HashMap<Player, Integer> scoreUtilsTask;
 
-    public ScoreBoardAPI(Main plugin) {
+    public ScoreBoardAPI(SkyWars plugin) {
         this.plugin = plugin;
         this.scoretask = new HashMap<>();
         this.scoreUtilsTask = new HashMap<>();

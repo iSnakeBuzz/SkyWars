@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Tasks;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
@@ -18,9 +18,9 @@ import java.util.Set;
 
 public class LobbyTask extends BukkitRunnable {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public LobbyTask(Main plugin) {
+    public LobbyTask(SkyWars plugin) {
         this.plugin = plugin;
     }
 

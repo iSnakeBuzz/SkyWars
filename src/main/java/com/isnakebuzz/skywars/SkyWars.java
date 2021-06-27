@@ -5,7 +5,7 @@ import com.isnakebuzz.skywars.Arena.SkyWarsArena;
 import com.isnakebuzz.skywars.Chest.ChestController;
 import com.isnakebuzz.skywars.Configurations.ConfigCreator;
 import com.isnakebuzz.skywars.Configurations.ConfigUtils;
-import com.isnakebuzz.skywars.Database.Database;
+import com.isnakebuzz.skywars.Database.IDatabase;
 import com.isnakebuzz.skywars.Inventory.Inventories;
 import com.isnakebuzz.skywars.Kits.KitLoader;
 import com.isnakebuzz.skywars.Listeners.ListenerManager;
@@ -20,6 +20,7 @@ import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.skywars.Utils.Utils;
 import com.isnakebuzz.skywars.Utils.World.FaweUtils;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
+import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,34 +29,33 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Main extends JavaPlugin {
+import static com.isnakebuzz.skywars.Utils.Statics.c;
 
+@Getter
+public final class SkyWars extends JavaPlugin {
+
+    private final ConfigUtils configUtils;
+    private final DataManager dataManager;
+    private final ScoreBoardAPI scoreBoardAPI;
+    private final ListenerManager listenerManager;
+    private final ChestController chestController;
+    private final DependManager dependManager;
+    private final CagesManager cagesManager;
+    private final TimerManager timerManager;
+    private final Inventories inventories;
+    private final ArenaSetup arenaSetup;
+    private final IScheduler scheduler;
+    private final KitLoader kitLoader;
+    private final Utils utils;
     private SkyWarsArena skyWarsArena;
-    private ConfigUtils configUtils;
-    private DataManager dataManager;
-    private PlayerManager playerManager;
-
-    //Scoreboard
-    private ScoreBoardAPI scoreBoardAPI;
-
-    // Other classes
-    private Inventories inventories;
-    private ArenaSetup arenaSetup;
-    private ListenerManager listenerManager;
-    private ChestController chestController;
-    private DependManager dependManager;
-    private FaweUtils worldRestarting;
-    private CagesManager cagesManager;
-    private VoteManager voteManager;
-    private TimerManager timerManager;
     private ChestRefillManager chestRefillManager;
-    private KitLoader kitLoader;
-    private Utils utils;
-    private TeamManager teamManager;
     private EventsManager eventsManager;
-    private IScheduler scheduler;
+    private PlayerManager playerManager;
+    private FaweUtils worldRestarting;
+    private VoteManager voteManager;
+    private TeamManager teamManager;
 
-    public Main() {
+    public SkyWars() {
         this.scheduler = new BukkitScheduler(this);
         this.teamManager = new TeamManager(this);
         this.utils = new Utils(this);
@@ -102,6 +102,7 @@ public final class Main extends JavaPlugin {
         Statics.BungeeID = settings.getString("BungeeID", Bukkit.getServerName());
         Statics.lobbies = settings.getStringList("Lobbies");
         Statics.mapName = arena.getString("MapName", "none");
+        Statics.API_URL = arena.getString("SnakeDb", "http://localhost:3000/games/");
 
         this.debug("Settings Mode: " + settings.getString("Mode").toUpperCase());
 
@@ -128,13 +129,27 @@ public final class Main extends JavaPlugin {
             GameQueueAPI.removeGame(Statics.BungeeID);
         }
 
-        if (Bukkit.getOnlinePlayers().size()>0) Bukkit.getOnlinePlayers().forEach(o -> o.kickPlayer("Reloading SkyWars Plugin. " + ChatColor.DARK_RED + "(DON'T USE RELOAD)"));
+        if (Bukkit.getOnlinePlayers().size() > 0)
+            Bukkit.getOnlinePlayers().forEach(o -> o.kickPlayer("Reloading SkyWars Plugin. " + ChatColor.DARK_RED + "(DON'T USE RELOAD)"));
     }
 
+    /**
+     * Log message into the console
+     *
+     * @param logger prefix
+     * @param log    message
+     */
+    @Deprecated
     public void log(String logger, String log) {
         Bukkit.getConsoleSender().sendMessage(c("&a&l" + logger + " &8|&e " + log));
     }
 
+    /**
+     * Log message into the console
+     *
+     * @param log message
+     */
+    @Deprecated
     public void debug(String log) {
         if (this.getConfig("Settings").getBoolean("debug")) {
             Bukkit.getConsoleSender().sendMessage(c("&a&lSkyWars-Debug &8|&e " + log));
@@ -153,88 +168,18 @@ public final class Main extends JavaPlugin {
         for (Player online : Bukkit.getOnlinePlayers()) online.closeInventory();
     }
 
-    public ConfigUtils getConfigUtils() {
-        return configUtils;
-    }
 
     public FileConfiguration getConfig(String configName) {
         return this.getConfigUtils().getConfig(this, configName);
     }
 
-    public SkyWarsArena getSkyWarsArena() {
-        return skyWarsArena;
-    }
 
-    public PlayerManager getPlayerManager() {
-        return playerManager;
-    }
-
-    public Database getDb() {
+    public IDatabase getDb() {
         return dataManager.getDatabase();
     }
 
     public ScoreBoardAPI getScoreBoardAPI2() {
         return scoreBoardAPI;
-    }
-
-    public ArenaSetup getArenaSetup() {
-        return arenaSetup;
-    }
-
-    public ChestRefillManager getChestRefillManager() {
-        return chestRefillManager;
-    }
-
-    public DataManager getDataManager() {
-        return dataManager;
-    }
-
-    public ListenerManager getListenerManager() {
-        return listenerManager;
-    }
-
-    public Inventories getInventories() {
-        return inventories;
-    }
-
-    public FaweUtils getWorldRestarting() {
-        return worldRestarting;
-    }
-
-    public CagesManager getCagesManager() {
-        return cagesManager;
-    }
-
-    public VoteManager getVoteManager() {
-        return voteManager;
-    }
-
-    public ChestController getChestController() {
-        return chestController;
-    }
-
-    public TimerManager getTimerManager() {
-        return timerManager;
-    }
-
-    public Utils getUtils() {
-        return utils;
-    }
-
-    public TeamManager getTeamManager() {
-        return teamManager;
-    }
-
-    public EventsManager getEventsManager() {
-        return eventsManager;
-    }
-
-    public KitLoader getKitLoader() {
-        return kitLoader;
-    }
-
-    public IScheduler getScheduler() {
-        return scheduler;
     }
 
     public synchronized void resetArena() {
@@ -256,7 +201,4 @@ public final class Main extends JavaPlugin {
         }
     }
 
-    private String c(String c) {
-        return ChatColor.translateAlternateColorCodes('&', c);
-    }
 }

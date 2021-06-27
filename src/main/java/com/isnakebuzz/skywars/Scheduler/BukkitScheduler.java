@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Scheduler;
 
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit;
 
 public class BukkitScheduler extends SchedulerBase {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public BukkitScheduler(Main plugin) {
+    public BukkitScheduler(SkyWars plugin) {
         super(plugin);
         this.plugin = plugin;
     }

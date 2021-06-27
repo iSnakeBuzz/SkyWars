@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.VoteEvents;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.*;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
@@ -13,9 +13,9 @@ import org.bukkit.util.Vector;
 
 public class SoftBlocks implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SoftBlocks(Main plugin) {
+    public SoftBlocks(SkyWars plugin) {
         this.plugin = plugin;
     }
 

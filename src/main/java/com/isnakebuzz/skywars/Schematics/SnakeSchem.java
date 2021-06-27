@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Schematics;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SnakeSchem implements ISnakeSchem {
 
-    private Main plugin;
+    private SkyWars plugin;
     private Location pasteLocation;
 
     //Utils
@@ -19,7 +19,7 @@ public class SnakeSchem implements ISnakeSchem {
     private List<Integer> blocks;
     private List<Byte> blockIDs;
 
-    public SnakeSchem(Main plugin, Location pasteLoc) {
+    public SnakeSchem(SkyWars plugin, Location pasteLoc) {
         this.plugin = plugin;
         this.pasteLocation = pasteLoc;
     }

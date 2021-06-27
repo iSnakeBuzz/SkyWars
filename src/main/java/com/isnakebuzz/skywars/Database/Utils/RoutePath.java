@@ -1,18 +1,16 @@
 package com.isnakebuzz.skywars.Database.Utils;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum RoutePath {
 
-    PLAYER("player/"),
-    SOLO("solo/"),
-    TEAM("team/");
+    PLAYER("sw_player"),
+    SOLO("sw_solo"),
+    TEAM("sw_team");
 
-    private String path;
-
-    RoutePath(String path) {
-        this.path = path;
-    }
+    private final String path;
 
 }

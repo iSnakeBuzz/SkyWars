@@ -1,8 +1,8 @@
 package com.isnakebuzz.skywars.Inventory.MenuManager;
 
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.PlayerUtils;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.ChestType;
 import com.isnakebuzz.skywars.Utils.Enums.ProjectileType;
 import com.isnakebuzz.skywars.Utils.Enums.TimeType;
@@ -22,10 +22,10 @@ import java.util.Set;
 
 public class MenuCreator extends Menu {
 
-    private Main plugin;
+    private SkyWars plugin;
     private int taskId;
 
-    public MenuCreator(Player player, Main plugin, String _name) {
+    public MenuCreator(Player player, SkyWars plugin, String _name) {
         super(plugin, _name, player);
         this.plugin = plugin;
         Configuration config = plugin.getConfig("Extra/MenuCreator");

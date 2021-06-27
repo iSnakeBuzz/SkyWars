@@ -9,17 +9,16 @@ import java.util.concurrent.TimeUnit;
 
 public class Queue implements Messages {
 
-    private String message;
+    private final String message;
 
     @Nullable
     private sSound sound;
-
 
     public Queue(String message) {
         this.message = message;
     }
 
-    public Queue(String message, sSound sound) {
+    public Queue(String message, @Nullable sSound sound) {
         this.message = message;
         this.sound = sound;
     }

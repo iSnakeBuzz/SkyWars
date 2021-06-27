@@ -2,8 +2,8 @@ package com.isnakebuzz.skywars.Scoreboard.type;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Scoreboard.common.Strings;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SimpleScoreboard implements Scoreboard {
 
-    private Main plugin;
+    private SkyWars plugin;
 
     private static final String TEAM_PREFIX = "Scoreboard_";
     private static int TEAM_COUNTER = 0;
@@ -40,7 +40,7 @@ public class SimpleScoreboard implements Scoreboard {
     private Table<Team, String, String> teamCache = HashBasedTable.create();
     private BukkitRunnable updateTask;
 
-    public SimpleScoreboard(Main plugin, Player holder) {
+    public SimpleScoreboard(SkyWars plugin, Player holder) {
         this.plugin = plugin;
         this.holder = holder;
         // Initiate the Bukkit scoreboard

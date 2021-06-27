@@ -19,7 +19,7 @@ import com.isnakebuzz.skywars.Listeners.Setup.SetupInteract;
 import com.isnakebuzz.skywars.Listeners.Setup.SetupJoin;
 import com.isnakebuzz.skywars.Listeners.Test.TestPhysics;
 import com.isnakebuzz.skywars.Listeners.VoteEvents.SoftBlocks;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.PlaceholderAPI.SkyHolder;
 import com.isnakebuzz.skywars.Utils.Statics;
@@ -34,7 +34,7 @@ import org.bukkit.event.Listener;
 
 public class ListenerManager {
 
-    private Main plugin;
+    private SkyWars plugin;
 
     //Pre Events
     private JoinQuitLobbyGame joinQuitLobbyGame;
@@ -66,7 +66,7 @@ public class ListenerManager {
     //Lobby Listeners
     private StatsLoaderLobby statsLoaderLobby;
 
-    public ListenerManager(Main plugin) {
+    public ListenerManager(SkyWars plugin) {
         this.plugin = plugin;
 
         //Pre Listeners

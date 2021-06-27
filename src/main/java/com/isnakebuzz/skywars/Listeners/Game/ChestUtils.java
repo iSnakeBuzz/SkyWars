@@ -2,7 +2,7 @@ package com.isnakebuzz.skywars.Listeners.Game;
 
 import com.isnakebuzz.skywars.Calls.Events.ChestCloseEvent;
 import com.isnakebuzz.skywars.Calls.Events.ChestOpenEvent;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -19,9 +18,9 @@ import org.bukkit.event.inventory.InventoryType;
 
 public class ChestUtils implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public ChestUtils(Main plugin) {
+    public ChestUtils(SkyWars plugin) {
         this.plugin = plugin;
     }
 

@@ -3,8 +3,8 @@ package com.isnakebuzz.skywars.Listeners.Game;
 import com.isnakebuzz.skywars.Inventory.MenuManager.MenuCreator;
 import com.isnakebuzz.skywars.Inventory.Others.Teleporter;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.Bukkit;
@@ -29,9 +29,9 @@ import java.util.Set;
 
 public class GameItems implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public GameItems(Main plugin) {
+    public GameItems(SkyWars plugin) {
         this.plugin = plugin;
     }
 

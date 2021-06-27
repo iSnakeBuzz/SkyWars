@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Arena;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.LocUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,9 +12,9 @@ import java.io.IOException;
 
 public class ArenaSetup {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public ArenaSetup(Main plugin) {
+    public ArenaSetup(SkyWars plugin) {
         this.plugin = plugin;
     }
 

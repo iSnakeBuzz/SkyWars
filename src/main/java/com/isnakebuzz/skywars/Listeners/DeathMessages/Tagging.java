@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.DeathMessages;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public class Tagging implements Listener {
 
 
-    private static Main plugin;
+    private static SkyWars plugin;
 
-    public Tagging(Main plugin) {
+    public Tagging(SkyWars plugin) {
         this.plugin = plugin;
     }
 

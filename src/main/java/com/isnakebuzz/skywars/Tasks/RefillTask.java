@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Tasks;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,12 +8,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class RefillTask extends BukkitRunnable {
 
-    private Main plugin;
+    private SkyWars plugin;
 
     //Refill utils
     private String changeTo;
 
-    public RefillTask(Main plugin) {
+    public RefillTask(SkyWars plugin) {
         this.plugin = plugin;
 
         //Refill Utils

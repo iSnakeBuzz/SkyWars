@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Chest;
 
 import com.google.common.collect.Lists;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.ProjectileType;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,7 +23,7 @@ public final class ChestController {
     private Random random = new Random();
 
     private List<Integer> randomLoc = new ArrayList<>();
-    private Main plugin;
+    private SkyWars plugin;
     private SettingsManager op_Conf_center, nor_Conf_center, ba_Conf_center;
     private SettingsManager op_Conf_island, nor_Conf_island, ba_Conf_island;
 
@@ -38,7 +38,7 @@ public final class ChestController {
             Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.WOOD_SWORD, Material.GOLD_SWORD
     };
 
-    public ChestController(Main plugin) {
+    public ChestController(SkyWars plugin) {
         this.plugin = plugin;
 
         //Banned items

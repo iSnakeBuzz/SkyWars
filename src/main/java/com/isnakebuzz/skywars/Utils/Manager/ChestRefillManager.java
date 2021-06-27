@@ -1,8 +1,8 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
 import com.google.common.collect.Lists;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.QueueEvents.QueueEvent;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Holograms.TruenoHologram;
 import com.isnakebuzz.skywars.Utils.Holograms.TruenoHologramAPI;
 import com.isnakebuzz.skywars.Utils.LocUtils;
@@ -23,11 +23,11 @@ import java.util.List;
 
 public class ChestRefillManager {
 
-    private Main plugin;
+    private SkyWars plugin;
     private HashMap<Location, TruenoHologram> hologramHashMap;
     private Boolean actived;
 
-    public ChestRefillManager(Main plugin) {
+    public ChestRefillManager(SkyWars plugin) {
         this.plugin = plugin;
 
         this.hologramHashMap = new HashMap<>();

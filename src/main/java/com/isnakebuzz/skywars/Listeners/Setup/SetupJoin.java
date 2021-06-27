@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.Setup;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
@@ -9,9 +9,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class SetupJoin implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SetupJoin(Main plugin) {
+    public SetupJoin(SkyWars plugin) {
         this.plugin = plugin;
     }
 

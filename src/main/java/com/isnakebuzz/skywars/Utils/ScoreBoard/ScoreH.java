@@ -1,11 +1,11 @@
 package com.isnakebuzz.skywars.Utils.ScoreBoard;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
 import com.isnakebuzz.skywars.QueueEvents.QueueEvent;
 import com.isnakebuzz.skywars.Scoreboard.common.EntryBuilder;
 import com.isnakebuzz.skywars.Scoreboard.type.Entry;
 import com.isnakebuzz.skywars.Scoreboard.type.ScoreboardHandler;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.Statics;
@@ -19,14 +19,14 @@ import java.util.List;
 
 public class ScoreH implements ScoreboardHandler {
 
-    private Main plugin;
+    private SkyWars plugin;
     private Configuration config;
     private ScoreboardType scoreboardType;
 
     //Scoreboard information
     private String title;
 
-    public ScoreH(Main plugin, ScoreboardType scoreboardType) {
+    public ScoreH(SkyWars plugin, ScoreboardType scoreboardType) {
         this.plugin = plugin;
         this.scoreboardType = scoreboardType;
 

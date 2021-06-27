@@ -1,10 +1,11 @@
 package com.isnakebuzz.skywars.Listeners.Lobby;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Tasks.CageOpeningTask;
 import com.isnakebuzz.skywars.Tasks.LobbyTask;
 import com.isnakebuzz.skywars.Teams.Team;
+import com.isnakebuzz.skywars.Utils.Console;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
@@ -30,15 +31,15 @@ import java.util.UUID;
 
 public class JoinQuitLobbyGame implements Listener {
 
-    private Main plugin;
+    private final SkyWars plugin;
 
-    public JoinQuitLobbyGame(Main plugin) {
+    public JoinQuitLobbyGame(SkyWars plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
     public void PlayerLogin(AsyncPlayerPreLoginEvent e) {
-        plugin.debug("AsyncPlayerPreLoginEvent " + e.getName());
+        Console.debug("AsyncPlayerPreLoginEvent " + e.getName());
 
 
         /*Double join fix*/
@@ -58,7 +59,8 @@ public class JoinQuitLobbyGame implements Listener {
         }
 
         if (e.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getDataManager().getDatabase().createPlayer(e.getUniqueId()), 20);
+            plugin.getDataManager().getDatabase().loadPlayer(e.getUniqueId(), e.getName());
+
         }
     }
 
@@ -81,13 +83,13 @@ public class JoinQuitLobbyGame implements Listener {
             plugin.getSkyWarsArena().SEND_TO_NEW_GAME(e.getPlayer());
         }
 
-        plugin.debug("Player joining timings.");
+        Console.debug("Player joining timings.");
         Long currentTimeMillis = System.currentTimeMillis();
         Configuration lang = plugin.getConfig("Lang");
 
         Player p = e.getPlayer();
         plugin.getSkyWarsArena().getGamePlayers().add(p);
-        plugin.debug("Players: " + plugin.getSkyWarsArena().getGamePlayers().size());
+        Console.debug("Players: " + plugin.getSkyWarsArena().getGamePlayers().size());
 
         plugin.getInventories().setLobbyInventory(p);
         PacketsAPI.sendClean(p);
@@ -112,7 +114,7 @@ public class JoinQuitLobbyGame implements Listener {
 
         /* Check start arena */
         if (plugin.getSkyWarsArena().checkStart()) {
-            plugin.debug("Starting arena");
+            Console.debug("Starting arena");
             plugin.getSkyWarsArena().setGameStatus(GameStatus.STARTING);
 
             if (Statics.skyMode.equals(GameType.SOLO)) {
@@ -130,7 +132,7 @@ public class JoinQuitLobbyGame implements Listener {
             }
         }
 
-        plugin.debug("Finish loading in " + counter(currentTimeMillis));
+        Console.debug("Finish loading in " + counter(currentTimeMillis));
     }
 
     @EventHandler
@@ -147,7 +149,6 @@ public class JoinQuitLobbyGame implements Listener {
 
         if (Statics.skyMode.equals(GameType.SOLO)) {
             SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
-            plugin.getPlayerManager().addPlayer(p.getUniqueId(), skyPlayer);
 
             Team team = plugin.getTeamManager().addTeam(skyPlayer);
             int spawnID = team.getSpawnID();
@@ -190,9 +191,6 @@ public class JoinQuitLobbyGame implements Listener {
         // Saving uuid in momentaneus ram..
         UUID uuid = p.getUniqueId();
         plugin.getPlayerManager().getDoubleJoinBug().remove(uuid);
-
-        // Removing player async
-        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(p), false);
 
         e.setQuitMessage(c(lang.getString("LeaveMessage")
                 .replaceAll("%player%", p.getName())

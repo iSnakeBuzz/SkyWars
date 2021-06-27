@@ -3,8 +3,8 @@ package com.isnakebuzz.skywars.Inventory.Shop;
 import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Inventory.MenuManager.Menu;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.LobbyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import com.isnakebuzz.snakeco.Utils.EcoAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -23,10 +23,10 @@ import java.util.Set;
 
 public class ShopCreator extends Menu {
 
-    private Main plugin;
+    private SkyWars plugin;
     private int taskId;
 
-    public ShopCreator(Player player, Main plugin, String _name) {
+    public ShopCreator(Player player, SkyWars plugin, String _name) {
         super(plugin, _name, player);
         this.plugin = plugin;
         Configuration config = plugin.getConfig("Extra/MenuCreator");

@@ -1,15 +1,15 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.MessageAPI.Messages;
 import com.isnakebuzz.skywars.MessageAPI.Queue;
 import com.isnakebuzz.skywars.MessageAPI.sSound;
+import com.isnakebuzz.skywars.SkyWars;
 
 public class SetupManager {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SetupManager(Main plugin) {
+    public SetupManager(SkyWars plugin) {
         this.plugin = plugin;
     }
 

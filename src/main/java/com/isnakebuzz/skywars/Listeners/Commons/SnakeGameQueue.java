@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.Commons;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Statics;
@@ -15,9 +15,9 @@ import org.bukkit.event.Listener;
 
 public class SnakeGameQueue implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SnakeGameQueue(Main plugin) {
+    public SnakeGameQueue(SkyWars plugin) {
         this.plugin = plugin;
     }
 

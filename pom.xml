@@ -65,7 +65,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/skyWars/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
@@ -184,6 +184,13 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.isnakebuzz</groupId>
+            <artifactId>NetCore</artifactId>
+            <version>1.0.1-BETA</version>
             <scope>provided</scope>
         </dependency>
 

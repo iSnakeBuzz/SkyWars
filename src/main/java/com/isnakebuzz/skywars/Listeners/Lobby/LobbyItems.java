@@ -3,7 +3,7 @@ package com.isnakebuzz.skywars.Listeners.Lobby;
 import com.isnakebuzz.skywars.Inventory.MenuManager.MenuCreator;
 import com.isnakebuzz.skywars.Inventory.Others.KitsMenu;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.ChatColor;
@@ -22,9 +22,9 @@ import java.util.Set;
 
 public class LobbyItems implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public LobbyItems(Main plugin) {
+    public LobbyItems(SkyWars plugin) {
         this.plugin = plugin;
     }
 

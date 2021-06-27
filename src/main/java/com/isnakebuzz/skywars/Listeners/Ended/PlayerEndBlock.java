@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.Ended;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,15 +10,14 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 public class PlayerEndBlock implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public PlayerEndBlock(Main plugin) {
+    public PlayerEndBlock(SkyWars plugin) {
         this.plugin = plugin;
     }
 

@@ -2,8 +2,8 @@ package com.isnakebuzz.skywars.Inventory.Others;
 
 import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Inventory.MenuManager.Menu;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import org.bukkit.ChatColor;
@@ -20,11 +20,11 @@ import java.util.List;
 
 public class Teleporter extends Menu {
 
-    private Main plugin;
+    private SkyWars plugin;
 
     private HashMap<String, Player> itemPlayer;
 
-    public Teleporter(Main plugin, String menu_name, Player player) {
+    public Teleporter(SkyWars plugin, String menu_name, Player player) {
         super(plugin, menu_name, player);
         this.plugin = plugin;
         this.itemPlayer = new HashMap<>();

@@ -3,8 +3,8 @@ package com.isnakebuzz.skywars.Listeners.Game;
 import com.isnakebuzz.skywars.Calls.Events.SkyQueueFinishEvent;
 import com.isnakebuzz.skywars.Calls.Events.SkyQueueStartEvent;
 import com.isnakebuzz.skywars.Calls.Events.SkyQueueUpdateEvent;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.QueueEvents.enums.QueueType;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -14,10 +14,10 @@ import org.bukkit.event.Listener;
 
 public class RefillingChests implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
     private String changeTo;
 
-    public RefillingChests(Main plugin) {
+    public RefillingChests(SkyWars plugin) {
         this.plugin = plugin;
 
 

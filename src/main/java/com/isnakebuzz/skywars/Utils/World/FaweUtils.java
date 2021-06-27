@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Utils.World;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.LocUtils;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
@@ -16,9 +16,9 @@ import java.util.Objects;
 
 public class FaweUtils {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public FaweUtils(Main plugin) {
+    public FaweUtils(SkyWars plugin) {
         this.plugin = plugin;
     }
 

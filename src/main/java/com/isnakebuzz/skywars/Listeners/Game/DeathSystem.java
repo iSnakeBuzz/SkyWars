@@ -1,8 +1,8 @@
 package com.isnakebuzz.skywars.Listeners.Game;
 
 import com.isnakebuzz.skywars.Calls.Events.SkyWinEvent;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
@@ -21,9 +21,9 @@ import java.util.List;
 
 public class DeathSystem implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public DeathSystem(Main plugin) {
+    public DeathSystem(SkyWars plugin) {
         this.plugin = plugin;
     }
 

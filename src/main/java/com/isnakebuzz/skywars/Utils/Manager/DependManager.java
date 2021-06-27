@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
 import com.isnakebuzz.skywars.Calls.Callback;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -14,9 +14,9 @@ import java.nio.channels.ReadableByteChannel;
 
 public class DependManager {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public DependManager(Main plugin) {
+    public DependManager(SkyWars plugin) {
         this.plugin = plugin;
     }
 

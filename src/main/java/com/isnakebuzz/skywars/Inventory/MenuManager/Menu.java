@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Inventory.MenuManager;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -18,11 +18,11 @@ import java.io.IOException;
 public abstract class Menu implements Listener {
 
     private Inventory _inv;
-    private Main plugin;
+    private SkyWars plugin;
     private String _name;
     private Player player;
 
-    public Menu(Main plugin, String menu_name, Player player) {
+    public Menu(SkyWars plugin, String menu_name, Player player) {
         this._name = menu_name;
         this.plugin = plugin;
         this.player = player;

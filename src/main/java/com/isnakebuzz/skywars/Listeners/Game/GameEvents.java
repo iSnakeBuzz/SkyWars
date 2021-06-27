@@ -3,8 +3,8 @@ package com.isnakebuzz.skywars.Listeners.Game;
 import com.isnakebuzz.skywars.Calls.Events.SkyEndEvent;
 import com.isnakebuzz.skywars.Calls.Events.SkyWinEffectEvent;
 import com.isnakebuzz.skywars.Calls.Events.SkyWinEvent;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Tasks.EndTask;
 import com.isnakebuzz.skywars.Tasks.WinEffect;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
@@ -23,9 +23,9 @@ import static com.isnakebuzz.skywars.Utils.Strings.StringUtils.centerText;
 
 public class GameEvents implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public GameEvents(Main plugin) {
+    public GameEvents(SkyWars plugin) {
         this.plugin = plugin;
     }
 

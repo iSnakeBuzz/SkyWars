@@ -1,8 +1,8 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
 import com.isnakebuzz.skywars.Calls.Events.SkyCheckVotesEvent;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.ChestType;
 import com.isnakebuzz.skywars.Utils.Enums.ProjectileType;
 import com.isnakebuzz.skywars.Utils.Enums.TimeType;
@@ -21,13 +21,13 @@ import java.util.UUID;
 
 public class VoteManager {
 
-    private Main plugin;
+    private SkyWars plugin;
 
     private List<UUID> chest_overpowered, chest_normal, chest_basics;
     private List<UUID> time_day, time_night, time_sunset;
     private List<UUID> proj_empty, proj_normal, proj_breakable;
 
-    public VoteManager(Main plugin) {
+    public VoteManager(SkyWars plugin) {
         this.plugin = plugin;
 
         //Chest setup

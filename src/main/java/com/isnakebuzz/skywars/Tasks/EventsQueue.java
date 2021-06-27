@@ -3,17 +3,17 @@ package com.isnakebuzz.skywars.Tasks;
 import com.isnakebuzz.skywars.Calls.Events.SkyQueueFinishEvent;
 import com.isnakebuzz.skywars.Calls.Events.SkyQueueUpdateEvent;
 import com.isnakebuzz.skywars.Listeners.DeathMessages.Tagging;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.QueueEvents.Interfaces.QueueAbstract;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public class EventsQueue extends QueueAbstract {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public EventsQueue(Main plugin) {
+    public EventsQueue(SkyWars plugin) {
         super(plugin);
         this.plugin = plugin;
     }

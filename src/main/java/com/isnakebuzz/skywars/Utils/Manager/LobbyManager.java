@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.LocUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,9 +12,9 @@ import java.io.IOException;
 
 public class LobbyManager {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public LobbyManager(Main plugin) {
+    public LobbyManager(SkyWars plugin) {
         this.plugin = plugin;
     }
 

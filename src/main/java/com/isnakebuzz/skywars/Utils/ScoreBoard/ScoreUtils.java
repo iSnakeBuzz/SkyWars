@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Utils.ScoreBoard;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class ScoreUtils {
 
-    private Main plugin;
+    private SkyWars plugin;
 
     private boolean reset;
     private boolean spect;
@@ -37,7 +37,7 @@ public class ScoreUtils {
     private Team enemySpot;
     private Team staffTeam;
 
-    public ScoreUtils(Main plugin, Player player, boolean health, boolean spect, boolean gameTags) {
+    public ScoreUtils(SkyWars plugin, Player player, boolean health, boolean spect, boolean gameTags) {
         this.scoreboard = player.getScoreboard();
         this.spect = spect;
         this.plugin = plugin;

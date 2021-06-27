@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Listeners.Game;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import org.bukkit.Bukkit;
@@ -18,9 +18,9 @@ import java.util.Arrays;
 
 public class JoinAndQuit implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public JoinAndQuit(Main plugin) {
+    public JoinAndQuit(SkyWars plugin) {
         this.plugin = plugin;
     }
 

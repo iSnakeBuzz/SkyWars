@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Utils.Cuboids;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Schematics.SnakeSchem;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Cage extends SnakeSchem {
 
-    public Cage(Main plugin, Location location, String schematicName) {
+    public Cage(SkyWars plugin, Location location, String schematicName) {
         super(plugin, location);
         FileConfiguration config = YamlConfiguration.loadConfiguration(plugin.getCagesManager().getCage(schematicName));
         this.setBlocks(config.getIntegerList("Blocks"));

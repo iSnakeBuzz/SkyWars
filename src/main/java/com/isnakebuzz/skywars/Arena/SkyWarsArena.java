@@ -2,7 +2,7 @@ package com.isnakebuzz.skywars.Arena;
 
 import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Calls.Events.SkyStartEvent;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cuboid;
 import com.isnakebuzz.skywars.Utils.Enums.*;
@@ -26,7 +26,7 @@ import java.util.*;
 public class SkyWarsArena {
 
     //Internal usages
-    private Main plugin;
+    private SkyWars plugin;
     private GameStatus gameStatus;
     private GameType gameType;
     private List<Player> gamePlayers;
@@ -60,7 +60,7 @@ public class SkyWarsArena {
     private TimeType timeType;
     private ProjectileType projectileType;
 
-    public SkyWarsArena(Main plugin) {
+    public SkyWarsArena(SkyWars plugin) {
         this.plugin = plugin;
         this.gamePlayers = new ArrayList<>();
         this.spawnLocations = new ArrayList<>();

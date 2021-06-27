@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Tasks;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
@@ -12,9 +12,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class EndTask extends BukkitRunnable {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public EndTask(Main plugin) {
+    public EndTask(SkyWars plugin) {
         this.plugin = plugin;
     }
 

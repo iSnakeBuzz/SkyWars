@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Listeners.Game;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -18,9 +18,9 @@ import org.bukkit.event.player.*;
 
 public class SpectatorEvents implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SpectatorEvents(Main plugin) {
+    public SpectatorEvents(SkyWars plugin) {
         this.plugin = plugin;
     }
 

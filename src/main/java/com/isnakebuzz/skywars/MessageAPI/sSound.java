@@ -5,9 +5,9 @@ import org.bukkit.Sound;
 
 public class sSound {
 
-    private Sound sound;
-    private Float volume;
-    private Float pitch;
+    private final Sound sound;
+    private final Float volume;
+    private final Float pitch;
 
     public sSound(Sound sound, Float volume, Float pitch) {
         this.sound = sound;

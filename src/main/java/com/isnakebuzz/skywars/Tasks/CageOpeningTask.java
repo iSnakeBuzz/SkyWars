@@ -1,8 +1,8 @@
 package com.isnakebuzz.skywars.Tasks;
 
 import com.isnakebuzz.skywars.Calls.Events.SkyCagesOpenEvent;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
@@ -21,9 +21,9 @@ import static com.isnakebuzz.skywars.Utils.Strings.StringUtils.centerText;
 
 public class CageOpeningTask extends BukkitRunnable {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public CageOpeningTask(Main plugin) {
+    public CageOpeningTask(SkyWars plugin) {
         this.plugin = plugin;
     }
 

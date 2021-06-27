@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Schematics;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Schematics.Utils.Cuboid;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -15,10 +15,10 @@ import java.util.Set;
 public class SchematicManager {
 
     private Inventory inv;
-    private Main plugin;
+    private SkyWars plugin;
     private HashMap<Player, ArrayList<String>> schemas;
 
-    public SchematicManager(final Main plugin) {
+    public SchematicManager(final SkyWars plugin) {
         this.inv = null;
         this.plugin = plugin;
         this.schemas = new HashMap<Player, ArrayList<String>>();

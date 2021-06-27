@@ -2,7 +2,7 @@ package com.isnakebuzz.skywars.Commands;
 
 import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.LocUtils;
 import com.isnakebuzz.skywars.Utils.Statics;
@@ -23,9 +23,9 @@ import java.util.List;
 
 public class SetupCommands implements CommandExecutor {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SetupCommands(Main plugin) {
+    public SetupCommands(SkyWars plugin) {
         this.plugin = plugin;
     }
 

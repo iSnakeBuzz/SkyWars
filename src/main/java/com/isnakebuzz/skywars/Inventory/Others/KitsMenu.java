@@ -2,8 +2,8 @@ package com.isnakebuzz.skywars.Inventory.Others;
 
 import com.isnakebuzz.skywars.Inventory.MenuManager.Menu;
 import com.isnakebuzz.skywars.Kits.Kit;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,9 +13,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class KitsMenu extends Menu {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public KitsMenu(Main plugin, String menu_name, Player player) {
+    public KitsMenu(SkyWars plugin, String menu_name, Player player) {
         super(plugin, menu_name, player);
         this.plugin = plugin;
 

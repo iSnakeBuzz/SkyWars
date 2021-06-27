@@ -1,14 +1,14 @@
 package com.isnakebuzz.skywars.Listeners;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 
 public class Example implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public Example(Main plugin) {
+    public Example(SkyWars plugin) {
         this.plugin = plugin;
     }
 

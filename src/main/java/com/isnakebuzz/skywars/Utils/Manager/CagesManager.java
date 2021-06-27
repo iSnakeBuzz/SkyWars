@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
 import com.google.common.collect.Maps;
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 
 import java.io.File;
@@ -9,10 +9,10 @@ import java.util.HashMap;
 
 public class CagesManager {
 
-    private Main plugin;
+    private SkyWars plugin;
     private HashMap<Integer, Cage> cages;
 
-    public CagesManager(Main plugin) {
+    public CagesManager(SkyWars plugin) {
         this.plugin = plugin;
         this.cages = Maps.newHashMap();
     }

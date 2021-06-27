@@ -1,13 +1,13 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 
 public class TimerManager {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public TimerManager(Main plugin) {
+    public TimerManager(SkyWars plugin) {
         this.plugin = plugin;
     }
 

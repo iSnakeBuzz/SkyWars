@@ -1,14 +1,14 @@
 package com.isnakebuzz.skywars.Tasks;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ExampleTask extends BukkitRunnable {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public ExampleTask(Main plugin) {
+    public ExampleTask(SkyWars plugin) {
         this.plugin = plugin;
     }
 

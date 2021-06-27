@@ -2,6 +2,7 @@ package com.isnakebuzz.skywars.Player;
 
 import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.snakeco.Utils.EcoAPI;
+import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -12,10 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Data
 public class SkyPlayer implements Comparable<SkyPlayer> {
 
-    private UUID uuid;
-    private String name;
+    private final UUID uuid;
+    private final String name;
 
     //Cosmetics
     private String cageName;
@@ -41,9 +43,9 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
     private boolean isTime;
     private boolean isProjectile;
 
-    public SkyPlayer(UUID uuid) {
+    public SkyPlayer(UUID uuid, String username) {
         this.uuid = uuid;
-        this.name = "none";
+        this.name = username;
 
         //Cosmetics
         this.cageName = "default";
@@ -74,68 +76,41 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setWins(int wins) {
-        this.wins = wins;
-    }
-
-    public void setKills(int kills) {
-        this.kills = kills;
-    }
-
-    public void setDeaths(int deaths) {
-        this.deaths = deaths;
-    }
-
-    public int getDeaths() {
-        return deaths;
-    }
-
     public void addDeaths(int value) {
         this.setDeaths(getDeaths() + value);
-    }
-
-    public int getKills() {
-        return kills;
     }
 
     public void addKills(int value) {
         this.setKills(getKills() + value);
     }
 
-    public int getWins() {
-        return wins;
-    }
-
     public void addWins(int value) {
         this.setWins(getWins() + value);
     }
 
-    public boolean isDead() {
-        return isDead;
-    }
+    public void setSpectator(boolean spectator) {
+        isSpectator = spectator;
 
-    public boolean isSpectator() {
-        return isSpectator;
-    }
+        Player p = Bukkit.getPlayer(this.uuid);
+        if (spectator) {
+            PlayerUtils.clean(p, new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
 
-    public boolean isStaff() {
-        return isStaff;
-    }
+            p.setGameMode(GameMode.ADVENTURE);
+            p.setAllowFlight(true);
+            p.setFlying(true);
+            p.setGameSpect(true);
 
-    public void setProjectile(boolean projectile) {
-        isProjectile = projectile;
-    }
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                online.hidePlayer(p);
+            }
+        } else {
+            PlayerUtils.clean(p);
+            p.setGameMode(GameMode.SURVIVAL);
 
-    public void setTime(boolean time) {
-        isTime = time;
-    }
-
-    public void setChest(boolean chest) {
-        isChest = chest;
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                online.showPlayer(p);
+            }
+        }
     }
 
     public void setStaff(boolean staff) {
@@ -164,117 +139,24 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
         }
     }
 
-    public void setSpectator(boolean spectator) {
-        isSpectator = spectator;
-
-        Player p = Bukkit.getPlayer(this.uuid);
-        if (spectator) {
-            PlayerUtils.clean(p, new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
-
-            p.setGameMode(GameMode.ADVENTURE);
-            p.setAllowFlight(true);
-            p.setFlying(true);
-            p.setGameSpect(true);
-
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                online.hidePlayer(p);
-            }
-        } else {
-            PlayerUtils.clean(p);
-            p.setGameMode(GameMode.SURVIVAL);
-
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                online.showPlayer(p);
-            }
-        }
-    }
-
     public Player getPlayer() {
         return Bukkit.getPlayer(this.uuid);
-    }
-
-    public int getKillStreak() {
-        return killStreak;
-    }
-
-    public void setKillStreak(int killStreak) {
-        this.killStreak = killStreak;
     }
 
     public void addKillStreak() {
         this.setKillStreak(this.getKillStreak() + 1);
     }
 
-    public void setDead(boolean dead) {
-        isDead = dead;
-    }
-
-    public String getCageName() {
-        return cageName;
-    }
-
-    public String getSelectedKit() {
-        return selectedKit;
-    }
-
-    public List<String> getPurchCages() {
-        return purchCages;
-    }
-
-    public List<String> getPurchKits() {
-        return purchKits;
-    }
-
-    public void setSelectedKit(String selectedKit) {
-        this.selectedKit = selectedKit;
-    }
-
-    public void setPurchKits(List<String> purchKits) {
-        this.purchKits = purchKits;
-    }
-
-    public void setCageName(String cageName) {
-        this.cageName = cageName;
-    }
-
-    public void setPurchCages(List<String> purchCages) {
-        this.purchCages = purchCages;
-    }
-
-    public boolean isSpectating() {
-        return isSpectating;
-    }
-
-    public void setSpectating(boolean spectating) {
-        isSpectating = spectating;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public boolean isProjectile() {
-        return isProjectile;
-    }
-
-    public boolean isChest() {
-        return isChest;
-    }
-
-    public boolean isTime() {
-        return isTime;
+    public void setTeam(Team team) {
+        System.out.println("Team Name: " + team.getName());
+        team.addPlayer(this);
+        this.team = team;
     }
 
     public void addCoins(int coins) {
         if (this.getPlayer() != null) {
             EcoAPI.addCoins(this.getPlayer(), coins);
         }
-    }
-
-    public void setTeam(Team team) {
-        System.out.println("Team Name: " + team.getName());
-        team.addPlayer(this);
-        this.team = team;
     }
 
     @Override

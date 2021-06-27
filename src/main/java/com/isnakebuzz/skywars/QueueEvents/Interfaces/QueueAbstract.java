@@ -1,21 +1,21 @@
 package com.isnakebuzz.skywars.QueueEvents.Interfaces;
 
 import com.isnakebuzz.skywars.Calls.Events.SkyQueueStartEvent;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.QueueEvents.QueueEvent;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class QueueAbstract extends BukkitRunnable {
 
-    private Main plugin;
+    private SkyWars plugin;
 
     // Ingame addons
     private Integer queueInt = 0;
     private Integer queueMax;
     private QueueEvent inQueue;
 
-    public QueueAbstract(Main plugin) {
+    public QueueAbstract(SkyWars plugin) {
         this.plugin = plugin;
 
         this.queueMax = plugin.getEventsManager().getQueue().size();

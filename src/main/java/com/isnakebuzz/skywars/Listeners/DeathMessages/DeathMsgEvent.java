@@ -1,10 +1,9 @@
 package com.isnakebuzz.skywars.Listeners.DeathMessages;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.entity.Chicken;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,9 +14,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class DeathMsgEvent implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public DeathMsgEvent(Main plugin) {
+    public DeathMsgEvent(SkyWars plugin) {
         this.plugin = plugin;
     }
 

@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import com.isnakebuzz.skywars.Calls.Callback;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Kits.Kit;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.LobbyPlayer;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,9 +17,9 @@ import java.util.List;
 
 public class Utils {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public Utils(Main plugin) {
+    public Utils(SkyWars plugin) {
         this.plugin = plugin;
     }
 

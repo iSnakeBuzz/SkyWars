@@ -1,14 +1,14 @@
 package com.isnakebuzz.skywars.Scheduler;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 
 import java.util.Date;
 
 public abstract class SchedulerBase implements IScheduler {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SchedulerBase(Main plugin) {
+    public SchedulerBase(SkyWars plugin) {
         this.plugin = plugin;
     }
 

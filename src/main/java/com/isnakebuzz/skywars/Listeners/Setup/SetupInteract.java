@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.Setup;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.LocUtils;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.ChatColor;
@@ -20,9 +20,9 @@ public class SetupInteract implements Listener {
 
     int islandschest = 1;
     int centerchest = 1;
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SetupInteract(Main plugin) {
+    public SetupInteract(SkyWars plugin) {
         this.plugin = plugin;
     }
 

@@ -1,8 +1,8 @@
 package com.isnakebuzz.skywars.Inventory;
 
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.PlayerUtils;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -13,9 +13,9 @@ import java.util.Set;
 
 public class Inventories {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public Inventories(Main plugin) {
+    public Inventories(SkyWars plugin) {
         this.plugin = plugin;
     }
 

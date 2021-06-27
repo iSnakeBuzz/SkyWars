@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Chest;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -11,13 +11,13 @@ public class SettingsManager {
 
     private FileConfiguration config;
     private File file;
-    private Main main;
+    private SkyWars skyWars;
 
-    public SettingsManager(Main main, String resourceName) {
-        this.main = main;
-        this.file = new File(this.main.getDataFolder(), resourceName + ".yml");
+    public SettingsManager(SkyWars skyWars, String resourceName) {
+        this.skyWars = skyWars;
+        this.file = new File(this.skyWars.getDataFolder(), resourceName + ".yml");
         this.config = new YamlConfiguration().loadConfiguration(this.file);
-        InputStream readConfig = this.main.getResource(resourceName + ".yml");
+        InputStream readConfig = this.skyWars.getResource(resourceName + ".yml");
         YamlConfiguration setDefaults = new YamlConfiguration().loadConfiguration(readConfig);
         try {
 

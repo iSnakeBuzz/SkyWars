@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.Test;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,9 +12,9 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 
 public class TestPhysics implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public TestPhysics(Main plugin) {
+    public TestPhysics(SkyWars plugin) {
         this.plugin = plugin;
     }
 

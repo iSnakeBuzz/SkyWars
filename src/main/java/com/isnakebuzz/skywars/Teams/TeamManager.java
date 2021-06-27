@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Teams;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Comparators.TeamComparator;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Statics;
@@ -16,11 +16,11 @@ import java.util.Map;
 
 public class TeamManager {
 
-    private Main plugin;
+    private SkyWars plugin;
     private Map<String, Team> teamMap;
     private int teamSize;
 
-    public TeamManager(Main plugin) {
+    public TeamManager(SkyWars plugin) {
         this.plugin = plugin;
         this.teamMap = new HashMap<>();
     }

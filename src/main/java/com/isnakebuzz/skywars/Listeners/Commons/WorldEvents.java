@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.Commons;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
@@ -10,9 +10,9 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class WorldEvents implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public WorldEvents(Main plugin) {
+    public WorldEvents(SkyWars plugin) {
         this.plugin = plugin;
     }
 

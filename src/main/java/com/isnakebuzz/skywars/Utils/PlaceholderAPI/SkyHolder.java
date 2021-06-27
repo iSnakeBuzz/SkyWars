@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Utils.PlaceholderAPI;
 
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.LobbyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 
@@ -16,9 +16,9 @@ import org.bukkit.OfflinePlayer;
  */
 public class SkyHolder extends PlaceholderExpansion {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SkyHolder(Main plugin) {
+    public SkyHolder(SkyWars plugin) {
         this.plugin = plugin;
     }
 

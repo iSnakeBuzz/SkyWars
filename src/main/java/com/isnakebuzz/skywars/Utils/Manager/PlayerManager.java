@@ -1,9 +1,9 @@
 package com.isnakebuzz.skywars.Utils.Manager;
 
 import com.google.common.collect.Lists;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.LobbyPlayer;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import lombok.Getter;
 
 import java.util.*;
@@ -11,12 +11,12 @@ import java.util.*;
 @Getter
 public class PlayerManager {
 
-    private Main plugin;
+    private SkyWars plugin;
     private Map<UUID, SkyPlayer> skyPlayerMap;
     private Map<UUID, LobbyPlayer> lobbyPlayerMap;
     private List<UUID> doubleJoinBug;
 
-    public PlayerManager(Main plugin) {
+    public PlayerManager(SkyWars plugin) {
         this.plugin = plugin;
         this.skyPlayerMap = new HashMap<>();
         this.lobbyPlayerMap = new HashMap<>();
@@ -38,12 +38,8 @@ public class PlayerManager {
 
     public SkyPlayer getPlayer(UUID uuid) {
         if (this.containsPlayer(uuid)) {
-            //plugin.debug("Getting player(" + uuid.toString() + ") from the RAM section");
             return this.skyPlayerMap.get(uuid);
-        } else {
-            //plugin.debug("Getting new player(" + uuid.toString() + ")");
-            return new SkyPlayer(uuid);
-        }
+        } else return null;
     }
 
     public Collection<SkyPlayer> getPlayers() {
@@ -71,7 +67,7 @@ public class PlayerManager {
     }
 
     public LobbyPlayer getLbPlayer(UUID uuid) {
-        return this.lobbyPlayerMap.getOrDefault(uuid, new LobbyPlayer(uuid));
+        return this.lobbyPlayerMap.getOrDefault(uuid, null);
     }
 
     public Collection<LobbyPlayer> getLobbyPlayers() {

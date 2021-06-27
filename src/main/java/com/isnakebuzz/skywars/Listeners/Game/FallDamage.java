@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Listeners.Game;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,9 +9,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class FallDamage implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public FallDamage(Main plugin) {
+    public FallDamage(SkyWars plugin) {
         this.plugin = plugin;
     }
 

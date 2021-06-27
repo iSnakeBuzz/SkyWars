@@ -1,8 +1,8 @@
 package com.isnakebuzz.skywars.QueueEvents;
 
 import com.google.common.collect.Lists;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.QueueEvents.enums.QueueType;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Tasks.EventsQueue;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,14 +12,14 @@ import java.util.Set;
 
 public class EventsManager {
 
-    private Main plugin;
+    private SkyWars plugin;
     private List<QueueEvent> queue;
 
     //Events common settings
     private QueueEvent actualQueue = null;
     private Boolean isActived = true;
 
-    public EventsManager(Main plugin) {
+    public EventsManager(SkyWars plugin) {
         this.plugin = plugin;
         this.queue = Lists.newArrayList();
     }

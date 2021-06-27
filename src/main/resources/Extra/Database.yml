@@ -17,4 +17,4 @@ MySQL:
 
 # CUSTOM DATABASE
 # URL for the API
-SnakeDb: 'http://localhost:9090/skywars/'
+SnakeDb: 'http://localhost:3000/games/'

@@ -1,8 +1,8 @@
 package com.isnakebuzz.skywars.Listeners.Game;
 
 import com.isnakebuzz.skywars.Calls.Events.SkyStatsEvent;
-import com.isnakebuzz.skywars.Main;
 import com.isnakebuzz.skywars.Player.SkyPlayer;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Enums.StatType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,9 +12,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class SkyStats implements Listener {
 
-    private Main plugin;
+    private SkyWars plugin;
 
-    public SkyStats(Main plugin) {
+    public SkyStats(SkyWars plugin) {
         this.plugin = plugin;
     }
 

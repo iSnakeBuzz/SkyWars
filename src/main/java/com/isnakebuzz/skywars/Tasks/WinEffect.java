@@ -1,6 +1,6 @@
 package com.isnakebuzz.skywars.Tasks;
 
-import com.isnakebuzz.skywars.Main;
+import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Teams.Team;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.*;
@@ -11,10 +11,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class WinEffect extends BukkitRunnable {
 
-    private Main plugin;
+    private SkyWars plugin;
     private Team team;
 
-    public WinEffect(Main plugin, Team team) {
+    public WinEffect(SkyWars plugin, Team team) {
         this.plugin = plugin;
         this.team = team;
     }
