@@ -28,7 +28,7 @@ public class LobbyManager {
 
     public Location getLobby() {
         FileConfiguration config = plugin.getConfigUtils().getConfig(plugin, "Extra/Arena");
-        return LocUtils.stringToLoc(config.getString("Lobby"));
+        return LocUtils.stringToLoc(config.getString("Lobby")).getLocation();
     }
 
     public void setLobby(Player p) throws IOException {

@@ -51,11 +51,6 @@ public class CageOpeningTask extends BukkitRunnable {
             plugin.getSkyWarsArena().fillChests();
             plugin.closeInventory();
 
-            //Loading player names
-            for (Player gamePlayer : plugin.getSkyWarsArena().getGamePlayers()) {
-                plugin.getPlayerManager().getPlayer(gamePlayer.getUniqueId()).setName(gamePlayer.getName());
-            }
-
             for (String msgs : config.getStringList("Banner")) {
                 String message = c(msgs);
                 if (message.contains("%center%")) {
@@ -119,7 +114,8 @@ public class CageOpeningTask extends BukkitRunnable {
         } else if (Statics.skyMode.equals(GameType.TEAM)) {
             if (plugin.getSkyWarsArena().getGamePlayers().size() < plugin.getSkyWarsArena().getMinPlayers() && !plugin.getSkyWarsArena().getGameStatus().equals(GameStatus.FINISH)) {
                 this.cancel();
-                plugin.resetArena();
+                plugin.getSkyWarsArena().cancelStart();
+                plugin.debug("Cancelling starting task..");
                 return;
             }
         }

@@ -7,6 +7,7 @@ import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
 import com.isnakebuzz.skywars.Utils.LocUtils;
+import com.isnakebuzz.skywars.Utils.SnakeLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -48,7 +49,7 @@ public class LobbyTask extends BukkitRunnable {
 
             // Spawning cages
             for (Team team : plugin.getTeamManager().getTeamMap().values()) {
-                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(team.getSpawnID());
+                SnakeLocation location = plugin.getSkyWarsArena().getSpawnLocations().get(team.getSpawnID());
                 Cage cage = new Cage(plugin, location, team.getCage());
                 cage.paste();
                 plugin.getCagesManager().addCage(team.getSpawnID(), cage);
@@ -60,7 +61,7 @@ public class LobbyTask extends BukkitRunnable {
             for (Player inGame : plugin.getSkyWarsArena().getGamePlayers()) {
                 SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(inGame.getUniqueId());
                 plugin.debug("Team of Skyplayer: " + skyPlayer.getTeam().getID());
-                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID());
+                Location location = plugin.getSkyWarsArena().getSpawnLocations().get(skyPlayer.getTeam().getSpawnID()).getLocation();
 
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     LocUtils.teleport(inGame, location, lobbyLocation);

@@ -14,7 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class DeathMsgEvent implements Listener {
 
-    private SkyWars plugin;
+    private final SkyWars plugin;
 
     public DeathMsgEvent(SkyWars plugin) {
         this.plugin = plugin;
@@ -28,7 +28,7 @@ public class DeathMsgEvent implements Listener {
     @EventHandler
     public void onEntityDie(final EntityDeathEvent e) {
         if (e.getEntity() != null) {
-            createMessage(e.getEntity(), e.getEntity().getLastDamageCause().getCause());
+            createMessage(e.getEntity(), e.getEntity().getLastDamageCause() != null ? e.getEntity().getLastDamageCause().getCause() : null);
             plugin.getSkyWarsArena().getLastDamager().remove(e.getEntity());
             plugin.getSkyWarsArena().getLastDmgTime().remove(e.getEntity());
         }

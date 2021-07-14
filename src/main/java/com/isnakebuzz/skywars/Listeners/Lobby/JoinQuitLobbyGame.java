@@ -5,14 +5,11 @@ import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Tasks.CageOpeningTask;
 import com.isnakebuzz.skywars.Tasks.LobbyTask;
 import com.isnakebuzz.skywars.Teams.Team;
-import com.isnakebuzz.skywars.Utils.Console;
+import com.isnakebuzz.skywars.Utils.*;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import com.isnakebuzz.skywars.Utils.Enums.GameType;
 import com.isnakebuzz.skywars.Utils.Enums.ScoreboardType;
-import com.isnakebuzz.skywars.Utils.LocUtils;
-import com.isnakebuzz.skywars.Utils.PacketsAPI;
-import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -40,7 +37,6 @@ public class JoinQuitLobbyGame implements Listener {
     @EventHandler
     public void PlayerLogin(AsyncPlayerPreLoginEvent e) {
         Console.debug("AsyncPlayerPreLoginEvent " + e.getName());
-
 
         /*Double join fix*/
         if (plugin.getPlayerManager().getDoubleJoinBug().contains(e.getUniqueId())) {
@@ -153,13 +149,14 @@ public class JoinQuitLobbyGame implements Listener {
             Team team = plugin.getTeamManager().addTeam(skyPlayer);
             int spawnID = team.getSpawnID();
 
-            Location spawnLocation = plugin.getSkyWarsArena().getSpawnLocations().get(spawnID);
+            SnakeLocation spawnLocation = plugin.getSkyWarsArena().getSpawnLocations().get(spawnID);
             Location lobbyLocation = plugin.getSkyWarsArena().getLobbyLocation();
 
-            LocUtils.teleport(p, spawnLocation, lobbyLocation);
+            LocUtils.teleport(p, spawnLocation.getLocation(), lobbyLocation);
 
             Cage cage = new Cage(plugin, spawnLocation, team.getCage());
             cage.paste();
+
             plugin.getCagesManager().addCage(spawnID, cage);
         } else if (Statics.skyMode.equals(GameType.TEAM)) {
             p.teleport(plugin.getSkyWarsArena().getLobbyLocation());
@@ -172,6 +169,8 @@ public class JoinQuitLobbyGame implements Listener {
         Configuration lang = plugin.getConfig("Lang");
         Player p = e.getPlayer();
         SkyPlayer skyPlayer = plugin.getPlayerManager().getPlayer(p.getUniqueId());
+        if (skyPlayer == null) return;
+
         plugin.getTeamManager().removeTeam(skyPlayer);
 
         /* Check if team not equals null and removing cage :) */

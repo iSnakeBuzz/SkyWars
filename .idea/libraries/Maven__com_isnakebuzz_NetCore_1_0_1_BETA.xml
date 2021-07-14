@@ -8,6 +8,8 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/com/isnakebuzz/NetCore/1.0.1-BETA/NetCore-1.0.1-BETA-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/isnakebuzz/NetCore/1.1.0-BETA/NetCore-1.1.0-BETA.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/isnakebuzz/NetCore/1.1.0-BETA/NetCore-1.1.0-BETA.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -5,6 +5,7 @@ import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cage;
 import com.isnakebuzz.skywars.Utils.LocUtils;
+import com.isnakebuzz.skywars.Utils.SnakeLocation;
 import com.isnakebuzz.skywars.Utils.Statics;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -449,7 +450,7 @@ public class SetupCommands implements CommandExecutor {
                 return;
             }
             String name = args[2];
-            Cage cage = new Cage(plugin, p.getLocation(), name);
+            Cage cage = new Cage(plugin, new SnakeLocation(p.getLocation()), name);
             cage.paste();
 
             p.sendMessage(c("&eHas been loaded " + name + " cage"));

@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class JoinAndQuit implements Listener {
 
-    private SkyWars plugin;
+    private final SkyWars plugin;
 
     public JoinAndQuit(SkyWars plugin) {
         this.plugin = plugin;
@@ -55,7 +55,6 @@ public class JoinAndQuit implements Listener {
         //Giving scoreboard to player
         plugin.getScoreBoardAPI2().setScoreBoard(p, ScoreboardType.INGAME, true, true, true);
 
-        //plugin.getDb().createPlayer(p);
         e.setJoinMessage(null);
     }
 
@@ -75,8 +74,8 @@ public class JoinAndQuit implements Listener {
         //Removing player scoreboard
         plugin.getScoreBoardAPI2().removeScoreBoard(p);
 
-        // Removing player async
-        plugin.getScheduler().runAsync(() -> plugin.getDb().savePlayer(p), false);
+        // Removing player
+        plugin.getPlayerManager().removePlayer(e.getPlayer().getUniqueId());
 
         e.setQuitMessage(null);
     }

@@ -1,7 +1,7 @@
 package com.isnakebuzz.skywars.Player;
 
+import com.isnakebuzz.netcore.NetCoreAPI;
 import com.isnakebuzz.skywars.Teams.Team;
-import com.isnakebuzz.snakeco.Utils.EcoAPI;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -155,7 +155,7 @@ public class SkyPlayer implements Comparable<SkyPlayer> {
 
     public void addCoins(int coins) {
         if (this.getPlayer() != null) {
-            EcoAPI.addCoins(this.getPlayer(), coins);
+            NetCoreAPI.addCoins(this.getPlayer(), coins);
         }
     }
 

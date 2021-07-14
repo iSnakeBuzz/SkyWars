@@ -18,7 +18,6 @@ import com.isnakebuzz.skywars.Utils.Manager.*;
 import com.isnakebuzz.skywars.Utils.ScoreBoard.ScoreBoardAPI;
 import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.skywars.Utils.Utils;
-import com.isnakebuzz.skywars.Utils.World.FaweUtils;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -41,6 +40,7 @@ public final class SkyWars extends JavaPlugin {
     private final ChestController chestController;
     private final DependManager dependManager;
     private final CagesManager cagesManager;
+    private final ArenaManager arenaManager;
     private final TimerManager timerManager;
     private final Inventories inventories;
     private final ArenaSetup arenaSetup;
@@ -51,7 +51,6 @@ public final class SkyWars extends JavaPlugin {
     private ChestRefillManager chestRefillManager;
     private EventsManager eventsManager;
     private PlayerManager playerManager;
-    private FaweUtils worldRestarting;
     private VoteManager voteManager;
     private TeamManager teamManager;
 
@@ -74,6 +73,7 @@ public final class SkyWars extends JavaPlugin {
         this.playerManager = new PlayerManager(this);
         this.configUtils = new ConfigUtils();
         this.eventsManager = new EventsManager(this);
+        this.arenaManager = new ArenaManager(this);
     }
 
     @Override
@@ -112,7 +112,6 @@ public final class SkyWars extends JavaPlugin {
         //Detecting fawe for instant world restart without lag
         if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") && Statics.skyMode != GameType.LOBBY) {
             Statics.isFawe = true;
-            this.worldRestarting = new FaweUtils(this);
         }
 
         //Load Listeners
@@ -124,7 +123,6 @@ public final class SkyWars extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.dataManager.getDatabase().closeConnection();
         if (Statics.SnakeGameQueue) {
             GameQueueAPI.removeGame(Statics.BungeeID);
         }
@@ -168,11 +166,9 @@ public final class SkyWars extends JavaPlugin {
         for (Player online : Bukkit.getOnlinePlayers()) online.closeInventory();
     }
 
-
     public FileConfiguration getConfig(String configName) {
         return this.getConfigUtils().getConfig(this, configName);
     }
-
 
     public IDatabase getDb() {
         return dataManager.getDatabase();
@@ -183,9 +179,10 @@ public final class SkyWars extends JavaPlugin {
     }
 
     public synchronized void resetArena() {
+        this.arenaManager.loadArenas();
         this.getChestRefillManager().reset();
         this.getPlayerManager().reset();
-        this.skyWarsArena = new SkyWarsArena(this);
+        this.skyWarsArena = this.arenaManager.getRandomArena();
         this.voteManager = new VoteManager(this);
         this.chestRefillManager = new ChestRefillManager(this);
         this.teamManager = new TeamManager(this);

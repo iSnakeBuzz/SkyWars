@@ -29,5 +29,4 @@ public class Statics {
         return ChatColor.translateAlternateColorCodes('&', c);
     }
 
-
 }

@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class ArenaSetup {
 
-    private SkyWars plugin;
+    private final SkyWars plugin;
 
     public ArenaSetup(SkyWars plugin) {
         this.plugin = plugin;

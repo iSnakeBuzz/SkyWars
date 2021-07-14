@@ -39,11 +39,11 @@ public class SnakeGame implements IDatabase {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("uuid", uniqueId.toString());
 
-        Request playerReq = new Request().body(jsonObject).methodType(MethodType.PUT).url(String.format("%s%s", Statics.API_URL, RoutePath.PLAYER.getPath()));
+        Request playerReq = new Request().body(jsonObject).methodType(MethodType.GET).url(String.format("%s%s", Statics.API_URL, RoutePath.PLAYER.getPath()));
         JsonObject playerRes = playerReq.execute();
 
-        if (playerRes == null || playerRes.get("status").getAsInt() == 404) {
-            Console.debug(String.format("Player(%s) do not exist.", uniqueId));
+        if (playerRes == null || playerRes.has("status") ) {
+            Console.debug(String.format("Player(%s) do not exist.", username));
             return;
         }
 
@@ -55,7 +55,7 @@ public class SnakeGame implements IDatabase {
         skyPlayer.setSelectedKit(playerRes.get("selKit").getAsString());
         skyPlayer.setCageName(playerRes.get("selCage").getAsString());
 
-        Request statsReq = new Request().body(jsonObject).methodType(MethodType.PUT).url(String.format("%s%s", Statics.API_URL, modeType.getPath()));
+        Request statsReq = new Request().body(jsonObject).methodType(MethodType.GET).url(String.format("%s%s", Statics.API_URL, modeType.getPath()));
         JsonObject statsRes = statsReq.execute();
 
         skyPlayer.setWins(statsRes.get("wins").getAsInt());

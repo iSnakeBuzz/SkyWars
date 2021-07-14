@@ -1,66 +1,66 @@
 package com.isnakebuzz.skywars.Arena;
 
 import com.google.common.collect.Lists;
+import com.grinderwolf.swm.api.SlimePlugin;
+import com.grinderwolf.swm.api.exceptions.CorruptedWorldException;
+import com.grinderwolf.swm.api.exceptions.NewerFormatException;
+import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
+import com.grinderwolf.swm.api.exceptions.WorldInUseException;
+import com.grinderwolf.swm.api.loaders.SlimeLoader;
+import com.grinderwolf.swm.api.world.SlimeWorld;
+import com.grinderwolf.swm.api.world.properties.SlimeProperties;
+import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import com.isnakebuzz.skywars.Calls.Events.SkyStartEvent;
 import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Teams.Team;
+import com.isnakebuzz.skywars.Utils.*;
 import com.isnakebuzz.skywars.Utils.Cuboids.Cuboid;
 import com.isnakebuzz.skywars.Utils.Enums.*;
-import com.isnakebuzz.skywars.Utils.LocUtils;
-import com.isnakebuzz.skywars.Utils.PacketsAPI;
-import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import com.isnakebuzz.snakegq.Enums.GameQueueStatus;
 import com.isnakebuzz.snakegq.Enums.GameQueueType;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.*;
 
 public class SkyWarsArena {
 
     //Internal usages
-    private SkyWars plugin;
+    private final SkyWars plugin;
+    private final List<Player> gamePlayers;
+    private final HashMap<LivingEntity, LivingEntity> lastDamager;
+    private final HashMap<LivingEntity, Integer> lastDmgTime;
+    //Map name
+    private final String mapName;
+    //Players
+    private final int minPlayers;
+    private final int maxPlayers;
+    //Locations
+    private final SnakeLocation lobbyLocation;
+    private final List<SnakeLocation> lobbyRegion;
+    private final List<SnakeLocation> spawnLocations;
+    private final List<SnakeLocation> centerChestLocs;
+    private final List<SnakeLocation> islandChestLocs;
     private GameStatus gameStatus;
     private GameType gameType;
-    private List<Player> gamePlayers;
-    private HashMap<LivingEntity, LivingEntity> lastDamager;
-    private HashMap<LivingEntity, Integer> lastDmgTime;
-
-    //Map name
-    private String mapName;
-
-    //Players
-    private int minPlayers;
-    private int maxPlayers;
-
     //Arena is ingame
     private boolean started;
-
     //Timers
     private int startingTime;
     private int cageOpens;
     private int endTimer;
-
-    //Locations
-    private Location lobbyLocation;
-    private List<Location> lobbyRegion;
-    private List<Location> spawnLocations;
-    private List<Location> centerChestLocs;
-    private List<Location> islandChestLocs;
-
     //Vote managers
     private ChestType chestType;
     private TimeType timeType;
     private ProjectileType projectileType;
 
-    public SkyWarsArena(SkyWars plugin) {
+    public SkyWarsArena(SkyWars plugin, Configuration arena) {
         this.plugin = plugin;
         this.gamePlayers = new ArrayList<>();
         this.spawnLocations = new ArrayList<>();
@@ -70,7 +70,6 @@ public class SkyWarsArena {
         this.lastDamager = new HashMap<>();
         this.lastDmgTime = new HashMap<>();
 
-        Configuration arena = plugin.getConfig("Extra/Arena");
         this.minPlayers = arena.getInt("Players.min");
         this.maxPlayers = arena.getInt("Players.max");
         this.mapName = arena.getString("MapName");
@@ -151,7 +150,7 @@ public class SkyWarsArena {
         return startingTime;
     }
 
-    public List<Location> getSpawnLocations() {
+    public List<SnakeLocation> getSpawnLocations() {
         return spawnLocations;
     }
 
@@ -160,14 +159,14 @@ public class SkyWarsArena {
     }
 
     public Location getLobbyLocation() {
-        return lobbyLocation;
+        return lobbyLocation.getLocation();
     }
 
-    public List<Location> getCenterChestLocs() {
+    public List<SnakeLocation> getCenterChestLocs() {
         return centerChestLocs;
     }
 
-    public List<Location> getIslandChestLocs() {
+    public List<SnakeLocation> getIslandChestLocs() {
         return islandChestLocs;
     }
 
@@ -275,9 +274,10 @@ public class SkyWarsArena {
     }
 
     public void fillChests() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             plugin.debug("Filling chests");
-            for (Location loc : this.islandChestLocs) {
+            for (SnakeLocation snakeLoc : this.islandChestLocs) {
+                Location loc = snakeLoc.getLocation();
                 Block block = loc.getWorld().getBlockAt(loc);
                 if (block.getState() instanceof Chest) {
                     Chest chest = (Chest) block.getState();
@@ -285,7 +285,8 @@ public class SkyWarsArena {
                 }
             }
 
-            for (Location loc : this.centerChestLocs) {
+            for (SnakeLocation snakeLoc : this.centerChestLocs) {
+                Location loc = snakeLoc.getLocation();
                 Block block = loc.getWorld().getBlockAt(loc);
                 if (block.getState() instanceof Chest) {
                     Chest chest = (Chest) block.getState();
@@ -334,8 +335,8 @@ public class SkyWarsArena {
     }
 
     public void removeLobby() {
-        Location loc1 = lobbyRegion.get(0);
-        Location loc2 = lobbyRegion.get(1);
+        Location loc1 = lobbyRegion.get(0).getLocation();
+        Location loc2 = lobbyRegion.get(1).getLocation();
 
         Cuboid cuboid = new Cuboid(loc1, loc2);
         for (Block b : cuboid) {
@@ -345,4 +346,42 @@ public class SkyWarsArena {
         }
     }
 
+    public void reloadWorld() {
+        SlimePlugin slimeInstance = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+        SlimeLoader fileLoader = slimeInstance.getLoader("file");
+
+        Console.debug(String.format("Reloading %s", mapName));
+        Bukkit.unloadWorld(mapName, true);
+
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            Console.debug(String.format("Reloading Task of %s", mapName));
+            try {
+                fileLoader.unlockWorld(mapName);
+            } catch (UnknownWorldException | IOException e) {
+                e.printStackTrace();
+            }
+
+            SlimePropertyMap slimeProperties = new SlimePropertyMap();
+            slimeProperties.setString(SlimeProperties.WORLD_TYPE, "flat");
+            SlimeWorld slimeWorld = null;
+            try {
+                slimeWorld = slimeInstance.loadWorld(fileLoader, mapName, true, slimeProperties);
+            } catch (UnknownWorldException | IOException | CorruptedWorldException | NewerFormatException | WorldInUseException e) {
+                e.printStackTrace();
+            }
+
+            slimeInstance.generateWorld(slimeWorld);
+
+            World world = Bukkit.getWorld(mapName);
+            world.setAutoSave(false);
+            world.getWorldBorder().setSize(10000);
+            world.setDifficulty(Difficulty.HARD);
+            world.setFullTime(6000);
+            world.setGameRuleValue("doDaylightCycle", "false");
+            world.setGameRuleValue("doMobSpawning", "false");
+            Bukkit.setSpawnRadius(0);
+
+            Console.debug(String.format("Finished Task of %s", mapName));
+        });
+    }
 }

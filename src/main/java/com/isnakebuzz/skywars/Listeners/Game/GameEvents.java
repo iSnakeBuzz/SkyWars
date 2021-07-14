@@ -11,7 +11,6 @@ import com.isnakebuzz.skywars.Utils.Enums.GameStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -54,11 +53,6 @@ public class GameEvents implements Listener {
             Bukkit.getPluginManager().callEvent(effectEvent);
 
             broadCastWin(lang, e);
-        }
-
-        // Saving player after add win  :)
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            plugin.getDb().savePlayer(online);
         }
     }
 

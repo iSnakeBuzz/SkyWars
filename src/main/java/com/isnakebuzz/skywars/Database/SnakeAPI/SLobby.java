@@ -37,10 +37,12 @@ public class SLobby implements IDatabase {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("uuid", uniqueId.toString());
 
-        Request playerReq = new Request().body(jsonObject).methodType(MethodType.PUT).url(String.format("%s%s", Statics.API_URL, RoutePath.PLAYER.getPath()));
+        String url = String.format("%s%s", Statics.API_URL, RoutePath.PLAYER.getPath());
+
+        Request playerReq = new Request().body(jsonObject).methodType(MethodType.GET).url(url);
         JsonObject playerRes = playerReq.execute();
 
-        if (playerRes == null || playerRes.get("status").getAsInt() == 404) {
+        if (playerRes == null || playerRes.has("status")) {
             Console.debug(String.format("Player(%s) do not exist.", uniqueId));
             return;
         }
@@ -54,7 +56,7 @@ public class SLobby implements IDatabase {
 
 
         /* Getting solo teams */
-        Request statsSoloReq = new Request().body(jsonObject).methodType(MethodType.PUT).url(String.format("%s%s", Statics.API_URL, RoutePath.SOLO));
+        Request statsSoloReq = new Request().body(jsonObject).methodType(MethodType.GET).url(String.format("%s%s", Statics.API_URL, RoutePath.SOLO));
         JsonObject statsSoloRes = statsSoloReq.execute();
 
         if (statsSoloRes != null && statsSoloRes.get("status").getAsInt() != 404) {
@@ -66,7 +68,7 @@ public class SLobby implements IDatabase {
         }
 
         /* Getting solo teams */
-        Request statsTeamReq = new Request().body(jsonObject).methodType(MethodType.PUT).url(String.format("%s%s", Statics.API_URL, RoutePath.TEAM));
+        Request statsTeamReq = new Request().body(jsonObject).methodType(MethodType.GET).url(String.format("%s%s", Statics.API_URL, RoutePath.TEAM));
         JsonObject statsTeamRes = statsTeamReq.execute();
 
         if (statsTeamRes != null && statsTeamRes.get("status").getAsInt() != 404) {

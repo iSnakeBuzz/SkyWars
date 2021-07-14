@@ -27,8 +27,6 @@ import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import com.isnakebuzz.snakegq.Enums.GameQueueStatus;
 import com.isnakebuzz.snakegq.Enums.GameQueueType;
 import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.World;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
@@ -183,22 +181,9 @@ public class ListenerManager {
 
     public void restartWorld() {
         //Reseting world
-        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") && Statics.skyMode != GameType.LOBBY) {
-            plugin.getWorldRestarting().restartWorld();
+        if (Statics.skyMode != GameType.LOBBY) {
+            plugin.getSkyWarsArena().reloadWorld();
         }
-
-
-        /* Setting world specifies */
-
-        World world = Bukkit.getWorld("world");
-
-        world.setAutoSave(false);
-        world.getWorldBorder().setSize(10000);
-        world.setDifficulty(Difficulty.HARD);
-        world.setFullTime(6000);
-        world.setGameRuleValue("doDaylightCycle", "false");
-        world.setGameRuleValue("doMobSpawning", "false");
-        Bukkit.setSpawnRadius(0);
     }
 
     public void reset() {

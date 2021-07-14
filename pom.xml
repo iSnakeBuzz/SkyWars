@@ -6,7 +6,7 @@
 
     <groupId>SkyWars</groupId>
     <artifactId>SkyWars</artifactId>
-    <version>1.0.1.5</version>
+    <version>1.0.2.0</version>
     <packaging>jar</packaging>
 
     <name>SkyWars</name>
@@ -65,7 +65,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src/skyWars/resources</directory>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
@@ -88,10 +88,19 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
-
+        <repository>
+            <id>glaremasters</id>
+            <url>https://repo.glaremasters.me/repository/concuncan/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.grinderwolf</groupId>
+            <artifactId>slimeworldmanager-api</artifactId>
+            <version>2.2.1</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
@@ -148,16 +157,20 @@
             <systemPath>${project.basedir}/Lib/SnakeGameQueue-1.0.0-RELEASE.jar</systemPath>
         </dependency>
 
-
         <dependency>
+            <groupId>com.isnakebuzz</groupId>
+            <artifactId>NetCore</artifactId>
+            <version>1.1.1-BETA</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--<dependency>
             <groupId>SnakeEconomy</groupId>
             <artifactId>snakeeco-api</artifactId>
             <scope>system</scope>
             <version>1.0.0-RELEASE</version>
             <systemPath>${project.basedir}/Lib/SnakeEconomy-1.0-SNAPSHOT.jar</systemPath>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        </dependency>--><!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -186,13 +199,5 @@
             <version>4.4</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.isnakebuzz</groupId>
-            <artifactId>NetCore</artifactId>
-            <version>1.0.1-BETA</version>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
 </project>

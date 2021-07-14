@@ -9,8 +9,8 @@ import java.util.HashMap;
 
 public class CagesManager {
 
-    private SkyWars plugin;
-    private HashMap<Integer, Cage> cages;
+    private final SkyWars plugin;
+    private final HashMap<Integer, Cage> cages;
 
     public CagesManager(SkyWars plugin) {
         this.plugin = plugin;

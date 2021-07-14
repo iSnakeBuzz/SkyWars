@@ -5,8 +5,6 @@ import com.isnakebuzz.skywars.Utils.Statics;
 import com.isnakebuzz.snakegq.API.GameQueueAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -33,37 +31,15 @@ public class EndTask extends BukkitRunnable {
             //replace for others methods more efficients.
             plugin.debug("Restarting arena..");
             this.cancel();
-            if (Statics.isFawe) {
-                if (Statics.SnakeGameQueue) GameQueueAPI.removeGame(Statics.BungeeID);
 
-                if (Statics.toRestart++ >= 20) {
-                    Bukkit.shutdown();
-                    return;
-                }
-
-                plugin.getWorldRestarting().restartWorld();
-                plugin.getListenerManager().reset();
-            } else {
-                if (Statics.SnakeGameQueue) GameQueueAPI.removeGame(Statics.BungeeID);
-
-                if (Statics.toRestart++ >= 20) {
-                    Bukkit.shutdown();
-                    return;
-                }
-
-                /* World restarting sync. */
-                plugin.getScheduler().runSync(() -> {
-                    World world = Bukkit.getWorld("world");
-                    world.setAutoSave(false);
-                    WorldCreator worldReseter = new WorldCreator(world.getName());
-                    Bukkit.unloadWorld(world, false);
-                    Bukkit.getServer().createWorld(worldReseter);
-                });
-
-                plugin.getListenerManager().reset();
+            if (Statics.SnakeGameQueue) GameQueueAPI.removeGame(Statics.BungeeID);
+            if (Statics.toRestart++ >= 20) {
+                Bukkit.shutdown();
                 return;
             }
 
+            /* World restarting sync. */
+            plugin.getListenerManager().reset();
 
             if (Bukkit.getOnlinePlayers().size() > 0) {
                 for (Player online : Bukkit.getOnlinePlayers()) {

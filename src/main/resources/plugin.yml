@@ -1,11 +1,11 @@
 name: 'SkyWars'
 version: ${project.version}
-main: com.isnakebuzz.skywars.Main
-authors: ['iSnakeBuzz_']
-softdepend: ['FastAsyncWorldEdit', 'SnakeGameQueue', 'SnakeEconomy', 'ProtocolLib', 'PlaceholderAPI']
+main: com.isnakebuzz.skywars.SkyWars
+authors: [ 'iSnakeBuzz_' ]
+softdepend: [ 'SnakeGameQueue', 'NetCore', 'SnakeEconomy', 'ProtocolLib', 'PlaceholderAPI' ]
 description: 'SkyWars Similar to Hypixel'
 website: https://www.isnakebuzz.com/
 commands:
   SkyWars:
     description: 'SkyWars principal command'
-    aliases: ['sw', 'skyw', 'swars']
+    aliases: [ 'sw', 'skyw', 'swars' ]

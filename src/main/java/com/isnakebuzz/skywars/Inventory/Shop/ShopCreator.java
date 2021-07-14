@@ -1,12 +1,12 @@
 package com.isnakebuzz.skywars.Inventory.Shop;
 
 import com.google.common.collect.Lists;
+import com.isnakebuzz.netcore.NetCoreAPI;
 import com.isnakebuzz.skywars.Inventory.MenuManager.Menu;
 import com.isnakebuzz.skywars.Inventory.Utils.ItemBuilder;
 import com.isnakebuzz.skywars.Player.LobbyPlayer;
 import com.isnakebuzz.skywars.SkyWars;
 import com.isnakebuzz.skywars.Utils.PacketsAPI;
-import com.isnakebuzz.snakeco.Utils.EcoAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -238,10 +238,10 @@ public class ShopCreator extends Menu {
                         .replaceAll("%kit%", kitName)
                 ));
             } else {
-                int haveCoins = EcoAPI.getCoins(p);
+                int haveCoins = NetCoreAPI.getCoins(p);
 
                 if (takeCoins <= haveCoins) {
-                    EcoAPI.removeCoins(p, takeCoins);
+                    NetCoreAPI.removeCoins(p, takeCoins);
                     p.sendMessage(c(p, lang.getString("Shop.Kits.buyed")
                             .replaceAll("%kit%", kitName)
                     ));
@@ -255,7 +255,7 @@ public class ShopCreator extends Menu {
             p.closeInventory();
         } else if (args[0].equalsIgnoreCase("cage")) {
             String cageName = args[1];
-            int takeCoins = Integer.valueOf(args[2]);
+            int takeCoins = Integer.parseInt(args[2]);
 
             if (hasPermissions) {
                 skyPlayer.setCageName(cageName);
@@ -272,10 +272,10 @@ public class ShopCreator extends Menu {
                         .replaceAll("%cageName%", cageName)
                 ));
             } else {
-                int haveCoins = EcoAPI.getCoins(p);
+                int haveCoins = NetCoreAPI.getCoins(p);
 
                 if (takeCoins <= haveCoins) {
-                    EcoAPI.removeCoins(p, takeCoins);
+                    NetCoreAPI.removeCoins(p, takeCoins);
                     p.sendMessage(c(p, lang.getString("Shop.Cages.buyed")
                             .replaceAll("%cageName%", cageName)
                     ));

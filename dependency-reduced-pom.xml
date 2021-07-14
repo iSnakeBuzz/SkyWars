@@ -4,7 +4,7 @@
   <groupId>SkyWars</groupId>
   <artifactId>SkyWars</artifactId>
   <name>SkyWars</name>
-  <version>1.0.1.5</version>
+  <version>1.0.2.0</version>
   <description>SkyWars Similar to HyPixel</description>
   <url>https://www.isnakebuzz.com/</url>
   <build>
@@ -12,7 +12,7 @@
     <resources>
       <resource>
         <filtering>true</filtering>
-        <directory>src/skyWars/resources</directory>
+        <directory>src/main/resources</directory>
       </resource>
     </resources>
     <finalName>${project.artifactId}</finalName>
@@ -72,6 +72,10 @@
       <id>placeholderapi</id>
       <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
+    <repository>
+      <id>glaremasters</id>
+      <url>https://repo.glaremasters.me/repository/concuncan/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -85,6 +89,18 @@
       <artifactId>HikariCP</artifactId>
       <version>LATEST</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.isnakebuzz</groupId>
+      <artifactId>NetCore</artifactId>
+      <version>1.1.1-BETA</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>httpclient</artifactId>
+          <groupId>org.apache.httpcomponents</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -157,13 +173,6 @@
       <version>1.0.1-RELEASE</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/Lib/SnakeGameQueue-1.0.0-RELEASE.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>SnakeEconomy</groupId>
-      <artifactId>snakeeco-api</artifactId>
-      <version>1.0.0-RELEASE</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/Lib/SnakeEconomy-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>

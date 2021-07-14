@@ -1,9 +1,7 @@
 package com.isnakebuzz.skywars.Utils;
 
 import com.isnakebuzz.skywars.Schematics.Utils.Cuboid;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -20,19 +18,15 @@ public class LocUtils {
                 + l.getYaw() + ":" + l.getPitch();
     }
 
-    public static Location stringToLoc(String s) {
-        try {
-            World world = Bukkit.getWorld(s.split(":")[0]);
-            double x = Double.parseDouble(s.split(":")[1]);
-            double y = Double.parseDouble(s.split(":")[2]);
-            double z = Double.parseDouble(s.split(":")[3]);
-            float p = Float.parseFloat(s.split(":")[4]);
-            float y2 = Float.parseFloat(s.split(":")[5]);
+    public static SnakeLocation stringToLoc(String s) {
+        String world = s.split(":")[0];
+        double x = Double.parseDouble(s.split(":")[1]);
+        double y = Double.parseDouble(s.split(":")[2]);
+        double z = Double.parseDouble(s.split(":")[3]);
+        float p = Float.parseFloat(s.split(":")[4]);
+        float y2 = Float.parseFloat(s.split(":")[5]);
 
-            return new Location(world, x + 0.5, y, z + 0.5, p, y2);
-        } catch (Exception ex) {
-        }
-        return null;
+        return new SnakeLocation(world, x + 0.5, y, z + 0.5, p, y2);
     }
 
     public static void teleport(Player player, Location spawnLocation, Location lobbyLocation) {
@@ -49,7 +43,7 @@ public class LocUtils {
         return new Location(loc.getWorld(), loc.getX() + 0.5, loc.getY(), loc.getZ() + 0.5);
     }
 
-    public static List<Location> stringsToLocs(List<String> locs) {
+    public static List<SnakeLocation> stringsToLocs(List<String> locs) {
         return locs.stream().map(LocUtils::stringToLoc).collect(Collectors.toList());
     }
 
